@@ -19,7 +19,11 @@ public class HealthBar : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        if (fillGraphic == null)
+            fillGraphic = GameObject.Find("HealthFill");
+
         healthBar = fillGraphic.GetComponent<Image>();
+
         health = 100;
     }
 
