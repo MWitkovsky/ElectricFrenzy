@@ -5,10 +5,22 @@ using System.Collections;
 public class UIManager : MonoBehaviour {
 
     private static Text pickupDisplay;
+    private static Timer timerDisplay;
+    private static float timer;
 
     void Start()
     {
         pickupDisplay = GameObject.Find("PickupDisplay").GetComponent<Text>();
+        timerDisplay = FindObjectOfType<Timer>();
+    }
+
+    void Update()
+    {
+        if (GameManager.IsGameActive())
+        {
+            timer += Time.deltaTime;
+            timerDisplay.UpdateTimeDisplay(timer);
+        }
     }
 
 	public static void UpdatePickupDisplay(uint numOfPickups)
@@ -20,4 +32,5 @@ public class UIManager : MonoBehaviour {
         else
             pickupDisplay.text = numOfPickups.ToString();
     }
+
 }
