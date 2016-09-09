@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour {
 
     private static UIManager ui;
     private static bool gameActive;
+    private static bool debug;
 
     void Start () {
         //load the player data if exists
@@ -14,6 +15,7 @@ public class GameManager : MonoBehaviour {
         ui = FindObjectOfType<UIManager>();
 
         gameActive = true;
+        debug = true;
 	}
 
     public static bool IsGameActive()
@@ -24,5 +26,15 @@ public class GameManager : MonoBehaviour {
     public static void SetGameActive(bool gameActive)
     {
         GameManager.gameActive = gameActive;
+    }
+
+    public static bool IsDebugEnabled()
+    {
+        return debug;
+    }
+
+    public static void SetDebugMode(bool debug)
+    {
+        GameManager.debug = debug;
     }
 }

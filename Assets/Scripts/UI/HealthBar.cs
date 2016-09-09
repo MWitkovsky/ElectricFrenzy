@@ -4,84 +4,133 @@ using System.Collections;
 
 public class HealthBar : MonoBehaviour
 { 
-    public GameObject fillGraphic;
+    [SerializeField]
+    private GameObject fillGraphic, backGraphic;
+    [SerializeField]
+    private float backBarEmptySpeed, backBarEmptyDelay;
 
-    private Image healthBar;
-    private int health;
+    private Image healthBarImage, backBarImage;
+    private float health;
 
     //for graphical LERP
+    private Color damageColor, healColor;
     private int lerpCounter;
-    private float initHealth;
-    private float displayHealth;
-    private float targetHealth;
-    private bool isHealing, isTakingDamage;
+    private float initHealth, displayHealth, backBarHealth, targetHealth, backBarTargetHealth;
+    private float backBarEmptyTimer;
+    private bool isHealing, isTakingDamage, backHealBarDone;
 
     // Use this for initialization
     void Start()
     {
         if (fillGraphic == null)
             fillGraphic = GameObject.Find("HealthFill");
+        if (backGraphic == null)
+            backGraphic = GameObject.Find("HealthBack");
 
-        healthBar = fillGraphic.GetComponent<Image>();
+        healthBarImage = fillGraphic.GetComponent<Image>();
+        backBarImage = backGraphic.GetComponent<Image>();
+        damageColor = Color.cyan;
+        healColor = Color.green;
 
-        health = 100;
+        displayHealth = 1.0f;
+        health = 100.0f;
+        backBarHealth = 100.0f;
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.KeypadMinus))
-        {
-            applyDamage(20);
-        }
-
-        if (Input.GetKeyDown(KeyCode.KeypadPlus))
-        {
-            heal(20);
-        }
-
         //Gives a more intense drain when taking damage versus a gentler fill when healing
         if (isTakingDamage)
-        {
-            displayHealth = Mathf.Lerp(displayHealth, targetHealth, 0.25f);
-
-            if(displayHealth - targetHealth < 0.01f)
-            {
-                displayHealth = targetHealth;
-                isTakingDamage = false;
-            }
-
-            updateGraphics();
-        }
+            ProcessDamage();
         else if (isHealing)
+            ProcessHealing();
+
+        if (backBarEmptyTimer > 0.0f)
+            backBarEmptyTimer -= Time.deltaTime;
+
+        if (backBarHealth > health && backBarEmptyTimer <= 0.0f)
+            backBarHealth -= Time.deltaTime * backBarEmptySpeed;
+
+        updateGraphics();
+
+        //DEBUG CONTROLS
+        if (GameManager.IsDebugEnabled())
+            ProcessDebugControls();
+    }
+
+    private void ProcessDamage()
+    {
+        displayHealth = Mathf.Lerp(displayHealth, targetHealth, 0.25f);
+
+        if (displayHealth - targetHealth < 0.01f)
         {
-            lerpCounter++;
-            displayHealth = Mathf.Lerp(initHealth, targetHealth, lerpCounter/100.0f);
-
-            if(lerpCounter == 100)
-            {
-                displayHealth = targetHealth;
-                lerpCounter = 0;
-                isHealing = false;
-            }
-
-            updateGraphics();
+            displayHealth = targetHealth;
+            isTakingDamage = false;
         }
+    }
+
+    private void ProcessHealing()
+    {
+        if (!backHealBarDone)
+        {
+            print(backBarHealth + " " + backBarTargetHealth);
+            backBarHealth = Mathf.Lerp(backBarHealth, backBarTargetHealth, 0.45f);
+
+            if (Mathf.Abs(backBarHealth - backBarTargetHealth) < 0.01f)
+            {
+                backBarHealth = backBarTargetHealth;
+                backHealBarDone = true;
+            }
+        }
+
+        ++lerpCounter;
+        displayHealth = Mathf.Lerp(initHealth, targetHealth, lerpCounter / 100.0f);
+
+        if (lerpCounter == 100)
+        {
+            displayHealth = targetHealth;
+            lerpCounter = 0;
+            isHealing = false;
+            backHealBarDone = false;
+        }
+    }
+
+    private void ProcessDebugControls()
+    {
+        if (Input.GetKeyDown(KeyCode.KeypadMinus))
+            ApplyDamage(20.0f);
+
+        if (Input.GetKeyDown(KeyCode.KeypadPlus))
+            Heal(20.0f);
     }
 
     //Takes two values and takes the resulting amount of damage
     //1.0f of rawDamage == 1% of total life
-    public void applyDamage(int damage)
+    public void ApplyDamage(float damage)
     {
-        initHealth = health / 100.0f;
-        health -= damage;
-        targetHealth = health / 100.0f; ;
+        backBarImage.color = damageColor;
+        backBarEmptyTimer = backBarEmptyDelay;
 
-        displayHealth = initHealth;
-
-        if (health <= 0)
+        if (isHealing)
         {
-            health = 0;
-            targetHealth = 0.00f;
+            backBarHealth = displayHealth * 100.0f;
+            isHealing = false;
+
+            initHealth = displayHealth;
+        }
+        else
+        {
+            initHealth = health / 100.0f;
+            displayHealth = initHealth;
+        }
+
+        health -= damage;
+        targetHealth = health / 100.0f;
+
+        if (health <= 0.0f)
+        {
+            health = 0.0f;
+            targetHealth = 0.0f;
 
             //Die
         }
@@ -91,15 +140,20 @@ public class HealthBar : MonoBehaviour
         isTakingDamage = true;
     }
 
-    public void heal(int amount)
+    public void Heal(float amount)
     {
-        if(health < 100)
+        backHealBarDone = false;
+        backBarImage.color = healColor;
+        backBarHealth = health;
+
+        if (health < 100.0f)
         {
             if (!isHealing)
             {
                 initHealth = health / 100.0f; ;
                 health += amount;
-                targetHealth = health / 100.0f; ;
+                backBarTargetHealth = health;
+                targetHealth = health / 100.0f;
 
                 displayHealth = initHealth;
             }
@@ -108,18 +162,18 @@ public class HealthBar : MonoBehaviour
                 //If heal effects gained in quick succession, compound the existing fill
                 initHealth = displayHealth;
                 health += amount;
-                targetHealth = health / 100.0f; ;
+                backBarTargetHealth = health;
+                targetHealth = health / 100.0f;
 
                 lerpCounter = 0;
             }
             //Clamp health to 100%
-            if (health > 100)
+            if (health > 100.0f)
             {
-                health = 100;
+                health = 100.0f;
                 targetHealth = 1.00f;
             }
 
-            isTakingDamage = false;
             lerpCounter = 0;
             isHealing = true;
         }        
@@ -127,6 +181,7 @@ public class HealthBar : MonoBehaviour
 
     private void updateGraphics()
     {
-        healthBar.fillAmount = displayHealth;
+        healthBarImage.fillAmount = displayHealth;
+        backBarImage.fillAmount = backBarHealth/100.0f;
     }
 }
