@@ -39,6 +39,9 @@ public class HealthBar : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.IsGameActive())
+            ApplyTimeDamage(Time.deltaTime);
+
         //Gives a more intense drain when taking damage versus a gentler fill when healing
         if (isTakingDamage)
             ProcessDamage();
@@ -138,6 +141,15 @@ public class HealthBar : MonoBehaviour
         isHealing = false;
         lerpCounter = 0;
         isTakingDamage = true;
+    }
+
+    public void ApplyTimeDamage(float damage)
+    {
+        health -= damage;
+        backBarHealth -= damage;
+        backBarTargetHealth -= damage;
+        targetHealth -= damage / 100.0f;
+        displayHealth -= damage / 100.0f;
     }
 
     public void Heal(float amount)
