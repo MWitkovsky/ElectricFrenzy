@@ -3,7 +3,7 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour {
 
-    public static PlayerInfo playerInfo;
+    private static PlayerInfo playerInfo;
 
     private static UIManager ui;
     private static bool gameActive;
@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour {
     void Start () {
         //load the player data if exists
         playerInfo = new PlayerInfo();
+        PlayerManager.SetPlayerInfo(playerInfo);
         ui = FindObjectOfType<UIManager>();
 
         gameActive = true;

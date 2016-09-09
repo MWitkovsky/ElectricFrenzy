@@ -35,14 +35,14 @@ public class FrenzyBar : MonoBehaviour
             }
         }
 
-        updateGraphics();
+        UpdateGraphics();
 
         //DEBUG CONTROLS
         if (GameManager.IsDebugEnabled())
             ProcessDebugControls();
     }
 
-    private void AddFrenzyCharge(float charge)
+    public void AddFrenzyCharge(float charge)
     {
         this.charge += charge;
         if (this.charge > 100.0f)
@@ -52,7 +52,7 @@ public class FrenzyBar : MonoBehaviour
         lerp = true;
     }
 
-    private void RemoveFrenzyCharge(float charge)
+    public void RemoveFrenzyCharge(float charge)
     {
         this.charge -= charge;
         if (this.charge < 0.0f)
@@ -71,8 +71,13 @@ public class FrenzyBar : MonoBehaviour
             AddFrenzyCharge(20.0f);
     }
 
-    private void updateGraphics()
+    private void UpdateGraphics()
     {
         frenzyBarImage.fillAmount = displayCharge;
+    }
+
+    public float GetCharge()
+    {
+        return charge;
     }
 }

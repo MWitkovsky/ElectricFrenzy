@@ -54,7 +54,7 @@ public class HealthBar : MonoBehaviour
         if (backBarHealth > health && backBarEmptyTimer <= 0.0f)
             backBarHealth -= Time.deltaTime * backBarEmptySpeed;
 
-        updateGraphics();
+        UpdateGraphics();
 
         //DEBUG CONTROLS
         if (GameManager.IsDebugEnabled())
@@ -76,7 +76,6 @@ public class HealthBar : MonoBehaviour
     {
         if (!backHealBarDone)
         {
-            print(backBarHealth + " " + backBarTargetHealth);
             backBarHealth = Mathf.Lerp(backBarHealth, backBarTargetHealth, Time.deltaTime * backBarHealSpeed);
 
             if (Mathf.Abs(backBarHealth - backBarTargetHealth) < 0.01f)
@@ -194,7 +193,12 @@ public class HealthBar : MonoBehaviour
         }        
     }
 
-    private void updateGraphics()
+    public float GetHealth()
+    {
+        return health;
+    }
+
+    private void UpdateGraphics()
     {
         healthBarImage.fillAmount = displayHealth;
         backBarImage.fillAmount = backBarHealth/100.0f;

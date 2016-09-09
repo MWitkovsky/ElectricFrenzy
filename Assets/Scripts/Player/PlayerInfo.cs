@@ -4,21 +4,21 @@ using System.Collections;
 [System.Serializable]
 public class PlayerInfo {
 
-    private uint numOfPickups;
+    private uint numOfLoosePackets;
 
     public PlayerInfo()
     {
-        numOfPickups = 0;
+        numOfLoosePackets = 0;
     }
 
-    public void IncrementNumOfPickups()
+    public void IncrementNumOfLoosePackets()
     {
-        numOfPickups++;
-        UIManager.UpdatePickupDisplay(numOfPickups);
+        numOfLoosePackets++;
+        UIManager.UpdatePickupDisplay(numOfLoosePackets);
     }
 
-    public uint GetNumOfPickups()
+    public uint GetNumOfLoosePackets()
     {
-        return numOfPickups;
+        return numOfLoosePackets;
     }
 }

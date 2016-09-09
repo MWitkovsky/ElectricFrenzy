@@ -1,13 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PickupHandler : MonoBehaviour {
-    
+public class RechargerHandler : MonoBehaviour {
+
+    [SerializeField]
+    private float chargeAmount;
+
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag(TagManager.Player))
         {
-            GameManager.playerInfo.IncrementNumOfPickups();
+            PlayerManager.AddFrenzyCharge(chargeAmount);
             Destroy(gameObject);
         }
     }
