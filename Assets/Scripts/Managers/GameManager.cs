@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour {
     private static bool debug;
 
     void Start () {
-        //load the player data if exists
+        //load the player data if exists and passes it to the PlayerManager
         playerInfo = new PlayerInfo();
         PlayerManager.SetPlayerInfo(playerInfo);
         ui = FindObjectOfType<UIManager>();
