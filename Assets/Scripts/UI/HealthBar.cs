@@ -7,7 +7,7 @@ public class HealthBar : MonoBehaviour
     [SerializeField]
     private GameObject fillGraphic, backGraphic;
     [SerializeField]
-    private float backBarEmptySpeed, backBarEmptyDelay;
+    private float damageDisplaySpeed, backBarHealSpeed, backBarEmptySpeed, backBarEmptyDelay;
 
     private Image healthBarImage, backBarImage;
     private float health;
@@ -15,7 +15,7 @@ public class HealthBar : MonoBehaviour
     //for graphical LERP
     private Color damageColor, healColor;
     private int lerpCounter;
-    private float initHealth, displayHealth, backBarHealth, targetHealth, backBarTargetHealth;
+    private float initHealth, displayHealth, backBarHealth, targetDisplayHealth, backBarTargetHealth;
     private float backBarEmptyTimer;
     private bool isHealing, isTakingDamage, backHealBarDone;
 
@@ -63,11 +63,11 @@ public class HealthBar : MonoBehaviour
 
     private void ProcessDamage()
     {
-        displayHealth = Mathf.Lerp(displayHealth, targetHealth, 0.25f);
+        displayHealth = Mathf.Lerp(displayHealth, targetDisplayHealth, Time.deltaTime * damageDisplaySpeed);
 
-        if (displayHealth - targetHealth < 0.01f)
+        if (displayHealth - targetDisplayHealth < 0.01f)
         {
-            displayHealth = targetHealth;
+            displayHealth = targetDisplayHealth;
             isTakingDamage = false;
         }
     }
@@ -77,7 +77,7 @@ public class HealthBar : MonoBehaviour
         if (!backHealBarDone)
         {
             print(backBarHealth + " " + backBarTargetHealth);
-            backBarHealth = Mathf.Lerp(backBarHealth, backBarTargetHealth, 0.45f);
+            backBarHealth = Mathf.Lerp(backBarHealth, backBarTargetHealth, Time.deltaTime * backBarHealSpeed);
 
             if (Mathf.Abs(backBarHealth - backBarTargetHealth) < 0.01f)
             {
@@ -87,11 +87,11 @@ public class HealthBar : MonoBehaviour
         }
 
         ++lerpCounter;
-        displayHealth = Mathf.Lerp(initHealth, targetHealth, lerpCounter / 100.0f);
+        displayHealth = Mathf.Lerp(initHealth, targetDisplayHealth, lerpCounter / 100.0f);
 
         if (lerpCounter == 100)
         {
-            displayHealth = targetHealth;
+            displayHealth = targetDisplayHealth;
             lerpCounter = 0;
             isHealing = false;
             backHealBarDone = false;
@@ -128,12 +128,12 @@ public class HealthBar : MonoBehaviour
         }
 
         health -= damage;
-        targetHealth = health / 100.0f;
+        targetDisplayHealth = health / 100.0f;
 
         if (health <= 0.0f)
         {
             health = 0.0f;
-            targetHealth = 0.0f;
+            targetDisplayHealth = 0.0f;
 
             //Die
         }
@@ -145,11 +145,14 @@ public class HealthBar : MonoBehaviour
 
     public void ApplyTimeDamage(float damage)
     {
-        health -= damage;
-        backBarHealth -= damage;
-        backBarTargetHealth -= damage;
-        targetHealth -= damage / 100.0f;
-        displayHealth -= damage / 100.0f;
+        if(health > 0.0f)
+        {
+            health -= damage;
+            backBarHealth -= damage;
+            backBarTargetHealth -= damage;
+            targetDisplayHealth -= damage / 100.0f;
+            displayHealth -= damage / 100.0f;
+        }
     }
 
     public void Heal(float amount)
@@ -165,7 +168,7 @@ public class HealthBar : MonoBehaviour
                 initHealth = health / 100.0f; ;
                 health += amount;
                 backBarTargetHealth = health;
-                targetHealth = health / 100.0f;
+                targetDisplayHealth = health / 100.0f;
 
                 displayHealth = initHealth;
             }
@@ -175,7 +178,7 @@ public class HealthBar : MonoBehaviour
                 initHealth = displayHealth;
                 health += amount;
                 backBarTargetHealth = health;
-                targetHealth = health / 100.0f;
+                targetDisplayHealth = health / 100.0f;
 
                 lerpCounter = 0;
             }
@@ -183,7 +186,7 @@ public class HealthBar : MonoBehaviour
             if (health > 100.0f)
             {
                 health = 100.0f;
-                targetHealth = 1.00f;
+                targetDisplayHealth = 1.00f;
             }
 
             lerpCounter = 0;
