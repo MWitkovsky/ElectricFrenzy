@@ -5,6 +5,7 @@ public class PlayerInfo {
 
     private uint numOfLoosePackets;
     private bool hasFirewall;
+    private bool hasProxy;
 
     public PlayerInfo()
     {
@@ -36,5 +37,21 @@ public class PlayerInfo {
     public bool HasFirewall()
     {
         return hasFirewall;
+    }
+
+    //Firewall
+    public void GiveProxy()
+    {
+        hasProxy = true;
+    }
+
+    public void RemoveProxy()
+    {
+        hasProxy = false;
+    }
+
+    public bool HasProxy()
+    {
+        return hasProxy;
     }
 }

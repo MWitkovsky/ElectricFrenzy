@@ -3,26 +3,26 @@ using System.Collections;
 
 public class PlayerManager : MonoBehaviour {
 
+    private static GameObject player;
     private static PlayerInfo playerInfo;
     private static PlayerController playerController;
 
-    private static GameObject firewall;
-    private static MeshRenderer meshRenderer;
+    private static GameObject firewallPrefab, firewall;
+    private static AfterimageGenerator afterimages;
+    private static SkinnedMeshRenderer meshRenderer;
     private static float invincibilityTime = 2.0f, amountOfBlinks = 5.0f, blinkTime = 0.1f, blinkIntervalTime;
     private static float invincibilityTimer, blinkIntervalTimer, blinkTimer;
 
     void Start()
     {
+        player = GameObject.Find("Player");
         playerController = FindObjectOfType<PlayerController>();
+        afterimages = FindObjectOfType<AfterimageGenerator>();
 
-        meshRenderer = GetComponent<MeshRenderer>();
-        foreach (Transform t in transform)
-        {
-            if (t.name == "Firewall")
-                firewall = t.gameObject;
-        }
+        firewallPrefab = (GameObject)Resources.Load(ResourcePaths.FirewallPrefab);
+        meshRenderer = GetComponent<SkinnedMeshRenderer>();
 
-        firewall.SetActive(false);
+        afterimages.enabled = false;
 
         blinkIntervalTime = invincibilityTime / amountOfBlinks;
     }
@@ -31,6 +31,17 @@ public class PlayerManager : MonoBehaviour {
     {
         if (invincibilityTimer > 0.0f)
             HandleInvincibility();
+
+        if (GameManager.IsDebugEnabled())
+        {
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                if (!HasProxy())
+                    GiveProxy();
+                else
+                    RemoveProxy();
+            }
+        }
     }
 
     private void HandleInvincibility()
@@ -74,18 +85,39 @@ public class PlayerManager : MonoBehaviour {
     public static void GiveFirewall()
     {
         playerInfo.GiveFirewall();
-        firewall.SetActive(true);
+        firewall = (GameObject)Instantiate(firewallPrefab, player.transform.position, player.transform.rotation);
+        firewall.transform.parent = player.transform;
+        firewall.transform.Translate(new Vector3(0.0f, 0.0f, -2.0f));
     }
 
     public static void RemoveFirewall()
     {
         playerInfo.RemoveFirewall();
-        firewall.SetActive(false);
+        if (firewall)
+            Destroy(firewall);
     }
 
     public static bool HasFirewall()
     {
         return playerInfo.HasFirewall();
+    }
+
+    public static void GiveProxy()
+    {
+        playerInfo.GiveProxy();
+        afterimages.enabled = true;
+    }
+
+    public static void RemoveProxy()
+    {
+        playerInfo.RemoveProxy();
+        afterimages.DestroyAllAfterimages();
+        afterimages.enabled = false;
+    }
+
+    public static bool HasProxy()
+    {
+        return playerInfo.HasProxy();
     }
 
     //These are interfaces with the UI manager since the health and frenzy bars work a little wonky
