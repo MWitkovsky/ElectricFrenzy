@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[System.Serializable]
 public class PlayerInfo {
 
     private uint numOfLoosePackets;
+    private bool hasFirewall;
 
     public PlayerInfo()
     {
@@ -20,5 +20,21 @@ public class PlayerInfo {
     public uint GetNumOfLoosePackets()
     {
         return numOfLoosePackets;
+    }
+
+    //Firewall
+    public void GiveFirewall()
+    {
+        hasFirewall = true;
+    }
+
+    public void RemoveFirewall()
+    {
+        hasFirewall = false;
+    }
+
+    public bool HasFirewall()
+    {
+        return hasFirewall;
     }
 }
