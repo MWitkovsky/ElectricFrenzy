@@ -29,8 +29,8 @@ public class HealthBar : MonoBehaviour
 
         healthBarImage = fillGraphic.GetComponent<Image>();
         backBarImage = backGraphic.GetComponent<Image>();
-        damageColor = Color.cyan;
-        healColor = Color.green;
+        damageColor = Color.red;
+        healColor = Color.black;
 
         displayHealth = 1.0f;
         health = 100.0f;
