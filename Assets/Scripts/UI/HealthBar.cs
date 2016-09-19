@@ -4,15 +4,16 @@ using System.Collections;
 
 public class HealthBar : MonoBehaviour
 { 
+    //Bar graphics
     [SerializeField]
     private GameObject fillGraphic, backGraphic;
     [SerializeField]
-    private float damageDisplaySpeed, backBarHealSpeed, backBarEmptySpeed, backBarEmptyDelay;
+    private float damageDisplaySpeed, backBarHealSpeed, backBarEmptySpeed, backBarEmptyDelay, healthDrainMultiplier, frenzyDrainMultiplier;
 
     private Image healthBarImage, backBarImage;
     private float health;
 
-    //for graphical LERP
+    //For graphical LERP
     private Color damageColor, healColor;
     private int lerpCounter;
     private float initHealth, displayHealth, backBarHealth, targetDisplayHealth, backBarTargetHealth;
@@ -40,7 +41,13 @@ public class HealthBar : MonoBehaviour
     void Update()
     {
         if (GameManager.IsGameActive())
-            ApplyTimeDamage(Time.deltaTime);
+        {
+            if(!PlayerManager.IsFrenzying())
+                ApplyTimeDamage(Time.deltaTime * healthDrainMultiplier);
+            else
+                ApplyTimeDamage(Time.deltaTime * healthDrainMultiplier * frenzyDrainMultiplier);
+        }
+            
 
         //Gives a more intense drain when taking damage versus a gentler fill when healing
         if (isTakingDamage)

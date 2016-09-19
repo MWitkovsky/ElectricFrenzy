@@ -6,12 +6,12 @@ public class PlayerController : MonoBehaviour {
     [SerializeField]
     private float moveSpeed = 15.0f, backwardsMoveSpeed = 13.5f, turnDelay = 1.0f;
     [SerializeField]
-    private float dashTime = 0.15f, dashCooldown = 0.1f;
+    private float attackTime = 0.15f, attackCooldown = 0.1f;
     [SerializeField]
     private float recoilForce, recoilTime, stunTime;
 
     private Rigidbody2D rb;
-    private float attackTimer, dashTimer, dashCooldownTimer, turnTimer, recoilTimer, stunTimer;
+    private float attackTimer, attackCooldownTimer, turnTimer, recoilTimer, stunTimer;
     private bool isRecoiling, isStunned;
     private bool facingRight;
 
@@ -24,14 +24,14 @@ public class PlayerController : MonoBehaviour {
     void Update()
     {
         //HANDLE DASH
-        if (dashTimer > 0.0f)
+        if (attackTimer > 0.0f)
         {
-            dashTimer -= Time.deltaTime;
+            attackTimer -= Time.deltaTime;
         }
         else
         {
-            if (dashCooldown > 0.0f)
-                dashCooldownTimer -= Time.deltaTime;
+            if (attackCooldown > 0.0f)
+                attackCooldownTimer -= Time.deltaTime;
         }    
 
         //HANDLE HIT RECOIL AND STUN
@@ -55,9 +55,6 @@ public class PlayerController : MonoBehaviour {
             PlayerManager.BeginInvincibility();
         }
 
-        if (attackTimer > 0.0f)
-            attackTimer -= Time.deltaTime;
-
         //TODO: replace true with actual condition for turning
         if (turnTimer > 0.0f && true)
             turnTimer -= Time.deltaTime;
@@ -79,17 +76,12 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    public void Attack()
-    {
-
-    }
-
-    public void Dash(Vector2 move)
+    public void Attack(Vector2 move)
     {
         if (AbleToMove())
         {
-            dashTimer = dashTime;
-            dashCooldownTimer = dashCooldown;
+            attackTimer = attackTime;
+            attackCooldownTimer = attackCooldown;
             rb.AddForce(move.normalized * moveSpeed * 2.0f, ForceMode2D.Impulse);
         }
     }
@@ -113,9 +105,14 @@ public class PlayerController : MonoBehaviour {
         return facingRight;
     }
 
+    public bool IsAttacking()
+    {
+        return attackTimer > 0.0f;
+    } 
+
     private bool AbleToMove()
     {
-        if (dashCooldownTimer <= 0.0f && !isRecoiling && !isStunned)
+        if (attackCooldownTimer <= 0.0f && !isRecoiling && !isStunned)
         {
             return true;
         }
@@ -124,7 +121,7 @@ public class PlayerController : MonoBehaviour {
 
     private bool ShouldLockVelocity()
     {
-        if (dashTimer <= 0.0f && recoilTimer <= 0.0f)
+        if (attackTimer <= 0.0f && recoilTimer <= 0.0f)
         {
             return true;
         }

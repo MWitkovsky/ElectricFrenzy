@@ -4,6 +4,7 @@ using System.Collections;
 
 public class FrenzyBar : MonoBehaviour
 { 
+    //Graphics
     [SerializeField]
     private GameObject fillGraphic;
     [SerializeField]
@@ -13,6 +14,11 @@ public class FrenzyBar : MonoBehaviour
     private float charge, displayCharge, targetDisplayCharge;
     private bool lerp;
 
+    //Properties
+    [SerializeField]
+    private float frenzyLength;
+    private float frenzyDrainCoefficient;
+
     // Use this for initialization
     void Start()
     {
@@ -21,6 +27,8 @@ public class FrenzyBar : MonoBehaviour
 
         frenzyBarImage = fillGraphic.GetComponent<Image>();
         charge = 0.0f;
+
+        frenzyDrainCoefficient = 100.0f / frenzyLength;
     }
 
     void Update()
@@ -36,6 +44,19 @@ public class FrenzyBar : MonoBehaviour
         }
 
         UpdateGraphics();
+
+        if (PlayerManager.IsFrenzying())
+        {
+            if (charge <= 0.0f)
+            {
+                charge = 0.0f;
+                PlayerManager.EndFrenzy();
+            }
+            else
+            {
+                RemoveFrenzyCharge(frenzyDrainCoefficient * Time.deltaTime);
+            }           
+        }
 
         //DEBUG CONTROLS
         if (GameManager.IsDebugEnabled())

@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerInfo {
 
+    private List<KeyloggerMain> keyloggers = new List<KeyloggerMain>();
     private uint numOfLoosePackets;
     private bool hasFirewall;
     private bool hasProxy;
+    private bool isFrenzying;
 
     public PlayerInfo()
     {
@@ -14,13 +16,34 @@ public class PlayerInfo {
 
     public void IncrementNumOfLoosePackets()
     {
-        numOfLoosePackets++;
+        ++numOfLoosePackets;
+        UIManager.UpdatePickupDisplay(numOfLoosePackets);
+    }
+
+    public void DecrementNumOfLoosePackets()
+    {
+        --numOfLoosePackets;
         UIManager.UpdatePickupDisplay(numOfLoosePackets);
     }
 
     public uint GetNumOfLoosePackets()
     {
         return numOfLoosePackets;
+    }
+
+    //Keyloggers
+    public void AttachKeylogger(KeyloggerMain keylogger)
+    {
+        keyloggers.Add(keylogger);
+    }
+
+    public void DetachKeyloggers()
+    {
+        foreach (KeyloggerMain k in keyloggers)
+        {
+            k.Detach();
+        }
+        keyloggers.Clear();
     }
 
     //Firewall
@@ -39,7 +62,7 @@ public class PlayerInfo {
         return hasFirewall;
     }
 
-    //Firewall
+    //Proxy
     public void GiveProxy()
     {
         hasProxy = true;
@@ -53,5 +76,21 @@ public class PlayerInfo {
     public bool HasProxy()
     {
         return hasProxy;
+    }
+
+    //Frenzy
+    public void BeginFrenzy()
+    {
+        isFrenzying = true;
+    }
+
+    public void EndFrenzy()
+    {
+        isFrenzying = false;
+    }
+
+    public bool IsFrenzying()
+    {
+        return isFrenzying;
     }
 }

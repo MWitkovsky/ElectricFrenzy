@@ -3,13 +3,19 @@ using System.Collections;
 
 public class PlayerManager : MonoBehaviour {
 
+    //Main player oversight tools
     private static GameObject player;
     private static PlayerInfo playerInfo;
     private static PlayerController playerController;
 
+    //Firewall tools
     private static GameObject firewallPrefab, firewall;
+
+    //Proxy tools
     private static AfterimageGenerator afterimages;
     private static SkinnedMeshRenderer meshRenderer;
+
+    //Taking damage and invincibility
     private static float invincibilityTime = 2.0f, amountOfBlinks = 5.0f, blinkTime = 0.1f, blinkIntervalTime;
     private static float invincibilityTimer, blinkIntervalTimer, blinkTimer;
 
@@ -76,12 +82,44 @@ public class PlayerManager : MonoBehaviour {
         invincibilityTimer = invincibilityTime;
     }
 
+    //Interfaces with PlayerController
+    public static bool IsAttacking()
+    {
+        return playerController.IsAttacking();
+    }
+
     //Interfaces with PlayerInfo
     public static void IncrementNumOfLoosePackets()
     {
         playerInfo.IncrementNumOfLoosePackets();
     }
 
+    //Keylogger
+    public static bool StealPacket()
+    {
+        if (playerInfo.GetNumOfLoosePackets() > 0)
+        {
+            playerInfo.DecrementNumOfLoosePackets();
+            return true;
+        }
+        else
+        {
+            Damage(1.0f, false);
+            return false;
+        }
+    }
+
+    public static void AttachKeylogger(KeyloggerMain keylogger)
+    {
+        playerInfo.AttachKeylogger(keylogger);
+    }
+
+    public static void DetachKeyloggers()
+    {
+        playerInfo.DetachKeyloggers();
+    }
+
+    //Firewall
     public static void GiveFirewall()
     {
         playerInfo.GiveFirewall();
@@ -102,6 +140,7 @@ public class PlayerManager : MonoBehaviour {
         return playerInfo.HasFirewall();
     }
 
+    //Proxy
     public static void GiveProxy()
     {
         playerInfo.GiveProxy();
@@ -120,6 +159,22 @@ public class PlayerManager : MonoBehaviour {
         return playerInfo.HasProxy();
     }
 
+    //Frenzy
+    public static bool IsFrenzying()
+    {
+        return playerInfo.IsFrenzying();
+    }
+
+    public static void BeginFrenzy()
+    {
+        playerInfo.BeginFrenzy();
+    }
+
+    public static void EndFrenzy()
+    {
+        playerInfo.EndFrenzy();
+    }
+
     //These are interfaces with the UI manager since the health and frenzy bars work a little wonky
     //It makes more sense organizationally to access them from a player manager rather than a UI element
     public static float GetHealth()
@@ -127,19 +182,14 @@ public class PlayerManager : MonoBehaviour {
        return UIManager.GetHealth();
     }
 
-    public static float GetFrenzyCharge()
-    {
-        return UIManager.GetFrenzyCharge();
-    }
-
 	public static void Heal(float amount)
     {
         UIManager.Heal(amount);
     }
 
-    public static void Damage(float amount, bool fromEnemy)
+    public static void Damage(float amount, bool knockback)
     {
-        if (!fromEnemy)
+        if (!knockback)
         {
             UIManager.Damage(amount);
         }
@@ -153,12 +203,25 @@ public class PlayerManager : MonoBehaviour {
                     UIManager.Damage(amount);
 
                 playerController.TakeHit();
+
+                //TODO: This will be moved to when the player teleports
+                DetachKeyloggers();
             }
         }
+    }
+
+    public static float GetFrenzyCharge()
+    {
+        return UIManager.GetFrenzyCharge();
     }
 
     public static void AddFrenzyCharge(float amount)
     {
         UIManager.AddFrenzyCharge(amount);
+    }
+
+    public static void RemoveFrenzyCharge(float amount)
+    {
+        UIManager.RemoveFrenzyCharge(amount);
     }
 }
