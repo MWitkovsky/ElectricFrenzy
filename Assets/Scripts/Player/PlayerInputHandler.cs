@@ -6,7 +6,8 @@ public class PlayerInputHandler : MonoBehaviour {
     private PlayerController playerController;
     private Vector2 move;
     private bool attack;
-    private bool dash;
+    private bool teleport;
+    private bool frenzy;
 
 	void Start () {
         playerController = FindObjectOfType<PlayerController>();
@@ -15,12 +16,13 @@ public class PlayerInputHandler : MonoBehaviour {
     void Update()
     {
         attack = Input.GetButtonDown("Fire1");
-        dash = Input.GetButtonDown("Jump");
+        teleport = Input.GetButtonDown("Jump");
+        frenzy = Input.GetButtonDown("Fire2");
 
         if (attack)
-            playerController.Attack();
-        if (dash)
-            playerController.Dash(move);
+            playerController.Attack(move);
+        if (frenzy)
+            Frenzy();
     }
 
 	void FixedUpdate() {
@@ -31,6 +33,12 @@ public class PlayerInputHandler : MonoBehaviour {
 
         move = v * Vector2.up + h * Vector2.right;
         playerController.Move(move);
+    }
+
+    private void Frenzy()
+    {
+        if(PlayerManager.GetFrenzyCharge() == 100.0f)
+            PlayerManager.BeginFrenzy();
     }
 
     //Keyboard controls are digital, getting keys here will avoid analogue emulation

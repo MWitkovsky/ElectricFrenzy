@@ -43,11 +43,6 @@ public class UIManager : MonoBehaviour {
         return healthBar.GetHealth();
     }
 
-    public static float GetFrenzyCharge()
-    {
-        return frenzyBar.GetCharge();
-    }
-
     public static void Heal(float amount)
     {
         healthBar.Heal(amount);
@@ -58,8 +53,18 @@ public class UIManager : MonoBehaviour {
         healthBar.ApplyDamage(amount);
     }
 
+    public static float GetFrenzyCharge()
+    {
+        return frenzyBar.GetCharge();
+    }
+
     public static void AddFrenzyCharge(float amount)
     {
         frenzyBar.AddFrenzyCharge(amount);
+    }
+
+    public static void RemoveFrenzyCharge(float amount)
+    {
+        frenzyBar.RemoveFrenzyCharge(amount);
     }
 }
