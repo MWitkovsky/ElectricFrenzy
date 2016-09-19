@@ -20,7 +20,7 @@ public class KeyloggerHitbox : MonoBehaviour {
     {
         if (other.CompareTag(TagManager.Player))
         {
-            if (PlayerManager.IsAttacking() && !keylogger.IsAttached() && damageTimer <= 0.0f)
+            if (PlayerManager.IsAttacking() && !keylogger.IsAttached() && !keylogger.IsStunned() && damageTimer <= 0.0f)
             {
                 if (PlayerManager.IsFrenzying())
                     keylogger.TakeDamage(3);
@@ -29,7 +29,7 @@ public class KeyloggerHitbox : MonoBehaviour {
 
                 damageTimer = damageDelay;
             }
-            else
+            else if (!PlayerManager.IsAttacking() && !keylogger.IsStunned())
             {
                 if (other.CompareTag(TagManager.Player))
                     keylogger.Attach();

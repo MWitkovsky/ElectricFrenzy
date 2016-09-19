@@ -203,9 +203,6 @@ public class PlayerManager : MonoBehaviour {
                     UIManager.Damage(amount);
 
                 playerController.TakeHit();
-
-                //TODO: This will be moved to when the player teleports
-                DetachKeyloggers();
             }
         }
     }
