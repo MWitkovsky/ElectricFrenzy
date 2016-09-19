@@ -4,13 +4,13 @@ using System.Collections;
 public class KeyloggerMain : MonoBehaviour {
 
     [SerializeField]
-    private float speed, packetYield, stealDelay;
+    private float speed, packetYield, stealDelay, hitstunTime;
 
     private Transform target;
     [SerializeField]
     private State state;
     private int health;
-    private float stealTimer;
+    private float stealTimer, hitstunTimer;
 
     public enum State { idle, spotted, attached };
 
@@ -23,30 +23,37 @@ public class KeyloggerMain : MonoBehaviour {
 
     void FixedUpdate()
     {
-        if (state == State.idle)
+        if (hitstunTimer <= 0.0f)
         {
-            //Make raycast check for walls here, turn around and patrol at a fixed speed
-        }
-        else if (state == State.spotted)
-        {
-            Vector3 dir = target.position - transform.position;
-            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.AngleAxis(angle-180.0f, Vector3.forward);
-            transform.Translate(dir * Time.fixedDeltaTime * speed, Space.World);
-        }
-        else if(state == State.attached)
-        {
-            if(stealTimer >= 0.0f)
+            if (state == State.idle)
             {
-                stealTimer -= Time.fixedDeltaTime;
+                //Make raycast check for walls here, turn around and patrol at a fixed speed
             }
-            else
+            else if (state == State.spotted)
             {
-                if (PlayerManager.StealPacket())
-                    ++packetYield;
+                Vector3 dir = target.position - transform.position;
+                float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+                transform.rotation = Quaternion.AngleAxis(angle - 180.0f, Vector3.forward);
+                transform.Translate(dir * Time.fixedDeltaTime * speed, Space.World);
+            }
+            else if (state == State.attached)
+            {
+                if (stealTimer >= 0.0f)
+                {
+                    stealTimer -= Time.fixedDeltaTime;
+                }
+                else
+                {
+                    if (PlayerManager.StealPacket())
+                        ++packetYield;
 
-                stealTimer = stealDelay;
+                    stealTimer = stealDelay;
+                }
             }
+        }
+        else
+        {
+            hitstunTimer -= Time.fixedDeltaTime;
         }
 
         //flips transform in Y direction if passes extreme angles on Z rotation
@@ -74,6 +81,7 @@ public class KeyloggerMain : MonoBehaviour {
     {
         transform.parent = null;
         GetComponent<Rigidbody2D>().isKinematic = false;
+        hitstunTimer = hitstunTime;
         state = State.spotted;
     }
 
@@ -85,10 +93,17 @@ public class KeyloggerMain : MonoBehaviour {
             //Death stuff
             Destroy(gameObject);
         }
+
+        hitstunTimer = hitstunTime;
     }
 
     public bool IsAttached()
     {
         return state == State.attached;
+    }
+
+    public bool IsStunned()
+    {
+        return hitstunTimer > 0.0f;
     }
 }

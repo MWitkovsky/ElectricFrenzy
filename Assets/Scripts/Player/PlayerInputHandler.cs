@@ -21,13 +21,13 @@ public class PlayerInputHandler : MonoBehaviour {
 
         if (attack)
             playerController.Attack(move);
+        if (teleport)
+            playerController.Teleport(move);
         if (frenzy)
             Frenzy();
     }
 
 	void FixedUpdate() {
-        move = Vector2.zero;
-
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
 

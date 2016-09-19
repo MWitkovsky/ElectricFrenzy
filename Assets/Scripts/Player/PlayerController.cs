@@ -3,15 +3,25 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour {
 
+    //Basic Movement
     [SerializeField]
     private float moveSpeed = 15.0f, backwardsMoveSpeed = 13.5f, turnDelay = 1.0f;
+
+    //Attack
     [SerializeField]
     private float attackTime = 0.15f, attackCooldown = 0.1f;
+
+    //Teleport
+    [SerializeField]
+    private float teleportDistance, teleportCooldown, unusedTeleportTravelTime, unusedTeleportStun;
+
+    //Timers
     [SerializeField]
     private float recoilForce, recoilTime, stunTime;
 
+    //Not set in editor
     private Rigidbody2D rb;
-    private float attackTimer, attackCooldownTimer, turnTimer, recoilTimer, stunTimer;
+    private float attackTimer, attackCooldownTimer, teleportCooldownTimer, turnTimer, recoilTimer, stunTimer;
     private bool isRecoiling, isStunned;
     private bool facingRight;
 
@@ -23,7 +33,7 @@ public class PlayerController : MonoBehaviour {
 
     void Update()
     {
-        //HANDLE DASH
+        //HANDLE ATTACK
         if (attackTimer > 0.0f)
         {
             attackTimer -= Time.deltaTime;
@@ -55,9 +65,15 @@ public class PlayerController : MonoBehaviour {
             PlayerManager.BeginInvincibility();
         }
 
+        //TELEPORT COOLDOWN
+        if (teleportCooldownTimer > 0.0f)
+            teleportCooldownTimer -= Time.deltaTime;
+
         //TODO: replace true with actual condition for turning
         if (turnTimer > 0.0f && true)
             turnTimer -= Time.deltaTime;
+        else
+            turnTimer = turnDelay;
     }
 
     void FixedUpdate()
@@ -83,6 +99,16 @@ public class PlayerController : MonoBehaviour {
             attackTimer = attackTime;
             attackCooldownTimer = attackCooldown;
             rb.AddForce(move.normalized * moveSpeed * 2.0f, ForceMode2D.Impulse);
+        }
+    }
+
+    public void Teleport(Vector2 move)
+    {
+        if (AbleToMove() && teleportCooldownTimer <= 0.0f)
+        {
+            PlayerManager.DetachKeyloggers();
+            transform.Translate(move.normalized * teleportDistance, Space.World);
+            teleportCooldownTimer = teleportCooldown;
         }
     }
 
