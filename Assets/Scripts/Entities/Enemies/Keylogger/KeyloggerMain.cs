@@ -9,7 +9,6 @@ public class KeyloggerMain : MonoBehaviour {
     private float speed, stealDelay, hitstunTime;
 
     private Transform target;
-    [SerializeField]
     private State state;
     private int health;
     private float stealTimer, hitstunTimer;
@@ -25,6 +24,9 @@ public class KeyloggerMain : MonoBehaviour {
 
     void FixedUpdate()
     {
+        ////////////
+        //AI LOGIC//
+        ////////////
         if (hitstunTimer <= 0.0f)
         {
             if (state == State.idle)

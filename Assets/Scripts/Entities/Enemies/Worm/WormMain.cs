@@ -8,9 +8,11 @@ public class WormMain : MonoBehaviour {
     [SerializeField]
     private float moveSpeed, rotateSpeed;
     [SerializeField]
-    private float snakeSpeed, snakeRotateSpeed;
+    private float snakeSpeed, snakeRotateSpeed, stealDelay, hitstunTime;
 
     private GameObject head, body;
+    private int health;
+    private float stealTimer, hitstunTimer;
 
     public enum State { idle, spotted, attached, running };
 
@@ -48,7 +50,7 @@ public class WormMain : MonoBehaviour {
         {
             if (!lastT)
             {
-                t.position = Vector3.Lerp(t.position, head.transform.position-head.transform.forward, Time.fixedDeltaTime * snakeSpeed);
+                t.position = Vector3.Lerp(t.position, head.transform.position - head.transform.forward, Time.fixedDeltaTime * snakeSpeed);
                 t.rotation = Quaternion.Lerp(t.rotation, head.transform.rotation, Time.fixedDeltaTime * snakeRotateSpeed);
             }
             else
@@ -67,6 +69,12 @@ public class WormMain : MonoBehaviour {
             else if (Input.GetKey(KeyCode.RightArrow))
                 head.transform.Rotate(Time.fixedDeltaTime * -rotateSpeed, 0.0f, 0.0f);
         }
+
+        //flips transform in Y direction if passes extreme angles on X rotation
+        if (Vector3.Dot(head.transform.forward, Vector3.left) > 0)
+            head.transform.localScale = new Vector3(head.transform.localScale.x, 1.0f, head.transform.localScale.z);
+        else
+            head.transform.localScale = new Vector3(head.transform.localScale.x, -1.0f, head.transform.localScale.z);
     }
 
     public int GetPacketYield()
