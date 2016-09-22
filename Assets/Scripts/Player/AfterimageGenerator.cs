@@ -30,8 +30,9 @@ public class AfterimageGenerator : MonoBehaviour {
         {
             //Instantiate the new afterimage
             GameObject newAfterimage = (GameObject)Instantiate(afterimagePrefab, transform.position, transform.rotation);
-            newAfterimage.transform.Translate(new Vector3(0.0f, 0.0f, 1.0f));
+            newAfterimage.transform.Translate(new Vector3(0.0f, 0.0f, 0.1f));
             newAfterimage.transform.parent = afterimageContainer.transform;
+            newAfterimage.tag = "Untagged";
 
             //Place the baked mesh onto it
             Mesh afterimageMesh = new Mesh();

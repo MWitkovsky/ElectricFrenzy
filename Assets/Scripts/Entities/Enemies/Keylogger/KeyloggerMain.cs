@@ -4,7 +4,9 @@ using System.Collections;
 public class KeyloggerMain : MonoBehaviour {
 
     [SerializeField]
-    private float speed, packetYield, stealDelay, hitstunTime;
+    private int packetYield;
+    [SerializeField]
+    private float speed, stealDelay, hitstunTime;
 
     private Transform target;
     [SerializeField]
