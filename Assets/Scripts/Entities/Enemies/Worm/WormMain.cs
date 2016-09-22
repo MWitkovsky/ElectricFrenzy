@@ -12,7 +12,7 @@ public class WormMain : MonoBehaviour {
 
     private GameObject head, body;
 
-    public enum State { idle, spotted, attached };
+    public enum State { idle, spotted, attached, running };
 
 	void Start () {
 	    foreach (Transform t in transform)
@@ -67,5 +67,15 @@ public class WormMain : MonoBehaviour {
             else if (Input.GetKey(KeyCode.RightArrow))
                 head.transform.Rotate(Time.fixedDeltaTime * -rotateSpeed, 0.0f, 0.0f);
         }
+    }
+
+    public int GetPacketYield()
+    {
+        return packetYield;
+    }
+
+    public void SetPacketYield(int packetYield)
+    {
+        this.packetYield = packetYield;
     }
 }

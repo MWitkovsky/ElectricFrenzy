@@ -108,4 +108,14 @@ public class KeyloggerMain : MonoBehaviour {
     {
         return hitstunTimer > 0.0f;
     }
+
+    public int GetPacketYield()
+    {
+        return packetYield;
+    }
+
+    public void SetPacketYield(int packetYield)
+    {
+        this.packetYield = packetYield;
+    }
 }
