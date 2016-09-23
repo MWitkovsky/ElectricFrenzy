@@ -4,10 +4,11 @@ using System.Collections;
 public class KeyloggerMain : MonoBehaviour {
 
     [SerializeField]
-    private float speed, packetYield, stealDelay, hitstunTime;
+    private int packetYield;
+    [SerializeField]
+    private float speed, stealDelay, hitstunTime;
 
     private Transform target;
-    [SerializeField]
     private State state;
     private int health;
     private float stealTimer, hitstunTimer;
@@ -23,6 +24,9 @@ public class KeyloggerMain : MonoBehaviour {
 
     void FixedUpdate()
     {
+        ////////////
+        //AI LOGIC//
+        ////////////
         if (hitstunTimer <= 0.0f)
         {
             if (state == State.idle)
@@ -105,5 +109,15 @@ public class KeyloggerMain : MonoBehaviour {
     public bool IsStunned()
     {
         return hitstunTimer > 0.0f;
+    }
+
+    public int GetPacketYield()
+    {
+        return packetYield;
+    }
+
+    public void SetPacketYield(int packetYield)
+    {
+        this.packetYield = packetYield;
     }
 }
