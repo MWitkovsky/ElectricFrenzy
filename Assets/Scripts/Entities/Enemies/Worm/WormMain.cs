@@ -6,13 +6,14 @@ public class WormMain : MonoBehaviour {
     [SerializeField]
     private int packetYield, numOfSections;
     [SerializeField]
-    private float moveSpeed, rotateSpeed;
+    private float moveSpeed, rotateSpeed, wallDetectionDistance, turnBeginThresholdDistance;
     [SerializeField]
     private float snakeSpeed, snakeRotateSpeed, stealDelay, hitstunTime;
 
     private GameObject head, body;
     private int health;
     private float stealTimer, hitstunTimer;
+    private bool turningFromWall;
 
     public enum State { idle, spotted, attached, running };
 
@@ -44,7 +45,9 @@ public class WormMain : MonoBehaviour {
         //MOVEMENT//
         ////////////
         head.transform.Translate(head.transform.forward * Time.fixedDeltaTime * moveSpeed, Space.World);
+        HandleWallDetection();
 
+        //Handle snake sections
         Transform lastT = null;
         foreach (Transform t in body.transform)
         {
@@ -75,6 +78,34 @@ public class WormMain : MonoBehaviour {
             head.transform.localScale = new Vector3(head.transform.localScale.x, 1.0f, head.transform.localScale.z);
         else
             head.transform.localScale = new Vector3(head.transform.localScale.x, -1.0f, head.transform.localScale.z);
+    }
+
+    //AI for turning from walls
+    private void HandleWallDetection()
+    {
+        RaycastHit2D minHit = Physics2D.Raycast(head.transform.position, head.transform.forward, turnBeginThresholdDistance, LayerMask.GetMask("Walls"));
+        RaycastHit2D maxHit = Physics2D.Raycast(head.transform.position, head.transform.forward, wallDetectionDistance, LayerMask.GetMask("Walls"));
+        if (maxHit.collider != null)
+        {
+            if (turningFromWall)
+                head.transform.Rotate(Time.fixedDeltaTime * rotateSpeed, 0.0f, 0.0f);
+            Debug.DrawLine(head.transform.position, head.transform.position + head.transform.forward * wallDetectionDistance, Color.red);
+        }
+        else
+        {
+            turningFromWall = false;
+            Debug.DrawLine(head.transform.position, head.transform.position + head.transform.forward * wallDetectionDistance, Color.blue);
+        }
+
+        if (minHit.collider != null)
+        {
+            Debug.DrawLine(head.transform.position, head.transform.position + head.transform.forward * turnBeginThresholdDistance, Color.red);
+            turningFromWall = true;
+        }
+        else
+        {
+            Debug.DrawLine(head.transform.position, head.transform.position + head.transform.forward * turnBeginThresholdDistance, Color.yellow);
+        }
     }
 
     public int GetPacketYield()
