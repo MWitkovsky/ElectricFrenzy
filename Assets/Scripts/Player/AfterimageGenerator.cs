@@ -19,7 +19,7 @@ public class AfterimageGenerator : MonoBehaviour {
         afterimageContainer = GameObject.Find("Afterimages");
         afterimagePrefab = (GameObject)Resources.Load(ResourcePaths.AfterimagePrefab);
 
-        meshRenderer = GetComponent<SkinnedMeshRenderer>();
+        meshRenderer = GameObject.Find("PlugMesh").GetComponent<SkinnedMeshRenderer>();
         bakeTimer = bakeTime;
 	}
 	
@@ -30,7 +30,6 @@ public class AfterimageGenerator : MonoBehaviour {
         {
             //Instantiate the new afterimage
             GameObject newAfterimage = (GameObject)Instantiate(afterimagePrefab, transform.position, transform.rotation);
-            newAfterimage.transform.Translate(new Vector3(0.0f, 0.0f, 0.1f));
             newAfterimage.transform.parent = afterimageContainer.transform;
             newAfterimage.tag = "Untagged";
 

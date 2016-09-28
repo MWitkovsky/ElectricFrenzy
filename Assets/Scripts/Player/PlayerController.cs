@@ -25,9 +25,14 @@ public class PlayerController : MonoBehaviour {
     private bool isRecoiling, isStunned;
     private bool facingRight;
 
+    //animation variables
+    private Animator anim;
+    private Vector2 currentMoveSpeed;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
         facingRight = true;
     }
 
@@ -74,6 +79,10 @@ public class PlayerController : MonoBehaviour {
             turnTimer -= Time.deltaTime;
         else
             turnTimer = turnDelay;
+
+        //Anim flags
+        anim.SetFloat("horizontalMoveSpeed", currentMoveSpeed.x);
+        anim.SetFloat("verticalMoveSpeed", currentMoveSpeed.y);
     }
 
     void FixedUpdate()
@@ -88,7 +97,8 @@ public class PlayerController : MonoBehaviour {
     {
         if (AbleToMove())
         {
-            transform.Translate(move * moveSpeed * Time.fixedDeltaTime);
+            currentMoveSpeed = move * moveSpeed * Time.fixedDeltaTime;
+            transform.Translate(currentMoveSpeed);
         }
     }
 

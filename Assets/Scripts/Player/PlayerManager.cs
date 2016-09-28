@@ -26,7 +26,7 @@ public class PlayerManager : MonoBehaviour {
         afterimages = FindObjectOfType<AfterimageGenerator>();
 
         firewallPrefab = (GameObject)Resources.Load(ResourcePaths.FirewallPrefab);
-        meshRenderer = GetComponent<SkinnedMeshRenderer>();
+        meshRenderer = GameObject.Find("PlugMesh").GetComponent<SkinnedMeshRenderer>();
 
         afterimages.enabled = false;
 
@@ -125,7 +125,6 @@ public class PlayerManager : MonoBehaviour {
         playerInfo.GiveFirewall();
         firewall = (GameObject)Instantiate(firewallPrefab, player.transform.position, player.transform.rotation);
         firewall.transform.parent = player.transform;
-        firewall.transform.Translate(new Vector3(0.0f, 0.0f, -2.0f));
     }
 
     public static void RemoveFirewall()
