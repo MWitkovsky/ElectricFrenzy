@@ -19,7 +19,7 @@ public class AfterimageGenerator : MonoBehaviour {
         afterimageContainer = GameObject.Find("Afterimages");
         afterimagePrefab = (GameObject)Resources.Load(ResourcePaths.AfterimagePrefab);
 
-        meshRenderer = GameObject.Find("PlugMesh").GetComponent<SkinnedMeshRenderer>();
+        meshRenderer = GameObject.Find("PlugMesh_002").GetComponent<SkinnedMeshRenderer>();
         bakeTimer = bakeTime;
 	}
 	

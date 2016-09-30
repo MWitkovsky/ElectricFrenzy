@@ -26,7 +26,7 @@ public class PlayerManager : MonoBehaviour {
         afterimages = FindObjectOfType<AfterimageGenerator>();
 
         firewallPrefab = (GameObject)Resources.Load(ResourcePaths.FirewallPrefab);
-        meshRenderer = GameObject.Find("PlugMesh").GetComponent<SkinnedMeshRenderer>();
+        meshRenderer = GameObject.Find("PlugMesh_002").GetComponent<SkinnedMeshRenderer>();
 
         afterimages.enabled = false;
 
