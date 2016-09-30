@@ -52,6 +52,8 @@ ModelImporter:
     100088: PlugMesh_002
     100090: TailConnector
     100092: TailIK
+    100094: Bone_015
+    100096: Bone_016
     400000: A-Body
     400002: Bone
     400004: Bone_001
@@ -99,6 +101,8 @@ ModelImporter:
     400088: PlugMesh_002
     400090: TailConnector
     400092: TailIK
+    400094: Bone_015
+    400096: Bone_016
     4300000: PlugMesh_002
     4300002: PlugMesh_001
     4300004: PlugMesh
