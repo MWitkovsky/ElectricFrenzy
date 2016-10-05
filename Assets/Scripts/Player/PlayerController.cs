@@ -21,18 +21,28 @@ public class PlayerController : MonoBehaviour {
 
     //Not set in editor
     private Rigidbody2D rb;
+    private Vector2 lastAttack;
     private float attackTimer, attackCooldownTimer, teleportCooldownTimer, turnTimer, recoilTimer, stunTimer;
     private bool isRecoiling, isStunned;
-    private bool facingRight;
 
     //animation variables
     private Animator anim;
+    private Transform model;
     private Vector2 currentMoveSpeed;
+    private bool facingRight;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        foreach (Transform t in transform)
+        {
+            if (t.name == "Mesh")
+            {
+                model = t;
+                break;
+            }
+        }
         facingRight = true;
     }
 
@@ -45,6 +55,17 @@ public class PlayerController : MonoBehaviour {
         }
         else
         {
+            if (Vector2.Dot(lastAttack, Vector2.left) > 0)
+            {
+                model.LookAt(transform.position + Vector3.left);
+                facingRight = false;
+            }
+            else
+            {
+                model.LookAt(transform.position + Vector3.right);
+                facingRight = true;
+            }
+                
             if (attackCooldown > 0.0f)
                 attackCooldownTimer -= Time.deltaTime;
         }    
@@ -81,7 +102,11 @@ public class PlayerController : MonoBehaviour {
             turnTimer = turnDelay;
 
         //Anim flags
-        anim.SetFloat("horizontalMoveSpeed", currentMoveSpeed.x);
+        if (facingRight)
+            anim.SetFloat("horizontalMoveSpeed", currentMoveSpeed.x);
+        else
+            anim.SetFloat("horizontalMoveSpeed", 0.0f-currentMoveSpeed.x);
+
         anim.SetFloat("verticalMoveSpeed", currentMoveSpeed.y);
     }
 
@@ -109,6 +134,10 @@ public class PlayerController : MonoBehaviour {
             attackTimer = attackTime;
             attackCooldownTimer = attackCooldown;
             rb.AddForce(move.normalized * moveSpeed * 2.0f, ForceMode2D.Impulse);
+
+            lastAttack = move.normalized;
+            model.LookAt(transform.position + (Vector3)move.normalized);
+            anim.SetTrigger("attack");
         }
     }
 
