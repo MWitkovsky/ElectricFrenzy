@@ -12,7 +12,7 @@ public class AfterimageGenerator : MonoBehaviour {
     //Not set in editor
     private List<Renderer> afterimages = new List<Renderer>();
     private List<Renderer> afterimagesToRemove = new List<Renderer>();
-    private SkinnedMeshRenderer meshRenderer;
+    private SkinnedMeshRenderer meshRenderer, meshRenderer2;
     private float bakeTimer;
 
 	void Start () {
@@ -20,6 +20,7 @@ public class AfterimageGenerator : MonoBehaviour {
         afterimagePrefab = (GameObject)Resources.Load(ResourcePaths.AfterimagePrefab);
 
         meshRenderer = GameObject.Find("PlugMesh_002").GetComponent<SkinnedMeshRenderer>();
+        meshRenderer2 = GameObject.Find("Eyes").GetComponent<SkinnedMeshRenderer>();
         bakeTimer = bakeTime;
 	}
 	
@@ -28,17 +29,8 @@ public class AfterimageGenerator : MonoBehaviour {
 
         if(bakeTimer <= 0.0f)
         {
-            //Instantiate the new afterimage
-            GameObject newAfterimage = (GameObject)Instantiate(afterimagePrefab, transform.position, transform.rotation);
-            newAfterimage.transform.parent = afterimageContainer.transform;
-            newAfterimage.tag = "Untagged";
-
-            //Place the baked mesh onto it
-            Mesh afterimageMesh = new Mesh();
-            meshRenderer.BakeMesh(afterimageMesh);
-            newAfterimage.GetComponent<MeshFilter>().mesh = afterimageMesh;
-
-            afterimages.Add(newAfterimage.GetComponent<Renderer>());
+            BakeMesh(meshRenderer);
+            BakeMesh(meshRenderer2);
 
             bakeTimer = bakeTime;
         }
@@ -69,5 +61,20 @@ public class AfterimageGenerator : MonoBehaviour {
             Destroy(r.gameObject);
         }
         afterimages.Clear();
+    }
+
+    private void BakeMesh(SkinnedMeshRenderer meshRenderer)
+    {
+        //Instantiate the new afterimage
+        GameObject newAfterimage = (GameObject)Instantiate(afterimagePrefab, transform.position, transform.rotation);
+        newAfterimage.transform.parent = afterimageContainer.transform;
+        newAfterimage.tag = "Untagged";
+
+        //Place the baked mesh onto it
+        Mesh afterimageMesh = new Mesh();
+        meshRenderer.BakeMesh(afterimageMesh);
+        newAfterimage.GetComponent<MeshFilter>().mesh = afterimageMesh;
+
+        afterimages.Add(newAfterimage.GetComponent<Renderer>());
     }
 }
