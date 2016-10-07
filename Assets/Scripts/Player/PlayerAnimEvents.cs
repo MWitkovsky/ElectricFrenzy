@@ -12,8 +12,6 @@ public class PlayerAnimEvents : MonoBehaviour {
 
 	void FinishTurn()
     {
-        bool temp = PlayerManager.IsFacingRight();
         PlayerManager.SetFacingRight(!PlayerManager.IsFacingRight());
-        print(temp + " " + PlayerManager.IsFacingRight());
     }
 }

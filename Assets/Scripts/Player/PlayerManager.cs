@@ -98,6 +98,16 @@ public class PlayerManager : MonoBehaviour {
         playerController.SetFacingRight(facingRight);
     }
 
+    public static bool IsTeleporting()
+    {
+        return playerController.IsTeleporting();
+    }
+
+    public static void SetTeleporting(bool isTeleporting)
+    {
+        playerController.SetTeleporting(isTeleporting);
+    }
+
     //Interfaces with PlayerInfo
     public static void IncrementNumOfLoosePackets()
     {

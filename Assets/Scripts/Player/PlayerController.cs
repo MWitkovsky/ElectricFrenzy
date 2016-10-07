@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour {
     private Rigidbody2D rb;
     private Vector2 lastAttack;
     private float attackTimer, attackCooldownTimer, teleportCooldownTimer, turnTimer, recoilTimer, stunTimer;
-    private bool isRecoiling, isStunned;
+    private bool isRecoiling, isStunned, isTeleporting;
 
     //animation variables
     private Animator anim;
@@ -167,6 +167,31 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
+    private bool AbleToMove()
+    {
+        if (attackCooldownTimer <= 0.0f && !isRecoiling && !isStunned && !isTeleporting)
+            return true;
+        else
+            return false;
+    }
+
+    private bool ShouldLockVelocity()
+    {
+        if (attackTimer <= 0.0f && recoilTimer <= 0.0f)
+            return true;
+        else
+            return false;
+    }
+
+    private bool CanTakeHit()
+    {
+        if (isRecoiling && !isTeleporting)
+            return false;
+        else
+            return true;
+    }
+
+    //GETTERS AND SETTERS
     public bool IsFacingRight()
     {
         return facingRight;
@@ -184,32 +209,15 @@ public class PlayerController : MonoBehaviour {
     public bool IsAttacking()
     {
         return attackTimer > 0.0f;
-    } 
-
-    private bool AbleToMove()
-    {
-        if (attackCooldownTimer <= 0.0f && !isRecoiling && !isStunned)
-        {
-            return true;
-        }
-        return false;
     }
 
-    private bool ShouldLockVelocity()
+    public bool IsTeleporting()
     {
-        if (attackTimer <= 0.0f && recoilTimer <= 0.0f)
-        {
-            return true;
-        }
-        return false;
+        return isTeleporting;
     }
 
-    private bool CanTakeHit()
+    public void SetTeleporting(bool isTeleporting)
     {
-        if (isRecoiling)
-        {
-            return false;
-        }
-        return true;
+        this.isTeleporting = isTeleporting;
     }
 }
