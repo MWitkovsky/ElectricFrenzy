@@ -92,10 +92,15 @@ public class PlayerController : MonoBehaviour {
         if (teleportCooldownTimer > 0.0f)
             teleportCooldownTimer -= Time.deltaTime;
 
-        //TODO: replace true with actual condition for turning
+        //TURNING
         if ((turnTimer > 0.0f) && ((facingRight && currentMoveSpeed.x < 0.0f) || (!facingRight && currentMoveSpeed.x > 0.0f)))
         {
             turnTimer -= Time.deltaTime;
+            if(turnTimer <= 0.0f)
+            {
+                anim.SetTrigger("turn");
+                turnTimer = turnDelay;
+            }
         }
         else
         {
