@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿    using UnityEngine;
 using System.Collections;
 
 public class PlayerManager : MonoBehaviour {
@@ -86,6 +86,16 @@ public class PlayerManager : MonoBehaviour {
     public static bool IsAttacking()
     {
         return playerController.IsAttacking();
+    }
+
+    public static bool IsFacingRight()
+    {
+        return playerController.IsFacingRight();
+    }
+
+    public static void SetFacingRight(bool facingRight)
+    {
+        playerController.SetFacingRight(facingRight);
     }
 
     //Interfaces with PlayerInfo

@@ -55,19 +55,16 @@ public class PlayerController : MonoBehaviour {
         }
         else
         {
-            if (Vector2.Dot(lastAttack, Vector2.left) > 0)
+            if(attackCooldownTimer > 0.0f)
             {
-                model.LookAt(transform.position + Vector3.left);
-                facingRight = false;
-            }
-            else
-            {
-                model.LookAt(transform.position + Vector3.right);
-                facingRight = true;
+                if (Vector2.Dot(lastAttack, Vector2.left) > 0)
+                    SetFacingRight(false);
+                else
+                    SetFacingRight(true);
+
+                attackCooldownTimer -= Time.deltaTime;
             }
                 
-            if (attackCooldown > 0.0f)
-                attackCooldownTimer -= Time.deltaTime;
         }    
 
         //HANDLE HIT RECOIL AND STUN
@@ -96,10 +93,15 @@ public class PlayerController : MonoBehaviour {
             teleportCooldownTimer -= Time.deltaTime;
 
         //TODO: replace true with actual condition for turning
-        if (turnTimer > 0.0f && true)
+        if ((turnTimer > 0.0f) && ((facingRight && currentMoveSpeed.x < 0.0f) || (!facingRight && currentMoveSpeed.x > 0.0f)))
+        {
             turnTimer -= Time.deltaTime;
+        }
         else
+        {
             turnTimer = turnDelay;
+        }
+            
 
         //Anim flags
         if (facingRight)
@@ -168,6 +170,15 @@ public class PlayerController : MonoBehaviour {
     public bool IsFacingRight()
     {
         return facingRight;
+    }
+
+    public void SetFacingRight(bool facingRight)
+    {
+        this.facingRight = facingRight;
+        if (facingRight)
+            model.LookAt(transform.position + Vector3.right);
+        else
+            model.LookAt(transform.position + Vector3.left);
     }
 
     public bool IsAttacking()
