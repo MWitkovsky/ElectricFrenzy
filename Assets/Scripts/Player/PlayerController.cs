@@ -164,6 +164,7 @@ public class PlayerController : MonoBehaviour {
     {
         if (CanTakeHit())
         {
+            anim.SetTrigger("damage");
             if (facingRight)
                 rb.AddForce(Vector2.left * recoilForce, ForceMode2D.Impulse);
             else
