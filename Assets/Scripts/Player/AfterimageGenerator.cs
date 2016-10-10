@@ -12,7 +12,8 @@ public class AfterimageGenerator : MonoBehaviour {
     //Not set in editor
     private List<Renderer> afterimages = new List<Renderer>();
     private List<Renderer> afterimagesToRemove = new List<Renderer>();
-    private SkinnedMeshRenderer meshRenderer, meshRenderer2;
+    private SkinnedMeshRenderer meshRenderer, meshRenderer2, meshRenderer3, meshRenderer4;
+    private Transform modelTransform;
     private float bakeTimer;
 
 	void Start () {
@@ -21,6 +22,9 @@ public class AfterimageGenerator : MonoBehaviour {
 
         meshRenderer = GameObject.Find("PlugMesh_002").GetComponent<SkinnedMeshRenderer>();
         meshRenderer2 = GameObject.Find("Eyes").GetComponent<SkinnedMeshRenderer>();
+        meshRenderer3 = GameObject.Find("EarLeft").GetComponent<SkinnedMeshRenderer>();
+        meshRenderer4 = GameObject.Find("EarRight").GetComponent<SkinnedMeshRenderer>();
+
         bakeTimer = bakeTime;
 	}
 	
@@ -31,6 +35,8 @@ public class AfterimageGenerator : MonoBehaviour {
         {
             BakeMesh(meshRenderer);
             BakeMesh(meshRenderer2);
+            BakeMesh(meshRenderer3);
+            BakeMesh(meshRenderer4);
 
             bakeTimer = bakeTime;
         }
@@ -66,7 +72,10 @@ public class AfterimageGenerator : MonoBehaviour {
     private void BakeMesh(SkinnedMeshRenderer meshRenderer)
     {
         //Instantiate the new afterimage
-        GameObject newAfterimage = (GameObject)Instantiate(afterimagePrefab, transform.position, transform.rotation);
+        GameObject newAfterimage = (GameObject)Instantiate(afterimagePrefab, modelTransform.position, modelTransform.rotation);
+        if(meshRenderer == this.meshRenderer || meshRenderer == meshRenderer3 || meshRenderer == meshRenderer4)
+            newAfterimage.transform.position -= modelTransform.forward / 4.5f;
+
         newAfterimage.transform.parent = afterimageContainer.transform;
         newAfterimage.tag = "Untagged";
 
@@ -76,5 +85,10 @@ public class AfterimageGenerator : MonoBehaviour {
         newAfterimage.GetComponent<MeshFilter>().mesh = afterimageMesh;
 
         afterimages.Add(newAfterimage.GetComponent<Renderer>());
+    }
+
+    public void SetModelTransform(Transform modelTransform)
+    {
+        this.modelTransform = modelTransform;
     }
 }

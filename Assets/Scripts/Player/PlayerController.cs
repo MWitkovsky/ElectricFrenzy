@@ -44,6 +44,8 @@ public class PlayerController : MonoBehaviour {
             }
         }
         facingRight = true;
+
+        GetComponent<AfterimageGenerator>().SetModelTransform(model);
     }
 
     void Update()
@@ -224,5 +226,10 @@ public class PlayerController : MonoBehaviour {
     public void SetTeleporting(bool isTeleporting)
     {
         this.isTeleporting = isTeleporting;
+    }
+
+    public Transform GetModelTransform()
+    {
+        return model;
     }
 }

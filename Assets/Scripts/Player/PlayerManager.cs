@@ -108,6 +108,11 @@ public class PlayerManager : MonoBehaviour {
         playerController.SetTeleporting(isTeleporting);
     }
 
+    public static Transform GetModelTransform()
+    {
+        return playerController.GetModelTransform();
+    }
+
     //Interfaces with PlayerInfo
     public static void IncrementNumOfLoosePackets()
     {
