@@ -58,6 +58,11 @@ ModelImporter:
     100100: EarRightBone
     100102: EarLeft
     100104: EarRight
+    100106: EyeDriverController
+    100108: Eyes_L
+    100110: Eyes_R
+    100112: LidLeft
+    100114: LidLeft_001
     400000: A-Body
     400002: Bone
     400004: Bone_001
@@ -111,12 +116,25 @@ ModelImporter:
     400100: EarRightBone
     400102: EarLeft
     400104: EarRight
+    400106: EyeDriverController
+    400108: Eyes_L
+    400110: Eyes_R
+    400112: LidLeft
+    400114: LidLeft_001
+    2300000: LidLeft
+    2300002: LidLeft_001
+    3300000: LidLeft
+    3300002: LidLeft_001
     4300000: PlugMesh_002
     4300002: PlugMesh_001
     4300004: PlugMesh
     4300006: Eyes
     4300008: EarLeft
     4300010: EarRight
+    4300012: Eyes_R
+    4300014: LidLeft_001
+    4300016: Eyes_L
+    4300018: LidLeft
     7400000: Default Take
     7400002: HackAttack
     7400004: HackAttack
@@ -137,6 +155,8 @@ ModelImporter:
     13700006: PlugMesh_002
     13700008: EarLeft
     13700010: EarRight
+    13700012: Eyes_L
+    13700014: Eyes_R
   materials:
     importMaterials: 1
     materialName: 0
