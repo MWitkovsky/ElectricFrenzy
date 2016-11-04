@@ -5,7 +5,7 @@ public class PlayerController : MonoBehaviour {
 
     //Basic Movement
     [SerializeField]
-    private float moveSpeed = 15.0f, backwardsMoveSpeed = 13.5f, turnDelay = 1.0f;
+    private float moveSpeed = 15.0f, backwardsMoveSpeed = 13.5f, turnDelay = 1.0f, acceleration = 1.0f, turnSpeed = 0.5f;
 
     //Attack
     [SerializeField]
@@ -95,7 +95,7 @@ public class PlayerController : MonoBehaviour {
             teleportCooldownTimer -= Time.deltaTime;
 
         //TURNING
-        if ((turnTimer > 0.0f) && ((facingRight && currentMoveSpeed.x < 0.0f) || (!facingRight && currentMoveSpeed.x > 0.0f)))
+        if ((turnTimer > 0.0f) && ((facingRight && rb.velocity.x < 0.0f) || (!facingRight && rb.velocity.x > 0.0f)))
         {
             turnTimer -= Time.deltaTime;
             if(turnTimer <= 0.0f)
@@ -112,27 +112,36 @@ public class PlayerController : MonoBehaviour {
 
         //Anim flags
         if (facingRight)
-            anim.SetFloat("horizontalMoveSpeed", currentMoveSpeed.x);
+            anim.SetFloat("horizontalMoveSpeed", rb.velocity.x);
         else
-            anim.SetFloat("horizontalMoveSpeed", 0.0f-currentMoveSpeed.x);
+            anim.SetFloat("horizontalMoveSpeed", 0.0f-rb.velocity.x);
 
-        anim.SetFloat("verticalMoveSpeed", currentMoveSpeed.y);
+        anim.SetFloat("verticalMoveSpeed", rb.velocity.y);
     }
 
     void FixedUpdate()
     {
         if (ShouldLockVelocity())
         {
-            rb.velocity = Vector2.zero;
+            //rb.velocity = Vector2.zero;
         }
     }
-
+    int q = 0;
 	public void Move(Vector2 move)
     {
         if (AbleToMove())
         {
-            currentMoveSpeed = move * moveSpeed * Time.fixedDeltaTime;
-            transform.Translate(currentMoveSpeed);
+            float tiltPercent = move.magnitude;
+
+            if (rb.velocity.magnitude > moveSpeed * tiltPercent)
+                rb.velocity = rb.velocity.normalized * (moveSpeed * tiltPercent);
+            else
+                rb.AddForce(move.normalized * acceleration);
+
+            //turning
+            float magnitude = rb.velocity.magnitude;
+            rb.velocity = Vector2.Lerp(rb.velocity.normalized, move.normalized, turnSpeed);
+            rb.velocity *= magnitude;
         }
     }
 
