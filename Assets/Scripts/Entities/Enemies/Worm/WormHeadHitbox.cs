@@ -8,7 +8,7 @@ public class WormHeadHitbox : MonoBehaviour {
 
     void Start()
     {
-        worm = transform.parent.GetComponent<WormMain>();
+        worm = transform.parent.parent.GetComponent<WormMain>();
     }
 
     void Update()

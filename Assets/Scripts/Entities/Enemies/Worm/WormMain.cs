@@ -44,45 +44,57 @@ public class WormMain : MonoBehaviour {
 
 	void FixedUpdate () {
         ////////////
-        //MOVEMENT//
+        //AI LOGIC//
         ////////////
-        if(state != State.spotted)
-        {
-            head.transform.Translate(head.transform.forward * Time.fixedDeltaTime * moveSpeed, Space.World);
+        if (hitstunTimer <= 0.0f)
+        {  
+            if (state == State.idle || state == State.spotted || state == State.attached){
+                ////////////
+                //MOVEMENT//
+                ////////////
+                if (state == State.idle)
+                {
+                    head.transform.Translate(head.transform.forward * Time.fixedDeltaTime * moveSpeed, Space.World);
+                }
+                else if (state == State.spotted || state == State.attached)
+                {
+                    Quaternion temp = head.transform.rotation;
+                    head.transform.LookAt(target);
+                    head.transform.rotation = Quaternion.Lerp(temp, head.transform.rotation, spottedRotateSpeed * Time.fixedDeltaTime);
+                    head.transform.Translate(head.transform.forward * Time.fixedDeltaTime * spottedMoveSpeed, Space.World);
+                }
+
+                HandleWallDetection();
+
+                //Handle snake sections
+                Transform lastT = null;
+                foreach (Transform t in body.transform)
+                {
+                    if (!lastT)
+                    {
+                        t.position = Vector3.Lerp(t.position, head.transform.position - head.transform.forward, Time.fixedDeltaTime * snakeSpeed);
+                        t.rotation = Quaternion.Lerp(t.rotation, head.transform.rotation, Time.fixedDeltaTime * snakeRotateSpeed);
+                    }
+                    else
+                    {
+                        t.position = Vector3.Lerp(t.position, lastT.position - lastT.transform.forward, Time.fixedDeltaTime * snakeSpeed);
+                        t.rotation = Quaternion.Lerp(t.rotation, lastT.rotation, Time.fixedDeltaTime * snakeRotateSpeed);
+                    }
+                    lastT = t;
+                }
+
+                if (GameManager.IsDebugEnabled())
+                {
+                    if (Input.GetKey(KeyCode.LeftArrow))
+                        head.transform.Rotate(Time.fixedDeltaTime * rotateSpeed, 0.0f, 0.0f);
+                    else if (Input.GetKey(KeyCode.RightArrow))
+                        head.transform.Rotate(Time.fixedDeltaTime * -rotateSpeed, 0.0f, 0.0f);
+                }
+            }
         }
         else
         {
-            Quaternion temp = head.transform.rotation;
-            head.transform.LookAt(target);
-            head.transform.rotation = Quaternion.Lerp(temp, head.transform.rotation, spottedRotateSpeed * Time.fixedDeltaTime);
-            head.transform.Translate(head.transform.forward * Time.fixedDeltaTime * spottedMoveSpeed, Space.World);
-        }
-        HandleWallDetection();
-
-        //Handle snake sections
-        Transform lastT = null;
-        foreach (Transform t in body.transform)
-        {
-            if (!lastT)
-            {
-                t.position = Vector3.Lerp(t.position, head.transform.position - head.transform.forward, Time.fixedDeltaTime * snakeSpeed);
-                t.rotation = Quaternion.Lerp(t.rotation, head.transform.rotation, Time.fixedDeltaTime * snakeRotateSpeed);
-            }
-            else
-            {
-                t.position = Vector3.Lerp(t.position, lastT.position - lastT.transform.forward, Time.fixedDeltaTime * snakeSpeed);
-                t.rotation = Quaternion.Lerp(t.rotation, lastT.rotation, Time.fixedDeltaTime * snakeRotateSpeed);
-            }
-
-            lastT = t;
-        }
-
-        if (GameManager.IsDebugEnabled())
-        {
-            if (Input.GetKey(KeyCode.LeftArrow))
-                head.transform.Rotate(Time.fixedDeltaTime * rotateSpeed, 0.0f, 0.0f);
-            else if (Input.GetKey(KeyCode.RightArrow))
-                head.transform.Rotate(Time.fixedDeltaTime * -rotateSpeed, 0.0f, 0.0f);
+            hitstunTimer -= Time.fixedDeltaTime;
         }
 
         //flips transform in Y direction if passes extreme angles on X rotation
@@ -143,7 +155,6 @@ public class WormMain : MonoBehaviour {
     public void Attach()
     {
         transform.parent = target;
-        GetComponent<Rigidbody2D>().isKinematic = true;
         PlayerManager.AttachWorm(this);
         state = State.attached;
     }
@@ -151,7 +162,6 @@ public class WormMain : MonoBehaviour {
     public void Detach()
     {
         transform.parent = null;
-        GetComponent<Rigidbody2D>().isKinematic = false;
         hitstunTimer = hitstunTime;
         state = State.spotted;
     }
@@ -171,5 +181,10 @@ public class WormMain : MonoBehaviour {
     public bool IsStunned()
     {
         return hitstunTimer > 0.0f;
+    }
+
+    public bool IsAttached()
+    {
+        return state == State.attached;
     }
 }
