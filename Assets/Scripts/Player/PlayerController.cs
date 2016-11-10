@@ -163,7 +163,7 @@ public class PlayerController : MonoBehaviour {
     {
         if (AbleToMove() && teleportCooldownTimer <= 0.0f)
         {
-            PlayerManager.DetachKeyloggers();
+            PlayerManager.DetachEnemies();
             transform.Translate(move.normalized * teleportDistance, Space.World);
             teleportCooldownTimer = teleportCooldown;
         }

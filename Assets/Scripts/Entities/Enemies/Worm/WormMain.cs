@@ -6,16 +6,18 @@ public class WormMain : MonoBehaviour {
     [SerializeField]
     private int packetYield, numOfSections;
     [SerializeField]
-    private float moveSpeed, rotateSpeed, wallDetectionDistance, turnBeginThresholdDistance;
+    private float moveSpeed, spottedMoveSpeed, rotateSpeed, spottedRotateSpeed, wallDetectionDistance, turnBeginThresholdDistance;
     [SerializeField]
     private float snakeSpeed, snakeRotateSpeed, stealDelay, hitstunTime;
 
     private GameObject head, body;
+    private Transform target;
     private int health;
     private float stealTimer, hitstunTimer;
     private bool turningFromWall;
 
     public enum State { idle, spotted, attached, running };
+    private State state;
 
 	void Start () {
 	    foreach (Transform t in transform)
@@ -44,7 +46,17 @@ public class WormMain : MonoBehaviour {
         ////////////
         //MOVEMENT//
         ////////////
-        head.transform.Translate(head.transform.forward * Time.fixedDeltaTime * moveSpeed, Space.World);
+        if(state != State.spotted)
+        {
+            head.transform.Translate(head.transform.forward * Time.fixedDeltaTime * moveSpeed, Space.World);
+        }
+        else
+        {
+            Quaternion temp = head.transform.rotation;
+            head.transform.LookAt(target);
+            head.transform.rotation = Quaternion.Lerp(temp, head.transform.rotation, spottedRotateSpeed * Time.fixedDeltaTime);
+            head.transform.Translate(head.transform.forward * Time.fixedDeltaTime * spottedMoveSpeed, Space.World);
+        }
         HandleWallDetection();
 
         //Handle snake sections
@@ -85,6 +97,7 @@ public class WormMain : MonoBehaviour {
     {
         RaycastHit2D minHit = Physics2D.Raycast(head.transform.position, head.transform.forward, turnBeginThresholdDistance, LayerMask.GetMask("Walls"));
         RaycastHit2D maxHit = Physics2D.Raycast(head.transform.position, head.transform.forward, wallDetectionDistance, LayerMask.GetMask("Walls"));
+
         if (maxHit.collider != null)
         {
             if (turningFromWall)
@@ -98,9 +111,12 @@ public class WormMain : MonoBehaviour {
         }
 
         if (minHit.collider != null)
-        {
+        {            
             Debug.DrawLine(head.transform.position, head.transform.position + head.transform.forward * turnBeginThresholdDistance, Color.red);
-            turningFromWall = true;
+            if (state == State.spotted && Vector3.Distance(head.transform.position, minHit.transform.position) > Vector3.Distance(head.transform.position, target.position))
+                turningFromWall = false;
+            else
+                turningFromWall = true;
         }
         else
         {
@@ -116,5 +132,44 @@ public class WormMain : MonoBehaviour {
     public void SetPacketYield(int packetYield)
     {
         this.packetYield = packetYield;
+    }
+
+    public void SetTarget(Transform target)
+    {
+        this.target = target;
+        state = State.spotted;
+    }
+
+    public void Attach()
+    {
+        transform.parent = target;
+        GetComponent<Rigidbody2D>().isKinematic = true;
+        PlayerManager.AttachWorm(this);
+        state = State.attached;
+    }
+
+    public void Detach()
+    {
+        transform.parent = null;
+        GetComponent<Rigidbody2D>().isKinematic = false;
+        hitstunTimer = hitstunTime;
+        state = State.spotted;
+    }
+
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+        if (health <= 0)
+        {
+            //Death stuff
+            Destroy(gameObject);
+        }
+
+        hitstunTimer = hitstunTime;
+    }
+
+    public bool IsStunned()
+    {
+        return hitstunTimer > 0.0f;
     }
 }
