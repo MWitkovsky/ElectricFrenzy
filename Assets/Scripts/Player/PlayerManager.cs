@@ -119,6 +119,11 @@ public class PlayerManager : MonoBehaviour {
         playerInfo.IncrementNumOfLoosePackets();
     }
 
+    public static void DecrementNumOfLoosePackets()
+    {
+        playerInfo.DecrementNumOfLoosePackets();
+    }
+
     //Keylogger
     public static bool StealPacket()
     {

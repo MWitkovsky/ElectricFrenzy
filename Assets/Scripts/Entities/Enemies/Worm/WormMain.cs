@@ -4,7 +4,7 @@ using System.Collections;
 public class WormMain : MonoBehaviour {
 
     [SerializeField]
-    private int packetYield, numOfSections;
+    private int health, packetYield, numOfSections;
     [SerializeField]
     private float moveSpeed, spottedMoveSpeed, rotateSpeed, spottedRotateSpeed, wallDetectionDistance, turnBeginThresholdDistance;
     [SerializeField]
@@ -12,14 +12,13 @@ public class WormMain : MonoBehaviour {
 
     private GameObject head, body;
     private Transform target;
-    private int health;
     private float stealTimer, hitstunTimer;
     private bool turningFromWall;
 
     public enum State { idle, spotted, attached, running };
     private State state;
 
-	void Start () {
+	void Awake () {
 	    foreach (Transform t in transform)
         {
             if (t.gameObject.name == "Head")
@@ -40,6 +39,9 @@ public class WormMain : MonoBehaviour {
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.AngleAxis(angle - 180.0f, Vector3.forward);
         head.transform.forward = dir.normalized;
+
+        state = State.idle;
+        stealTimer = stealDelay;
     }
 
 	void FixedUpdate () {
@@ -48,11 +50,11 @@ public class WormMain : MonoBehaviour {
         ////////////
         if (hitstunTimer <= 0.0f)
         {  
-            if (state == State.idle || state == State.spotted || state == State.attached){
+            if (state == State.idle || state == State.spotted || state == State.attached || state == State.running){
                 ////////////
                 //MOVEMENT//
                 ////////////
-                if (state == State.idle)
+                if (state == State.idle || state == State.running)
                 {
                     head.transform.Translate(head.transform.forward * Time.fixedDeltaTime * moveSpeed, Space.World);
                 }
@@ -89,6 +91,36 @@ public class WormMain : MonoBehaviour {
                         head.transform.Rotate(Time.fixedDeltaTime * rotateSpeed, 0.0f, 0.0f);
                     else if (Input.GetKey(KeyCode.RightArrow))
                         head.transform.Rotate(Time.fixedDeltaTime * -rotateSpeed, 0.0f, 0.0f);
+                }
+
+                //////////
+                //DAMAGE//
+                //////////
+                if(state == State.attached)
+                {
+                    if(stealTimer > 0.0f)
+                    {
+                        stealTimer -= Time.fixedDeltaTime;
+                        spottedRotateSpeed += Time.fixedDeltaTime;
+                    }
+                    else
+                    {
+                        PlayerManager.Damage(10.0f, true);
+                        for(int i=0; i<=numOfSections; i++)
+                        {
+                            PlayerManager.DecrementNumOfLoosePackets();
+
+                            Transform temp = target;
+                            GameObject newHead = (GameObject)Instantiate(Resources.Load(ResourcePaths.SnakeHeadOnlyPrefab),
+                               temp.position,
+                               temp.rotation);
+                            Vector3 tempPosition = newHead.transform.position + new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), 0.0f);
+                            newHead.GetComponent<WormMain>().GetHead().transform.LookAt(tempPosition);
+                            newHead.GetComponent<WormMain>().GetHead().transform.position = tempPosition;
+                            newHead.GetComponent<WormMain>().SetRunning();
+                        }
+                        Destroy(gameObject);
+                    } 
                 }
             }
         }
@@ -186,5 +218,20 @@ public class WormMain : MonoBehaviour {
     public bool IsAttached()
     {
         return state == State.attached;
+    }
+
+    public void SetRunning()
+    {
+        state = State.running;
+    }
+
+    public bool IsRunnning()
+    {
+        return state == State.running;
+    }
+
+    public GameObject GetHead()
+    {
+        return head;
     }
 }

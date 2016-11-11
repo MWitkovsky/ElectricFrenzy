@@ -4,7 +4,7 @@ using System.Collections;
 public class KeyloggerHitbox : MonoBehaviour {
 
     private KeyloggerMain keylogger;
-    private float damageDelay = 0.2f, damageTimer;
+    private float damageDelay = 0.75f, damageTimer;
 
 	void Start () {
         keylogger = transform.parent.GetComponent<KeyloggerMain>();

@@ -5,14 +5,14 @@ public class WormDetector : MonoBehaviour {
 
     private WormMain worm;
 
-    void Start()
+    void Awake()
     {
         worm = transform.parent.parent.gameObject.GetComponent<WormMain>();
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag(TagManager.Player))
+        if (other.CompareTag(TagManager.Player) && !worm.IsRunnning())
         {
             worm.SetTarget(other.transform);
         }
