@@ -13,7 +13,7 @@ public class PlayerManager : MonoBehaviour {
 
     //Proxy tools
     private static AfterimageGenerator afterimages;
-    private static SkinnedMeshRenderer meshRenderer;
+    private static SkinnedMeshRenderer meshRenderer, eyeMeshRenderer, ear1MeshRenderer, ear2MeshRenderer;
 
     //Taking damage and invincibility
     private static float invincibilityTime = 2.0f, amountOfBlinks = 5.0f, blinkTime = 0.1f, blinkIntervalTime;
@@ -27,6 +27,9 @@ public class PlayerManager : MonoBehaviour {
 
         firewallPrefab = (GameObject)Resources.Load(ResourcePaths.FirewallPrefab);
         meshRenderer = GameObject.Find("PlugMesh_002").GetComponent<SkinnedMeshRenderer>();
+        eyeMeshRenderer = GameObject.Find("Eyes").GetComponent<SkinnedMeshRenderer>();
+        ear1MeshRenderer = GameObject.Find("EarLeft").GetComponent<SkinnedMeshRenderer>();
+        ear2MeshRenderer = GameObject.Find("EarRight").GetComponent<SkinnedMeshRenderer>();
 
         afterimages.enabled = false;
 
@@ -55,12 +58,21 @@ public class PlayerManager : MonoBehaviour {
         if (blinkIntervalTimer <= 0.0f)
         {
             meshRenderer.enabled = false;
+            eyeMeshRenderer.enabled = false;
+            ear1MeshRenderer.enabled = false;
+            ear2MeshRenderer.enabled = false;
             blinkTimer = blinkTime;
             blinkIntervalTimer = blinkIntervalTime;
         }
 
         if (blinkTimer <= 0.0f)
+        {
             meshRenderer.enabled = true;
+            eyeMeshRenderer.enabled = true;
+            ear1MeshRenderer.enabled = true;
+            ear2MeshRenderer.enabled = true;
+        }
+            
 
         blinkTimer -= Time.deltaTime;
         blinkIntervalTimer -= Time.deltaTime;
