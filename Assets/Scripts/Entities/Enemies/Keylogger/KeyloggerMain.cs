@@ -4,20 +4,18 @@ using System.Collections;
 public class KeyloggerMain : MonoBehaviour {
 
     [SerializeField]
-    private int packetYield;
+    private int health, packetYield;
     [SerializeField]
     private float speed, stealDelay, hitstunTime;
 
     private Transform target;
     private State state;
-    private int health;
     private float stealTimer, hitstunTimer;
 
     public enum State { idle, spotted, attached };
 
-    void Start()
+    void Awake()
     {
-        health = 3;
         state = State.idle;
         stealTimer = stealDelay;
     }

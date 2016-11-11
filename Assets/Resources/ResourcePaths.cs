@@ -15,9 +15,10 @@ public class ResourcePaths {
     private static readonly string PlayerPrefabsRoot = EntityPrefabsRoot + "Player/";
 
     //ENEMIES
-    private static readonly string SnakePrefabsRoot = EnemyPrefabsRoot + "Snake/"; //SNAKE? SNAAAAAAAKE
+    private static readonly string SnakePrefabsRoot = EnemyPrefabsRoot + "SnakeComponents/"; //SNAKE? SNAAAAAAAKE
     public static readonly string SnakeHeadGraphicPrefab = SnakePrefabsRoot + "HeadGraphic";
     public static readonly string SnakeBodySectionPrefab = SnakePrefabsRoot + "BodySection";
+    public static readonly string SnakeHeadOnlyPrefab = SnakePrefabsRoot + "SnakeHeadOnly";
 
     //POWERUPS
     public static readonly string FirewallPrefab = PlayerPrefabsRoot + "Firewall";

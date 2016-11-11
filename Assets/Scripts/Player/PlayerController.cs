@@ -151,6 +151,7 @@ public class PlayerController : MonoBehaviour {
         {
             attackTimer = attackTime;
             attackCooldownTimer = attackCooldown;
+            rb.velocity = Vector3.zero;
             rb.AddForce(move.normalized * moveSpeed * 2.0f, ForceMode2D.Impulse);
 
             lastAttack = move.normalized;
@@ -163,7 +164,7 @@ public class PlayerController : MonoBehaviour {
     {
         if (AbleToMove() && teleportCooldownTimer <= 0.0f)
         {
-            PlayerManager.DetachKeyloggers();
+            PlayerManager.DetachEnemies();
             transform.Translate(move.normalized * teleportDistance, Space.World);
             teleportCooldownTimer = teleportCooldown;
         }

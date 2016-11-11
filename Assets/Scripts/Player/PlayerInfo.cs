@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class PlayerInfo {
 
     private List<KeyloggerMain> keyloggers = new List<KeyloggerMain>();
+    private List<WormMain> worms = new List<WormMain>();
     private uint numOfLoosePackets;
     private bool hasFirewall;
     private bool hasProxy;
@@ -22,7 +23,8 @@ public class PlayerInfo {
 
     public void DecrementNumOfLoosePackets()
     {
-        --numOfLoosePackets;
+        if(numOfLoosePackets > 0)
+            --numOfLoosePackets;
         UIManager.UpdatePickupDisplay(numOfLoosePackets);
     }
 
@@ -44,6 +46,21 @@ public class PlayerInfo {
             k.Detach();
         }
         keyloggers.Clear();
+    }
+
+    //Worms
+    public void AttachWorm(WormMain worm)
+    {
+        worms.Add(worm);
+    }
+
+    public void DetachWorms()
+    {
+        foreach (WormMain w in worms)
+        {
+            w.Detach();
+        }
+        worms.Clear();
     }
 
     //Firewall

@@ -119,6 +119,11 @@ public class PlayerManager : MonoBehaviour {
         playerInfo.IncrementNumOfLoosePackets();
     }
 
+    public static void DecrementNumOfLoosePackets()
+    {
+        playerInfo.DecrementNumOfLoosePackets();
+    }
+
     //Keylogger
     public static bool StealPacket()
     {
@@ -139,9 +144,15 @@ public class PlayerManager : MonoBehaviour {
         playerInfo.AttachKeylogger(keylogger);
     }
 
-    public static void DetachKeyloggers()
+    public static void AttachWorm(WormMain worm)
+    {
+        playerInfo.AttachWorm(worm);
+    }
+
+    public static void DetachEnemies()
     {
         playerInfo.DetachKeyloggers();
+        playerInfo.DetachWorms();
     }
 
     //Firewall
