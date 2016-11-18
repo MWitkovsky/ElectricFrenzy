@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class GameManager : MonoBehaviour {
@@ -37,5 +38,21 @@ public class GameManager : MonoBehaviour {
     public static void SetDebugMode(bool debug)
     {
         GameManager.debug = debug;
+    }
+
+    public static void ChangeScene(int level)
+    {
+        SceneManager.LoadScene(level);
+    }
+
+    public static void NextLevel()
+    {
+        if(SceneManager.GetSceneAt(SceneManager.GetActiveScene().buildIndex + 1) == null)
+        {
+            //Loop back around
+            SceneManager.LoadScene(0);
+        }
+        //Move to next scene if available, otherwise
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }

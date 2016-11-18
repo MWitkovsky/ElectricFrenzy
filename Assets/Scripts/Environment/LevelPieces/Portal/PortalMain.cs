@@ -15,9 +15,10 @@ public class PortalMain : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D obj)
     {
+        Debug.Log("Entered");
         if(obj.gameObject.tag.Equals("Player"))
         {
-            
+            GameManager.NextLevel();
         }
     }
 }
