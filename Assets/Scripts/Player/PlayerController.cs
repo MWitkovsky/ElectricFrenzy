@@ -5,7 +5,7 @@ public class PlayerController : MonoBehaviour {
 
     //Basic Movement
     [SerializeField]
-    private float moveSpeed = 15.0f, backwardsMoveSpeed = 13.5f, turnDelay = 1.0f, acceleration = 1.0f, turnSpeed = 0.5f;
+    private float moveSpeed = 15.0f, backwardsMoveSpeed = 13.5f, turnDelay, acceleration = 1.0f, turnSpeed = 0.5f;
 
     //Attack
     [SerializeField]
