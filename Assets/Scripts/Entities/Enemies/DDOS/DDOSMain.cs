@@ -21,6 +21,7 @@ public class DDOSMain : MonoBehaviour {
             if(Vector3.Distance(transform.position, player.position) < explosionRadius)
                 PlayerManager.Damage(damageYield, true);
             //Spawn explosion graphic and play explosion sound
+            Instantiate(Resources.Load(ResourcePaths.HitBurstPrefab), transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
 	}

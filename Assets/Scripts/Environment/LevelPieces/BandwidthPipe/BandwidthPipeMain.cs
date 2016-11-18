@@ -54,6 +54,7 @@ public class BandwidthPipeMain : MonoBehaviour {
         }
         else
         {
+            player.gameObject.layer = 6;
             index = -1;
             target = entrance;
             player = null;
