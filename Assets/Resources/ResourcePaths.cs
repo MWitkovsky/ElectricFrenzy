@@ -13,6 +13,7 @@ public class ResourcePaths {
     private static readonly string EntityPrefabsRoot = PrefabsRoot + "Entities/";
     private static readonly string EnemyPrefabsRoot = EntityPrefabsRoot + "Enemies/";
     private static readonly string PlayerPrefabsRoot = EntityPrefabsRoot + "Player/";
+    private static readonly string FXPrefabsRoot = PrefabsRoot + "FX/";
 
     //ENEMIES
     private static readonly string SnakePrefabsRoot = EnemyPrefabsRoot + "SnakeComponents/"; //SNAKE? SNAAAAAAAKE
@@ -23,6 +24,10 @@ public class ResourcePaths {
     //POWERUPS
     public static readonly string FirewallPrefab = PlayerPrefabsRoot + "Firewall";
     public static readonly string AfterimagePrefab = PlayerPrefabsRoot + "Afterimage";
+    
+    //FX
+    public static readonly string HitBurstPrefab = FXPrefabsRoot + "HitBurst";
+    public static readonly string SmallHitPrefab = FXPrefabsRoot + "SmallHit";
 
     /////////////
     //Materials//

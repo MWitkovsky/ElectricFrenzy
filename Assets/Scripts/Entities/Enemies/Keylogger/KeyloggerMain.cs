@@ -89,6 +89,7 @@ public class KeyloggerMain : MonoBehaviour {
 
     public void TakeDamage(int damage)
     {
+        Instantiate(Resources.Load(ResourcePaths.HitBurstPrefab), transform.position, Quaternion.identity);
         health -= damage;
         if(health <= 0)
         {
