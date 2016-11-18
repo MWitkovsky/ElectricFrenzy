@@ -54,6 +54,7 @@ public class RedirectLoopMain : MonoBehaviour {
         }
         else
         {
+            player.gameObject.layer = 6;
             index = -1;
             target = entrance;
             player = null;
