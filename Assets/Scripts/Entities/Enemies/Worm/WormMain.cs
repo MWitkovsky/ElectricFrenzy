@@ -200,7 +200,7 @@ public class WormMain : MonoBehaviour {
 
     public void TakeDamage(int damage)
     {
-        Instantiate(Resources.Load(ResourcePaths.SmallHitPrefab), transform.position, Quaternion.identity);
+        Instantiate(Resources.Load(ResourcePaths.SmallHitPrefab), transform.GetChild(0).position, Quaternion.identity);
         health -= damage;
         if (health <= 0)
         {
