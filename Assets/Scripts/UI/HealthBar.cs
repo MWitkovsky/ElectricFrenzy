@@ -38,14 +38,14 @@ public class HealthBar : MonoBehaviour
         backBarHealth = 100.0f;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (GameManager.IsGameActive())
         {
             if(!PlayerManager.IsFrenzying())
-                ApplyTimeDamage(Time.deltaTime * healthDrainMultiplier);
+                ApplyTimeDamage(Time.fixedDeltaTime * healthDrainMultiplier);
             else
-                ApplyTimeDamage(Time.deltaTime * healthDrainMultiplier * frenzyDrainMultiplier);
+                ApplyTimeDamage(Time.fixedDeltaTime * healthDrainMultiplier * frenzyDrainMultiplier);
         }
             
 
@@ -56,10 +56,10 @@ public class HealthBar : MonoBehaviour
             ProcessHealing();
 
         if (backBarEmptyTimer > 0.0f)
-            backBarEmptyTimer -= Time.deltaTime;
+            backBarEmptyTimer -= Time.fixedDeltaTime;
 
         if (backBarHealth > health && backBarEmptyTimer <= 0.0f)
-            backBarHealth -= Time.deltaTime * backBarEmptySpeed;
+            backBarHealth -= Time.fixedDeltaTime * backBarEmptySpeed;
 
         UpdateGraphics();
 
