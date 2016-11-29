@@ -37,4 +37,15 @@ public class DDOSMain : MonoBehaviour {
         if (other.CompareTag(TagManager.Player))
             set = true;
     }
+
+    public void Set()
+    {
+        set = true;
+    }
+
+    public void SetFuseTime(float fuseTime)
+    {
+        this.fuseTime = fuseTime;
+        fuseTimer = fuseTime;
+    }
 }
