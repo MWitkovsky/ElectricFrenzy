@@ -6,13 +6,27 @@ public class LoosePacketHandler : MonoBehaviour {
     [SerializeField]
     private float healAmount;
 
+    private Transform target;
+    private float lerpSpeed = 5.0f;
+
+    void FixedUpdate()
+    {
+        if (target)
+        {
+            transform.position = Vector3.Lerp(transform.position, target.position, lerpSpeed * Time.fixedDeltaTime);
+
+            if (Vector2.Distance(transform.position, target.position) < 0.5f)
+            {
+                PlayerManager.IncrementNumOfLoosePackets();
+                PlayerManager.Heal(healAmount);
+                Destroy(gameObject);
+            }
+        }
+    }
+
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag(TagManager.Player))
-        {
-            PlayerManager.IncrementNumOfLoosePackets();
-            PlayerManager.Heal(healAmount);
-            Destroy(gameObject);
-        }
+            target = other.transform;
     }
 }

@@ -21,11 +21,16 @@ public class PlayerInfo {
         UIManager.UpdatePickupDisplay(numOfLoosePackets);
     }
 
-    public void DecrementNumOfLoosePackets()
+    public bool DecrementNumOfLoosePackets()
     {
-        if(numOfLoosePackets > 0)
+        if (numOfLoosePackets > 0)
+        {
             --numOfLoosePackets;
-        UIManager.UpdatePickupDisplay(numOfLoosePackets);
+            UIManager.UpdatePickupDisplay(numOfLoosePackets);
+            return true;
+        }
+
+        return false;
     }
 
     public uint GetNumOfLoosePackets()

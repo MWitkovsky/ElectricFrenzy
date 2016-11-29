@@ -10,7 +10,7 @@ public class WormMain : MonoBehaviour {
     [SerializeField]
     private float snakeSpeed, snakeRotateSpeed, stealDelay, hitstunTime;
 
-    private GameObject head, body;
+    private GameObject head, body, packet;
     private Transform target;
     private float stealTimer, hitstunTimer;
     private bool turningFromWall;
@@ -67,7 +67,7 @@ public class WormMain : MonoBehaviour {
                     head.transform.Translate(head.transform.forward * Time.fixedDeltaTime * spottedMoveSpeed, Space.World);
 
                     //If target is far enough away, break pursuit
-                    if (Vector3.Distance(head.transform.position, target.position) < 10.0f)
+                    if (target && Vector2.Distance(head.transform.position, target.position) > 10.0f)
                         SetIdle();
                 }
 
@@ -110,19 +110,35 @@ public class WormMain : MonoBehaviour {
                     }
                     else
                     {
+                        Transform temp = null;
+                        WormMain newHead = null;
+                        WormPacket packet = null;
+                        Vector3 tempPosition = Vector3.zero;
+                        bool packetAvailable = false;
+
                         PlayerManager.Damage(10.0f, true);
                         for(int i=0; i<=numOfSections; i++)
                         {
-                            PlayerManager.DecrementNumOfLoosePackets();
+                            packetAvailable = PlayerManager.DecrementNumOfLoosePackets();
 
-                            Transform temp = target;
-                            GameObject newHead = (GameObject)Instantiate(Resources.Load(ResourcePaths.SnakeHeadOnlyPrefab),
+                            //Make the fleeing worm head
+                            temp = target;
+                            newHead = ((GameObject)Instantiate(Resources.Load(ResourcePaths.SnakeHeadOnlyPrefab),
                                temp.position,
-                               temp.rotation);
-                            Vector3 tempPosition = newHead.transform.position + new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), 0.0f);
-                            newHead.GetComponent<WormMain>().GetHead().transform.LookAt(tempPosition);
-                            newHead.GetComponent<WormMain>().GetHead().transform.position = tempPosition;
-                            newHead.GetComponent<WormMain>().SetRunning();
+                               temp.rotation)).GetComponent<WormMain>();
+                            tempPosition = newHead.transform.position + new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), 0.0f);
+                            newHead.GetHead().transform.LookAt(tempPosition);
+                            newHead.GetHead().transform.position = tempPosition;
+                            newHead.SetRunning();
+
+                            //Make a packet follow it if one was available
+                            if (packetAvailable)
+                            {
+                                temp = newHead.transform;
+                                packet = ((GameObject)Instantiate(Resources.Load(ResourcePaths.SnakePacketPrefab), target.position, target.rotation)).GetComponent<WormPacket>();
+                                newHead.SetPacket(packet.gameObject);
+                                packet.SetTarget(newHead.GetHead().transform);
+                            }
                         }
                         Destroy(gameObject);
                     } 
@@ -216,6 +232,9 @@ public class WormMain : MonoBehaviour {
         if (health <= 0)
         {
             //Death stuff
+            if (packet)
+                packet.GetComponent<WormPacket>().FlyToPlayer();
+
             Destroy(gameObject);
         }
 
@@ -245,5 +264,10 @@ public class WormMain : MonoBehaviour {
     public GameObject GetHead()
     {
         return head;
+    }
+
+    public void SetPacket(GameObject packet)
+    {
+        this.packet = packet;
     }
 }

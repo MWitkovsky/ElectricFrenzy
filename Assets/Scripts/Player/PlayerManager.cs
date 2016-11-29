@@ -83,6 +83,11 @@ public class PlayerManager : MonoBehaviour {
             meshRenderer.enabled = true;
     }
 
+    public static GameObject GetPlayer()
+    {
+        return player;
+    }
+
     //Grabbing the PlayerInfo from the GameManager
     public static void SetPlayerInfo(PlayerInfo playerInfo)
     {
@@ -131,9 +136,9 @@ public class PlayerManager : MonoBehaviour {
         playerInfo.IncrementNumOfLoosePackets();
     }
 
-    public static void DecrementNumOfLoosePackets()
+    public static bool DecrementNumOfLoosePackets()
     {
-        playerInfo.DecrementNumOfLoosePackets();
+        return playerInfo.DecrementNumOfLoosePackets();
     }
 
     //Keylogger

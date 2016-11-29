@@ -20,6 +20,7 @@ public class ResourcePaths {
     public static readonly string SnakeHeadGraphicPrefab = SnakePrefabsRoot + "HeadGraphic";
     public static readonly string SnakeBodySectionPrefab = SnakePrefabsRoot + "BodySection";
     public static readonly string SnakeHeadOnlyPrefab = SnakePrefabsRoot + "SnakeHeadOnly";
+    public static readonly string SnakePacketPrefab = SnakePrefabsRoot + "SnakePacket";
 
     //POWERUPS
     public static readonly string FirewallPrefab = PlayerPrefabsRoot + "Firewall";
