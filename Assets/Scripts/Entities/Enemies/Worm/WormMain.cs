@@ -60,10 +60,15 @@ public class WormMain : MonoBehaviour {
                 }
                 else if (state == State.spotted || state == State.attached)
                 {
+                    //Navigate towards target
                     Quaternion temp = head.transform.rotation;
                     head.transform.LookAt(target);
                     head.transform.rotation = Quaternion.Lerp(temp, head.transform.rotation, spottedRotateSpeed * Time.fixedDeltaTime);
                     head.transform.Translate(head.transform.forward * Time.fixedDeltaTime * spottedMoveSpeed, Space.World);
+
+                    //If target is far enough away, break pursuit
+                    if (Vector3.Distance(head.transform.position, target.position) < 10.0f)
+                        SetIdle();
                 }
 
                 HandleWallDetection();
@@ -176,6 +181,12 @@ public class WormMain : MonoBehaviour {
     public void SetPacketYield(int packetYield)
     {
         this.packetYield = packetYield;
+    }
+
+    public void SetIdle()
+    {
+        target = null;
+        state = State.idle;
     }
 
     public void SetTarget(Transform target)
