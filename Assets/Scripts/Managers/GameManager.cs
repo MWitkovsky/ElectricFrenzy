@@ -20,6 +20,17 @@ public class GameManager : MonoBehaviour {
         debug = true;
 	}
 
+    void Update()
+    {
+        if (debug && Input.GetKeyDown(KeyCode.U))
+            TogglePauseGame();
+    }
+
+    public static void TogglePauseGame()
+    {
+        Time.timeScale = Time.timeScale > 0.0f ? 0.0f : 1.0f;
+    }
+
     public static bool IsGameActive()
     {
         return gameActive;
