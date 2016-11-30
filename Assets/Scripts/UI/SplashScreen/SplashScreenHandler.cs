@@ -5,24 +5,50 @@ using System.Collections;
 public class SplashScreenHandler : MonoBehaviour {
 
     [SerializeField] private Color targetColor;
-    [SerializeField] private float fadeInTime, stayTime, fadeOutTime, totalSplashTime;
+    [SerializeField] private float fadeInTime, stayTime, fadeOutTime, leftScrollSpawnTime, leftScrollStayTime, totalSplashTime;
 
     private Image image;
-    private float fadeInTimer, stayTimer, fadeOutTimer;
+    private ScrollingTextContainer leftScrollingTextContainer, rightScrollingTextContainer;
+    private float fadeInTimer, stayTimer, fadeOutTimer, leftScrollSpawnTimer, leftScrollStayTimer;
 
 	void Start () { 
         Time.timeScale = 0.0f;
         totalSplashTime = fadeInTime + stayTime + fadeOutTime;
 
         image = GetComponent<Image>();
+        leftScrollingTextContainer = GameObject.Find("ScrollingTextLeft").GetComponent<ScrollingTextContainer>();
+        rightScrollingTextContainer = GameObject.Find("ScrollingTextRight").GetComponent<ScrollingTextContainer>();
 
         //init timers
         fadeInTimer = fadeInTime;
         stayTimer = stayTime;
         fadeOutTimer = fadeOutTime;
-	}
+
+        leftScrollSpawnTimer = leftScrollSpawnTime;
+        leftScrollStayTimer = leftScrollStayTime;
+    }
 	
 	void Update () {
+        if(leftScrollSpawnTimer > 0.0f)
+        {
+            leftScrollSpawnTimer -= Time.unscaledDeltaTime;
+            if (leftScrollSpawnTimer <= 0.0f)
+            {
+                leftScrollingTextContainer.Begin();
+                rightScrollingTextContainer.Begin();
+            }  
+        }
+        else if(leftScrollStayTimer > 0.0f)
+        {
+            leftScrollStayTimer -= Time.unscaledDeltaTime;
+            if (leftScrollStayTimer <= 0.0f)
+            {
+                leftScrollingTextContainer.Exit();
+                rightScrollingTextContainer.Exit();
+            }   
+        }
+
+        //FADEIN/OUT
 	    if(fadeInTimer > 0.0f)
         {
             fadeInTimer -= Time.unscaledDeltaTime;

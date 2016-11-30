@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: bb123bd262470454384ecc6f18430fee
+timeCreated: 1480486958
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Telegrama
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 1ae951d57e86fca4d8e01f4378358cd8, type: 3}
+  - {fileID: 12800000, guid: 99be26ee2ab6ad14ba00fd2c406d483b, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
