@@ -13,7 +13,6 @@ public class WormPacket : MonoBehaviour {
             if (onWorm)
             {
                 transform.position = Vector3.Lerp(transform.position, target.position - target.forward, lerpSpeed * Time.fixedDeltaTime);
-                print(target.position);
             }
             else
             {

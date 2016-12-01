@@ -24,7 +24,6 @@ public class ScrollingTextContainer : MonoBehaviour {
         {
             rect.position += new Vector3(Screen.width, 0.0f, 0.0f);
         }
-        print(rect.position.x + " " + (rect.position.x < -6000.0f));
     }
 	
 	void Update () {
