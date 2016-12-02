@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour {
 
     //animation variables
     private Animator anim;
-    private Transform model;
+    private Transform model, hitbox;
     private Vector2 currentMoveSpeed;
     private bool facingRight;
 
@@ -38,10 +38,9 @@ public class PlayerController : MonoBehaviour {
         foreach (Transform t in transform)
         {
             if (t.name == "Mesh")
-            {
                 model = t;
-                break;
-            }
+            else if (t.name == "Hitbox")
+                hitbox = t;
         }
         facingRight = true;
 
@@ -156,6 +155,13 @@ public class PlayerController : MonoBehaviour {
 
             lastAttack = move.normalized;
             model.LookAt(transform.position + (Vector3)move.normalized);
+
+            //rotate hitbox
+            Vector3 difference = (transform.position + (Vector3)move.normalized) - transform.position;
+            float rotationZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
+            hitbox.rotation = Quaternion.Euler(0.0f, 0.0f, rotationZ);
+            hitbox.Rotate(0.0f, 0.0f, -90.0f);
+
             anim.SetTrigger("attack");
         }
     }
@@ -222,6 +228,8 @@ public class PlayerController : MonoBehaviour {
             model.LookAt(transform.position + Vector3.right);
         else
             model.LookAt(transform.position + Vector3.left);
+
+        hitbox.eulerAngles = Vector3.zero;
     }
 
     public bool IsAttacking()
