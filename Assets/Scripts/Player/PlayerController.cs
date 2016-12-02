@@ -245,6 +245,7 @@ public class PlayerController : MonoBehaviour {
     public void SetTeleporting(bool isTeleporting)
     {
         this.isTeleporting = isTeleporting;
+        rb.velocity = Vector3.zero;
     }
 
     public Transform GetModelTransform()

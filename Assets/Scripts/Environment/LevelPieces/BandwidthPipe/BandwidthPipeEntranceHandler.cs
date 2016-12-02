@@ -9,8 +9,9 @@ public class BandwidthPipeEntranceHandler : MonoBehaviour {
     {
         if (other.CompareTag(TagManager.Player))
         {
-            main.SetPlayer(other.transform);
             other.gameObject.layer = 0;
+            main.SetPlayer(other.transform.parent);
+            main.SetHitbox(other.transform);
         }
     }
 

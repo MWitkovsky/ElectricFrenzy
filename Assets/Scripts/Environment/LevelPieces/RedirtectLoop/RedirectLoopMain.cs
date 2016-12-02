@@ -54,7 +54,7 @@ public class RedirectLoopMain : MonoBehaviour {
         }
         else
         {
-            hitbox.gameObject.layer = 6;
+            hitbox.gameObject.layer = LayerMask.NameToLayer("Player");
             index = -1;
             target = entrance;
             player = null;
