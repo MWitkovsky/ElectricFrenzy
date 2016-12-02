@@ -8,7 +8,7 @@ public class RedirectLoopMain : MonoBehaviour {
     [SerializeField]
     private Transform[] intermediaryPoints;
 
-    private Transform entrance, exit, target, player;
+    private Transform entrance, exit, target, player, hitbox;
     private int index;
 
 	void Start () {
@@ -54,10 +54,11 @@ public class RedirectLoopMain : MonoBehaviour {
         }
         else
         {
-            player.gameObject.layer = 6;
+            hitbox.gameObject.layer = 6;
             index = -1;
             target = entrance;
             player = null;
+            hitbox = null;
             PlayerManager.SetTeleporting(false);
         }
     }
@@ -66,5 +67,10 @@ public class RedirectLoopMain : MonoBehaviour {
     {
         this.player = player;
         PlayerManager.SetTeleporting(true);
+    }
+
+    public void SetHitbox(Transform hitbox)
+    {
+        this.hitbox = hitbox;
     }
 }
