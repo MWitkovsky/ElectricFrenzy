@@ -10,7 +10,8 @@ public class RedirectLoopEntranceHandler : MonoBehaviour {
         if (other.CompareTag(TagManager.Player))
         {
             other.gameObject.layer = 0;
-            main.SetPlayer(other.transform);
+            main.SetPlayer(other.transform.parent);
+            main.SetHitbox(other.transform);
         }
     }
 
