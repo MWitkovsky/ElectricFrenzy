@@ -8,9 +8,10 @@ public class DDOSMain : MonoBehaviour {
     private Transform player;
     private float explosionRadius, fuseTimer;
     private bool set;
-
+    private Animator anim;
 	void Start () {
         player = GameObject.Find("Player").transform;
+        anim = GetComponent<Animator>();
         fuseTimer = fuseTime;
         explosionRadius = GetComponent<CircleCollider2D>().radius;
 	}
@@ -35,7 +36,10 @@ public class DDOSMain : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag(TagManager.Player))
+        {
             set = true;
+            anim.SetBool("Set", true);
+        }
     }
 
     public void Set()
