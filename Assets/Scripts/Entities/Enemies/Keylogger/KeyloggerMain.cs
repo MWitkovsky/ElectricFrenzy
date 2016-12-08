@@ -6,13 +6,14 @@ public class KeyloggerMain : MonoBehaviour {
     [SerializeField]
     private int health, packetYield;
     [SerializeField]
-    private float moveSpeed, chaseSpeed, stealDelay, hitstunTime;
+    private float moveSpeed, chaseSpeed, rotateSpeed, stealDelay, hitstunTime, wallDetectDistance;
 
     private Transform target;
     private State state;
     private float stealTimer, hitstunTimer;
+    private bool facingRight;
 
-    public enum State { idle, spotted, attached };
+    public enum State { idle, turning, spotted, attached };
 
     void Awake()
     {
@@ -29,6 +30,39 @@ public class KeyloggerMain : MonoBehaviour {
         {
             if (state == State.idle)
             {
+                RaycastHit2D wallCheck = Physics2D.Raycast(transform.position, transform.forward, wallDetectDistance, LayerMask.GetMask("Walls"));
+                if (wallCheck.collider != null)
+                {
+                    state = State.turning;
+                    print("Turning");
+                }
+                    
+
+                transform.Translate(transform.forward * Time.fixedDeltaTime * moveSpeed, Space.World);
+            }
+            else if(state == State.turning)
+            {
+                if (facingRight)
+                {
+                    transform.eulerAngles = new Vector3(transform.eulerAngles.x, Mathf.LerpAngle(transform.eulerAngles.y, 270.0f, rotateSpeed * Time.fixedDeltaTime), transform.eulerAngles.z);
+                    if(Mathf.Abs(transform.eulerAngles.y - 270.0f) < 0.5f)
+                    {
+                        transform.eulerAngles = new Vector3(transform.eulerAngles.x, 270.0f, transform.eulerAngles.z);
+                        facingRight = false;
+                        state = State.idle;
+                    }
+                }
+                else
+                {
+                    transform.eulerAngles = new Vector3(transform.eulerAngles.x, Mathf.LerpAngle(transform.eulerAngles.y, 90.0f, rotateSpeed * Time.fixedDeltaTime), transform.eulerAngles.z);
+                    if (Mathf.Abs(transform.eulerAngles.y - 90.0f) < 0.5f)
+                    {
+                        transform.eulerAngles = new Vector3(transform.eulerAngles.x, 90.0f, transform.eulerAngles.z);
+                        facingRight = true;
+                        state = State.idle;
+                    }
+                }
+
                 transform.Translate(transform.forward * Time.fixedDeltaTime * moveSpeed, Space.World);
             }
             else if (state == State.spotted)
