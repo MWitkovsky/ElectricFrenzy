@@ -6,7 +6,7 @@ public class KeyloggerMain : MonoBehaviour {
     [SerializeField]
     private int health, packetYield;
     [SerializeField]
-    private float speed, stealDelay, hitstunTime;
+    private float moveSpeed, chaseSpeed, stealDelay, hitstunTime;
 
     private Transform target;
     private State state;
@@ -29,14 +29,15 @@ public class KeyloggerMain : MonoBehaviour {
         {
             if (state == State.idle)
             {
-                //Make raycast check for walls here, turn around and patrol at a fixed speed
+                transform.Translate(transform.forward * Time.fixedDeltaTime * moveSpeed, Space.World);
             }
             else if (state == State.spotted)
             {
-                Vector3 dir = target.position - transform.position;
+                /*Vector3 dir = target.position - transform.position;
                 float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-                transform.rotation = Quaternion.AngleAxis(angle - 180.0f, Vector3.forward);
-                transform.Translate(dir * Time.fixedDeltaTime * speed, Space.World);
+                transform.rotation = Quaternion.AngleAxis(angle - 180.0f, Vector3.forward);*/
+                transform.LookAt(target);
+                transform.Translate(transform.forward * Time.fixedDeltaTime * chaseSpeed, Space.World);
             }
             else if (state == State.attached)
             {
@@ -59,10 +60,10 @@ public class KeyloggerMain : MonoBehaviour {
         }
 
         //flips transform in Y direction if passes extreme angles on Z rotation
-        if (transform.rotation.eulerAngles.z >= 90.0f && transform.rotation.eulerAngles.z <= 270.0f)
+        /*if (transform.rotation.eulerAngles.z >= 90.0f && transform.rotation.eulerAngles.z <= 270.0f)
             transform.localScale = new Vector3(transform.localScale.x, -0.5f, transform.localScale.z);
         else
-            transform.localScale = new Vector3(transform.localScale.x, 0.5f, transform.localScale.z);
+            transform.localScale = new Vector3(transform.localScale.x, 0.5f, transform.localScale.z);*/
     }
 
     public void SetTarget(Transform target)
@@ -94,6 +95,9 @@ public class KeyloggerMain : MonoBehaviour {
         if(health <= 0)
         {
             //Death stuff
+            for (int i = 0; i < packetYield; i++)
+                Instantiate(Resources.Load(ResourcePaths.ReclaimedPacketPrefab), transform.position, Quaternion.identity);
+
             Destroy(gameObject);
         }
 

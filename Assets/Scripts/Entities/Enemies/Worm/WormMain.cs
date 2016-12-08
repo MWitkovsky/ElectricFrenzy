@@ -235,6 +235,9 @@ public class WormMain : MonoBehaviour {
             if (packet)
                 packet.GetComponent<WormPacket>().FlyToPlayer();
 
+            for(int i=0; i<packetYield; i++)
+                Instantiate(Resources.Load(ResourcePaths.ReclaimedPacketPrefab), head.transform.position, Quaternion.identity);
+
             Destroy(gameObject);
         }
 

@@ -7,7 +7,7 @@ public class LoosePacketHandler : MonoBehaviour {
     private float healAmount;
 
     private Transform target;
-    private float lerpSpeed = 5.0f;
+    private float lerpSpeed = 17.5f;
 
     void FixedUpdate()
     {
