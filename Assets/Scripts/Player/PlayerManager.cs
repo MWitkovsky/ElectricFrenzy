@@ -161,9 +161,15 @@ public class PlayerManager : MonoBehaviour {
         playerInfo.AttachKeylogger(keylogger);
     }
 
+    //Worm
     public static void AttachWorm(WormMain worm)
     {
         playerInfo.AttachWorm(worm);
+    }
+
+    public static void DetachWorm(WormMain worm)
+    {
+        playerInfo.DetachWorm(worm);
     }
 
     public static void DetachEnemies()

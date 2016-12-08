@@ -32,11 +32,7 @@ public class KeyloggerMain : MonoBehaviour {
             {
                 RaycastHit2D wallCheck = Physics2D.Raycast(transform.position, transform.forward, wallDetectDistance, LayerMask.GetMask("Walls"));
                 if (wallCheck.collider != null)
-                {
-                    state = State.turning;
-                    print("Turning");
-                }
-                    
+                    state = State.turning;    
 
                 transform.Translate(transform.forward * Time.fixedDeltaTime * moveSpeed, Space.World);
             }

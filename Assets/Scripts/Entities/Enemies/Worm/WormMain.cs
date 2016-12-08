@@ -140,6 +140,7 @@ public class WormMain : MonoBehaviour {
                                 packet.SetTarget(newHead.GetHead().transform);
                             }
                         }
+                        PlayerManager.DetachWorm(this);
                         Destroy(gameObject);
                     } 
                 }

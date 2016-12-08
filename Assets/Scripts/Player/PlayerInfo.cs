@@ -68,6 +68,11 @@ public class PlayerInfo {
         worms.Clear();
     }
 
+    public void DetachWorm(WormMain worm)
+    {
+        worms.Remove(worm);
+    }
+
     //Firewall
     public void GiveFirewall()
     {
