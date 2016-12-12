@@ -8,7 +8,7 @@ public class PauseScreen : MonoBehaviour {
     //Mouse driven? Controller driven? Easy but tedious work.
 
 	void Start () {
-	
+        gameObject.SetActive(false);
 	}
 
     //IF ANY NON-REACTIVE TIME BASED EFFECTS OR LOGIC IS DONE, USE Time.unscaledDeltaTime
