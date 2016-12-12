@@ -8,7 +8,7 @@ public class HealthBar : MonoBehaviour
     [SerializeField]
     private GameObject fillGraphic, backGraphic;
     [SerializeField]
-    private float damageDisplaySpeed, backBarHealSpeed, backBarEmptySpeed, backBarEmptyDelay, healthDrainMultiplier, frenzyDrainMultiplier;
+    private float damageDisplaySpeed, backBarHealSpeed, backBarEmptySpeed, backBarEmptyDelay, healthDrainMultiplier, frenzyDrainMultiplier, poisonDrainMultiplier;
 
     private Image healthBarImage, backBarImage;
     private float health;
@@ -42,10 +42,14 @@ public class HealthBar : MonoBehaviour
     {
         if (GameManager.IsGameActive())
         {
-            if(!PlayerManager.IsFrenzying())
-                ApplyTimeDamage(Time.fixedDeltaTime * healthDrainMultiplier);
-            else
-                ApplyTimeDamage(Time.fixedDeltaTime * healthDrainMultiplier * frenzyDrainMultiplier);
+            float additiveMultiplier = healthDrainMultiplier;
+
+            if (PlayerManager.IsFrenzying())
+                additiveMultiplier += frenzyDrainMultiplier;
+            if (PlayerManager.GetStatus() == PlayerInfo.Status.Poison)
+                additiveMultiplier += poisonDrainMultiplier;
+
+            ApplyTimeDamage(Time.fixedDeltaTime * additiveMultiplier);
         }
             
 

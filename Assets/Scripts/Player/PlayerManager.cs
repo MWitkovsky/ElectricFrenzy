@@ -8,6 +8,9 @@ public class PlayerManager : MonoBehaviour {
     private static PlayerInfo playerInfo;
     private static PlayerController playerController;
 
+    //UI access
+    private static StatusAilmentDisplay statusAilmentDisplay;
+
     //Firewall tools
     private static GameObject firewallPrefab, firewall;
 
@@ -28,6 +31,8 @@ public class PlayerManager : MonoBehaviour {
         player = GameObject.Find("Player");
         playerController = FindObjectOfType<PlayerController>();
         afterimages = FindObjectOfType<AfterimageGenerator>();
+
+        statusAilmentDisplay = FindObjectOfType<StatusAilmentDisplay>();
 
         firewallPrefab = (GameObject)Resources.Load(ResourcePaths.FirewallPrefab);
         meshRenderer = GameObject.Find("PlugMesh_002").GetComponent<SkinnedMeshRenderer>();
@@ -159,13 +164,13 @@ public class PlayerManager : MonoBehaviour {
 
     public static void SetStatus(PlayerInfo.Status status)
     {
-        //Set UI here
+        statusAilmentDisplay.SetStatus(status);
         playerInfo.SetStatus(status);
     }
 
     public static void SetStatus(PlayerInfo.Status status, float duration)
     {
-        //Set UI here
+        statusAilmentDisplay.SetStatus(status);
         playerInfo.SetStatus(status);
         timedStatus = true;
         statusTimer = duration;
@@ -173,7 +178,7 @@ public class PlayerManager : MonoBehaviour {
 
     public static void CureStatus()
     {
-        //Set UI here
+        statusAilmentDisplay.SetStatus(PlayerInfo.Status.OK);
         playerInfo.CureStatus();
         timedStatus = false;
         statusTimer = 0.0f;
