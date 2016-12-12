@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour {
     private static PlayerInfo playerInfo;
 
     private static UIManager ui;
+    private static SplashScreenHandler splashScreen;
+    private static PauseScreen pauseScreen;
     private static bool gameActive;
     private static bool debug;
 
@@ -14,7 +16,10 @@ public class GameManager : MonoBehaviour {
         //load the player data if exists and passes it to the PlayerManager
         playerInfo = new PlayerInfo();
         PlayerManager.SetPlayerInfo(playerInfo);
+
         ui = FindObjectOfType<UIManager>();
+        splashScreen = FindObjectOfType<SplashScreenHandler>();
+        pauseScreen = FindObjectOfType<PauseScreen>();
 
         gameActive = true;
         debug = true;
@@ -28,7 +33,22 @@ public class GameManager : MonoBehaviour {
 
     public static void TogglePauseGame()
     {
-        Time.timeScale = Time.timeScale > 0.0f ? 0.0f : 1.0f;
+        if (IsGamePausable())
+        {
+            Time.timeScale = Time.timeScale > 0.0f ? 0.0f : 1.0f;
+            if(Time.timeScale == 0.0f)
+                pauseScreen.gameObject.SetActive(true);
+            else
+                pauseScreen.gameObject.SetActive(false);
+        }
+    }
+
+    public static bool IsGamePausable()
+    {
+        if (splashScreen.gameObject.activeSelf)
+            return false;
+        else
+            return true;
     }
 
     public static bool IsGameActive()
