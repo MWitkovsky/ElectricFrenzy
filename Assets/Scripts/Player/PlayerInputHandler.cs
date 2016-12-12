@@ -5,9 +5,7 @@ public class PlayerInputHandler : MonoBehaviour {
 
     private PlayerController playerController;
     private Vector2 move;
-    private bool attack;
-    private bool teleport;
-    private bool frenzy;
+    private bool attack, teleport, frenzy, pause;
 
 	void Start () {
         playerController = FindObjectOfType<PlayerController>();
@@ -18,6 +16,7 @@ public class PlayerInputHandler : MonoBehaviour {
         attack = Input.GetButtonDown("Fire1");
         teleport = Input.GetButtonDown("Jump");
         frenzy = Input.GetButtonDown("Fire2");
+        pause = Input.GetButtonDown("Submit");
 
         if (attack)
             playerController.Attack(move);
@@ -25,6 +24,8 @@ public class PlayerInputHandler : MonoBehaviour {
             playerController.Teleport(move);
         if (frenzy)
             Frenzy();
+        if (pause)
+            GameManager.TogglePauseGame();
     }
 
 	void FixedUpdate() {
