@@ -242,6 +242,7 @@ public class WormMain : MonoBehaviour {
             Destroy(gameObject);
         }
 
+        PlayerManager.ResetAttackCooldown();
         hitstunTimer = hitstunTime;
     }
 

@@ -131,6 +131,7 @@ public class KeyloggerMain : MonoBehaviour {
             Destroy(gameObject);
         }
 
+        PlayerManager.ResetAttackCooldown();
         hitstunTimer = hitstunTime;
     }
 

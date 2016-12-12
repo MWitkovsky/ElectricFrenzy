@@ -11,7 +11,7 @@ public class SplashScreenHandler : MonoBehaviour {
     private ScrollingTextContainer leftScrollingTextContainer, rightScrollingTextContainer;
     private float fadeInTimer, stayTimer, fadeOutTimer, leftScrollSpawnTimer, leftScrollStayTimer;
 
-	void Start () { 
+	void Start () {
         Time.timeScale = 0.0f;
         totalSplashTime = fadeInTime + stayTime + fadeOutTime;
 

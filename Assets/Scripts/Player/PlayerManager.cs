@@ -145,6 +145,11 @@ public class PlayerManager : MonoBehaviour {
     {
         return playerController.GetModelTransform();
     }
+    
+    public static void ResetAttackCooldown()
+    {
+        playerController.ResetAttackCooldown();
+    }
 
     //Interfaces with PlayerInfo
     public static void IncrementNumOfLoosePackets()
