@@ -10,9 +10,14 @@ public class PlayerInfo {
     private bool hasProxy;
     private bool isFrenzying;
 
+    //Status ailments
+    private Status status;
+    public enum Status { OK, Poison, Paralyzed, Slowed };
+
     public PlayerInfo()
     {
         numOfLoosePackets = 0;
+        status = Status.OK;
     }
 
     public void IncrementNumOfLoosePackets()
@@ -36,6 +41,22 @@ public class PlayerInfo {
     public uint GetNumOfLoosePackets()
     {
         return numOfLoosePackets;
+    }
+
+    //Status
+    public Status GetStatus()
+    {
+        return status;
+    }
+
+    public void SetStatus(Status status)
+    {
+        this.status = status;
+    }
+
+    public void CureStatus()
+    {
+        status = Status.OK;
     }
 
     //Keyloggers

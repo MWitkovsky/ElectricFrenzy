@@ -7,6 +7,10 @@ public class PlayerController : MonoBehaviour {
     [SerializeField]
     private float moveSpeed = 15.0f, backwardsMoveSpeed = 13.5f, turnDelay, acceleration = 1.0f, turnSpeed = 0.5f;
 
+    //Status Ailments
+    [SerializeField]
+    private float slowDownStatusPercentage = 50.0f;
+
     //Attack
     [SerializeField]
     private float attackTime = 0.15f, attackCooldown = 0.1f;
@@ -44,6 +48,8 @@ public class PlayerController : MonoBehaviour {
         }
         facingRight = true;
 
+        slowDownStatusPercentage /= 100.0f;
+
         GetComponent<AfterimageGenerator>().SetModelTransform(model);
     }
 
@@ -58,10 +64,13 @@ public class PlayerController : MonoBehaviour {
         {
             if(attackCooldownTimer > 0.0f)
             {
-                if (Vector2.Dot(lastAttack, Vector2.left) > 0)
-                    SetFacingRight(false);
-                else
-                    SetFacingRight(true);
+                if(attackCooldownTimer == attackCooldown)
+                {
+                    if (Vector2.Dot(lastAttack, Vector2.left) > 0)
+                        SetFacingRight(false);
+                    else
+                        SetFacingRight(true);
+                }
 
                 attackCooldownTimer -= Time.deltaTime;
             }
@@ -125,12 +134,14 @@ public class PlayerController : MonoBehaviour {
             //rb.velocity = Vector2.zero;
         }
     }
-    int q = 0;
+
 	public void Move(Vector2 move)
     {
         if (AbleToMove())
         {
             float tiltPercent = move.magnitude;
+            if (PlayerManager.GetStatus() == PlayerInfo.Status.Slowed)
+                tiltPercent *= slowDownStatusPercentage;
 
             if (rb.velocity.magnitude > moveSpeed * tiltPercent)
                 rb.velocity = rb.velocity.normalized * (moveSpeed * tiltPercent);
@@ -166,6 +177,11 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
+    public void ResetAttackCooldown()
+    {
+        attackCooldownTimer = 0.0f;
+    }
+
     public void Teleport(Vector2 move)
     {
         if (AbleToMove() && teleportCooldownTimer <= 0.0f)
@@ -198,7 +214,7 @@ public class PlayerController : MonoBehaviour {
 
     private bool AbleToMove()
     {
-        if (attackCooldownTimer <= 0.0f && !isRecoiling && !isStunned && !isTeleporting)
+        if (attackTimer <= 0.0f && !isRecoiling && !isStunned && !isTeleporting && PlayerManager.GetStatus() != PlayerInfo.Status.Paralyzed)
             return true;
         else
             return false;

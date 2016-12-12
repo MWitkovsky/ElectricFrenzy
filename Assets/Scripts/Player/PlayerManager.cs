@@ -8,6 +8,9 @@ public class PlayerManager : MonoBehaviour {
     private static PlayerInfo playerInfo;
     private static PlayerController playerController;
 
+    //UI access
+    private static StatusAilmentDisplay statusAilmentDisplay;
+
     //Firewall tools
     private static GameObject firewallPrefab, firewall;
 
@@ -19,11 +22,17 @@ public class PlayerManager : MonoBehaviour {
     private static float invincibilityTime = 2.0f, amountOfBlinks = 5.0f, blinkTime = 0.1f, blinkIntervalTime;
     private static float invincibilityTimer, blinkIntervalTimer, blinkTimer;
 
+    //Status ailments
+    private static float statusTimer;
+    private static bool timedStatus;
+
     void Start()
     {
         player = GameObject.Find("Player");
         playerController = FindObjectOfType<PlayerController>();
         afterimages = FindObjectOfType<AfterimageGenerator>();
+
+        statusAilmentDisplay = FindObjectOfType<StatusAilmentDisplay>();
 
         firewallPrefab = (GameObject)Resources.Load(ResourcePaths.FirewallPrefab);
         meshRenderer = GameObject.Find("PlugMesh_002").GetComponent<SkinnedMeshRenderer>();
@@ -40,6 +49,13 @@ public class PlayerManager : MonoBehaviour {
     {
         if (invincibilityTimer > 0.0f)
             HandleInvincibility();
+
+        if (timedStatus)
+        {
+            statusTimer -= Time.deltaTime;
+            if (statusTimer <= 0.0f)
+                CureStatus();
+        }
 
         if (GameManager.IsDebugEnabled())
         {
@@ -139,6 +155,33 @@ public class PlayerManager : MonoBehaviour {
     public static bool DecrementNumOfLoosePackets()
     {
         return playerInfo.DecrementNumOfLoosePackets();
+    }
+
+    public static PlayerInfo.Status GetStatus()
+    {
+        return playerInfo.GetStatus();
+    }
+
+    public static void SetStatus(PlayerInfo.Status status)
+    {
+        statusAilmentDisplay.SetStatus(status);
+        playerInfo.SetStatus(status);
+    }
+
+    public static void SetStatus(PlayerInfo.Status status, float duration)
+    {
+        statusAilmentDisplay.SetStatus(status);
+        playerInfo.SetStatus(status);
+        timedStatus = true;
+        statusTimer = duration;
+    }
+
+    public static void CureStatus()
+    {
+        statusAilmentDisplay.SetStatus(PlayerInfo.Status.OK);
+        playerInfo.CureStatus();
+        timedStatus = false;
+        statusTimer = 0.0f;
     }
 
     //Keylogger
