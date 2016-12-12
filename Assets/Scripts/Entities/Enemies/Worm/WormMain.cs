@@ -8,11 +8,11 @@ public class WormMain : MonoBehaviour {
     [SerializeField]
     private float moveSpeed, spottedMoveSpeed, rotateSpeed, spottedRotateSpeed, wallDetectionDistance, turnBeginThresholdDistance;
     [SerializeField]
-    private float snakeSpeed, snakeRotateSpeed, stealDelay, hitstunTime;
+    private float snakeSpeed, snakeRotateSpeed, stealDelay, hitstunTime, spotDelayTime;
 
     private GameObject head, body, packet;
     private Transform target;
-    private float stealTimer, hitstunTimer;
+    private float stealTimer, hitstunTimer, spotDelayTimer;
     private bool turningFromWall;
 
     public enum State { idle, spotted, attached, running };
@@ -68,7 +68,13 @@ public class WormMain : MonoBehaviour {
 
                     //If target is far enough away, break pursuit
                     if (target && Vector2.Distance(head.transform.position, target.position) > 10.0f)
-                        SetIdle();
+                    {
+                        if (spotDelayTimer > 0.0f)
+                            spotDelayTimer -= Time.fixedDeltaTime;
+                        else 
+                            SetIdle();
+                    }
+                        
                 }
 
                 HandleWallDetection();
