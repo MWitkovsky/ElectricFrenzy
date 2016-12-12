@@ -171,7 +171,12 @@ public class PlayerController : MonoBehaviour {
         if (AbleToMove() && teleportCooldownTimer <= 0.0f)
         {
             PlayerManager.DetachEnemies();
-            transform.Translate(move.normalized * teleportDistance, Space.World);
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, move.normalized, teleportDistance, LayerMask.GetMask("Walls", "Enemies"));
+            if(hit.collider != null)
+                transform.position = hit.point - move.normalized/2.0f;
+            else
+                transform.Translate(move.normalized * teleportDistance, Space.World);
+            
             teleportCooldownTimer = teleportCooldown;
         }
     }
