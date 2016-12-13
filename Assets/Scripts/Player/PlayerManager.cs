@@ -125,15 +125,20 @@ public class PlayerManager : MonoBehaviour {
         return total;
     }
 
+    public static void BeginInvincibility()
+    {
+        invincibilityTimer = invincibilityTime;
+    }
+
+    public static bool CanBeHit()
+    {
+        return invincibilityTimer <= 0.0f && playerController.CanTakeHit();
+    }
+
     //Grabbing the PlayerInfo from the GameManager
     public static void SetPlayerInfo(PlayerInfo playerInfo)
     {
         PlayerManager.playerInfo = playerInfo;
-    }
-
-    public static void BeginInvincibility()
-    {
-        invincibilityTimer = invincibilityTime;
     }
 
     //Interfaces with PlayerController

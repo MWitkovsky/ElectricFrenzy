@@ -227,7 +227,7 @@ public class PlayerController : MonoBehaviour {
             return false;
     }
 
-    private bool CanTakeHit()
+    public bool CanTakeHit()
     {
         if (isRecoiling && !isTeleporting)
             return false;

@@ -14,6 +14,8 @@ public class ResourcePaths {
     private static readonly string EnvironmentPrefabsRoot = EntityPrefabsRoot + "Environment/";
     private static readonly string PickupsRoot = EnvironmentPrefabsRoot + "Pickups/";
     private static readonly string EnemyPrefabsRoot = EntityPrefabsRoot + "Enemies/";
+    private static readonly string BossPrefabsRoot = EnemyPrefabsRoot + "Bosses/";
+    private static readonly string SakuraTreePrefabsRoot = BossPrefabsRoot + "SakuraTree/";
     private static readonly string PlayerPrefabsRoot = EntityPrefabsRoot + "Player/";
     private static readonly string FXPrefabsRoot = PrefabsRoot + "FX/";
 
@@ -23,6 +25,9 @@ public class ResourcePaths {
     public static readonly string SnakeBodySectionPrefab = SnakePrefabsRoot + "BodySection";
     public static readonly string SnakeHeadOnlyPrefab = SnakePrefabsRoot + "SnakeHeadOnly";
     public static readonly string SnakePacketPrefab = SnakePrefabsRoot + "SnakePacket";
+
+    //BOSSES
+    public static readonly string SakuraLeafPrefab = SakuraTreePrefabsRoot + "SakuraLeaf";
 
     //POWERUPS
     public static readonly string FirewallPrefab = PlayerPrefabsRoot + "Firewall";
