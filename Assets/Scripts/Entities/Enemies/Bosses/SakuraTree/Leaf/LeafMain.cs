@@ -26,6 +26,12 @@ public class LeafMain : MonoBehaviour {
         }
     }
 
+    public void SetShotDirection(Vector3 direction, float speed)
+    {
+        mover.SetDirection(direction);
+        mover.SetSpeed(speed);
+    }
+
     public void SetRotationHome(Vector3 home, Vector3 initSpread, float spreadSpeed, float rotateSpeed)
     {
         this.home = home;

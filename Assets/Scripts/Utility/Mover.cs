@@ -11,6 +11,16 @@ public class Mover : MonoBehaviour {
 	}
 
 	void FixedUpdate () {
-        transform.Translate(direction * speed, Space.World);
+        transform.Translate(direction * speed * Time.fixedDeltaTime, Space.World);
 	}
+
+    public void SetDirection(Vector3 direction)
+    {
+        this.direction = direction;
+    }
+
+    public void SetSpeed(float speed)
+    {
+        this.speed = speed;
+    }
 }
