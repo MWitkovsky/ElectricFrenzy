@@ -3,10 +3,8 @@ using System.Collections;
 
 public class KeyloggerMain : MonoBehaviour {
 
-    [SerializeField]
-    private int health, packetYield;
-    [SerializeField]
-    private float moveSpeed, chaseSpeed, rotateSpeed, stealDelay, hitstunTime, wallDetectDistance;
+    [SerializeField] private int health, packetYield;
+    [SerializeField] private float moveSpeed, chaseSpeed, rotateSpeed, stealDelay, hitstunTime, wallDetectDistance;
 
     private Transform target;
     private State state;
@@ -63,9 +61,6 @@ public class KeyloggerMain : MonoBehaviour {
             }
             else if (state == State.spotted)
             {
-                /*Vector3 dir = target.position - transform.position;
-                float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-                transform.rotation = Quaternion.AngleAxis(angle - 180.0f, Vector3.forward);*/
                 transform.LookAt(target);
                 transform.Translate(transform.forward * Time.fixedDeltaTime * chaseSpeed, Space.World);
             }
@@ -88,12 +83,6 @@ public class KeyloggerMain : MonoBehaviour {
         {
             hitstunTimer -= Time.fixedDeltaTime;
         }
-
-        //flips transform in Y direction if passes extreme angles on Z rotation
-        /*if (transform.rotation.eulerAngles.z >= 90.0f && transform.rotation.eulerAngles.z <= 270.0f)
-            transform.localScale = new Vector3(transform.localScale.x, -0.5f, transform.localScale.z);
-        else
-            transform.localScale = new Vector3(transform.localScale.x, 0.5f, transform.localScale.z);*/
     }
 
     public void SetTarget(Transform target)

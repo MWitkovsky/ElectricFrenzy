@@ -4,7 +4,7 @@ using System.Collections;
 public class WormMain : MonoBehaviour {
 
     [SerializeField]
-    private int health, packetYield, numOfSections;
+    private int health, packetYield, numOfSections, maxChaseDistance;
     [SerializeField]
     private float moveSpeed, spottedMoveSpeed, rotateSpeed, spottedRotateSpeed, wallDetectionDistance, turnBeginThresholdDistance;
     [SerializeField]
@@ -67,7 +67,7 @@ public class WormMain : MonoBehaviour {
                     head.transform.Translate(head.transform.forward * Time.fixedDeltaTime * spottedMoveSpeed, Space.World);
 
                     //If target is far enough away, break pursuit
-                    if (target && Vector2.Distance(head.transform.position, target.position) > 10.0f)
+                    if (target && Vector2.Distance(head.transform.position, target.position) > maxChaseDistance)
                     {
                         if (spotDelayTimer > 0.0f)
                             spotDelayTimer -= Time.fixedDeltaTime;

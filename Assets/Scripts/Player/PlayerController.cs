@@ -64,17 +64,8 @@ public class PlayerController : MonoBehaviour {
         {
             if(attackCooldownTimer > 0.0f)
             {
-                if(attackCooldownTimer == attackCooldown)
-                {
-                    if (Vector2.Dot(lastAttack, Vector2.left) > 0)
-                        SetFacingRight(false);
-                    else
-                        SetFacingRight(true);
-                }
-
                 attackCooldownTimer -= Time.deltaTime;
-            }
-                
+            }   
         }    
 
         //HANDLE HIT RECOIL AND STUN
@@ -175,6 +166,14 @@ public class PlayerController : MonoBehaviour {
 
             anim.SetTrigger("attack");
         }
+    }
+
+    public void FinishAttack()
+    {
+        if (Vector2.Dot(lastAttack, Vector2.left) > 0)
+            SetFacingRight(false);
+        else
+            SetFacingRight(true);
     }
 
     public void ResetAttackCooldown()

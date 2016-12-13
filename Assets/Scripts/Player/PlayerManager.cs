@@ -17,6 +17,7 @@ public class PlayerManager : MonoBehaviour {
     //Proxy tools
     private static AfterimageGenerator afterimages;
     private static SkinnedMeshRenderer meshRenderer, eyeMeshRenderer, ear1MeshRenderer, ear2MeshRenderer;
+    private static float proxyTimer;
 
     //Taking damage and invincibility
     private static float invincibilityTime = 2.0f, amountOfBlinks = 5.0f, blinkTime = 0.1f, blinkIntervalTime;
@@ -50,6 +51,15 @@ public class PlayerManager : MonoBehaviour {
         if (invincibilityTimer > 0.0f)
             HandleInvincibility();
 
+        if (proxyTimer > 0.0f)
+        {
+            proxyTimer -= Time.deltaTime;
+            if(proxyTimer <= 0.0f)
+            {
+                RemoveProxy();
+            }
+        }
+
         if (timedStatus)
         {
             statusTimer -= Time.deltaTime;
@@ -62,7 +72,7 @@ public class PlayerManager : MonoBehaviour {
             if (Input.GetKeyDown(KeyCode.P))
             {
                 if (!HasProxy())
-                    GiveProxy();
+                    GiveProxy(10.0f);
                 else
                     RemoveProxy();
             }
@@ -102,6 +112,17 @@ public class PlayerManager : MonoBehaviour {
     public static GameObject GetPlayer()
     {
         return player;
+    }
+
+    public static int CalculateDamageDone()
+    {
+        int total = 1;
+        if (IsFrenzying())
+            total += 2;
+        if (HasProxy())
+            total *= 2;
+
+        return total;
     }
 
     //Grabbing the PlayerInfo from the GameManager
@@ -247,7 +268,7 @@ public class PlayerManager : MonoBehaviour {
     }
 
     //Proxy
-    public static void GiveProxy()
+    public static void GiveProxy(float duration)
     {
         playerInfo.GiveProxy();
         afterimages.enabled = true;
