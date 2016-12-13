@@ -74,7 +74,7 @@ public class AdwareMain : MonoBehaviour {
 
     public void TakeDamage(int damage)
     {
-        Instantiate(Resources.Load(ResourcePaths.SmallHitPrefab), transform.GetChild(0).position, Quaternion.identity);
+        Instantiate(Resources.Load(ResourcePaths.SmallHitPrefab), enemy.position, Quaternion.identity);
         health -= damage;
 
         if (health <= 0)

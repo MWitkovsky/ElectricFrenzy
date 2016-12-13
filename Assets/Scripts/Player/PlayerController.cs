@@ -122,7 +122,7 @@ public class PlayerController : MonoBehaviour {
     {
         if (ShouldLockVelocity())
         {
-            //rb.velocity = Vector2.zero;
+            rb.velocity = Vector2.zero;
         }
     }
 
@@ -221,7 +221,7 @@ public class PlayerController : MonoBehaviour {
 
     private bool ShouldLockVelocity()
     {
-        if (attackTimer <= 0.0f && recoilTimer <= 0.0f)
+        if (PlayerManager.GetStatus() == PlayerInfo.Status.Paralyzed)
             return true;
         else
             return false;
