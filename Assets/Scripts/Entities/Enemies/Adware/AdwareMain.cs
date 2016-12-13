@@ -4,7 +4,7 @@ using System.Collections;
 public class AdwareMain : MonoBehaviour {
 
     [SerializeField] private int health, packetYield, maxChaseDistance;
-    [SerializeField] private float moveSpeed, chaseSpeed, attackDelay, hitstunTime, spotDelayTime;
+    [SerializeField] private float damageYield, moveSpeed, chaseSpeed, attackDelay, hitstunTime, spotDelayTime;
 
     private Transform target, enemy, home, idleTarget;
     private float stealTimer, hitstunTimer, attackDelayTimer, spotDelayTimer;
@@ -13,7 +13,7 @@ public class AdwareMain : MonoBehaviour {
     public enum State { idle, spotted };
 
     void Start () {
-	    foreach(Transform t in transform.parent)
+	    foreach(Transform t in transform)
         {
             if(t.name == "Adware(Enemy)")
             {
@@ -36,7 +36,7 @@ public class AdwareMain : MonoBehaviour {
         {
             if (state == State.idle)
             {
-                enemy.position = Vector3.Lerp(enemy.transform.position, idleTarget.position, moveSpeed * Time.fixedDeltaTime);
+                enemy.position = Vector3.Lerp(enemy.position, idleTarget.position, moveSpeed * Time.fixedDeltaTime);
             }
             else if (state == State.spotted && CanAttack())
             {
@@ -72,6 +72,24 @@ public class AdwareMain : MonoBehaviour {
             
     }
 
+    public void TakeDamage(int damage)
+    {
+        Instantiate(Resources.Load(ResourcePaths.SmallHitPrefab), transform.GetChild(0).position, Quaternion.identity);
+        health -= damage;
+
+        if (health <= 0)
+        {
+            //Death stuff
+            for (int i = 0; i < packetYield; i++)
+                Instantiate(Resources.Load(ResourcePaths.ReclaimedPacketPrefab), enemy.position, Quaternion.identity);
+
+            Destroy(gameObject);
+        }
+
+        PlayerManager.ResetAttackCooldown();
+        hitstunTimer = hitstunTime;
+    }
+
     public void SetIdle()
     {
         state = State.idle;
@@ -103,5 +121,10 @@ public class AdwareMain : MonoBehaviour {
     public int GetPacketYield()
     {
         return packetYield;
+    }
+
+    public float GetDamageYield()
+    {
+        return damageYield;
     }
 }

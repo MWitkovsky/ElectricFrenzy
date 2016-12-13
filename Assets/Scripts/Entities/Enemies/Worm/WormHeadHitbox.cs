@@ -4,7 +4,7 @@ using System.Collections;
 public class WormHeadHitbox : MonoBehaviour {
 
     private WormMain worm;
-    private float damageDelay = 0.75f, damageTimer;
+    private float damageDelay = 0.0f, damageTimer;
 
     void Awake()
     {
@@ -23,10 +23,7 @@ public class WormHeadHitbox : MonoBehaviour {
         {
             if (PlayerManager.IsAttacking() && !worm.IsAttached() && !worm.IsStunned() && damageTimer <= 0.0f)
             {
-                if (PlayerManager.IsFrenzying())
-                    worm.TakeDamage(3);
-                else
-                    worm.TakeDamage(1);
+                worm.TakeDamage(PlayerManager.CalculateDamageDone());
 
                 damageTimer = damageDelay;
             }

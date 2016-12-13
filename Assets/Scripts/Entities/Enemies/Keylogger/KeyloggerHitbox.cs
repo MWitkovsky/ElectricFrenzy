@@ -4,7 +4,7 @@ using System.Collections;
 public class KeyloggerHitbox : MonoBehaviour {
 
     private KeyloggerMain keylogger;
-    private float damageDelay = 0.75f, damageTimer;
+    private float damageDelay = 0.0f, damageTimer;
 
 	void Start () {
         keylogger = transform.parent.GetComponent<KeyloggerMain>();
@@ -20,12 +20,9 @@ public class KeyloggerHitbox : MonoBehaviour {
     {
         if (other.CompareTag(TagManager.Player))
         {
-            if (PlayerManager.IsAttacking() && !keylogger.IsAttached() && !keylogger.IsStunned() && damageTimer <= 0.0f)
+            if (PlayerManager.IsAttacking() && !keylogger.IsAttached() && damageTimer <= 0.0f)
             {
-                if (PlayerManager.IsFrenzying())
-                    keylogger.TakeDamage(3);
-                else
-                    keylogger.TakeDamage(1);
+                keylogger.TakeDamage(PlayerManager.CalculateDamageDone());
 
                 damageTimer = damageDelay;
             }
