@@ -55,4 +55,9 @@ public class PlayerInputHandler : MonoBehaviour {
         else if (Input.GetKey(KeyCode.D))
             h = 1.0f;
     }
+
+    public Vector2 GetMovementVec()
+    {
+        return move;
+    }
 }
