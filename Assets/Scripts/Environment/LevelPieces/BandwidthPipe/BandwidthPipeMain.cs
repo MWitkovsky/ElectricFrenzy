@@ -60,6 +60,7 @@ public class BandwidthPipeMain : MonoBehaviour {
             player = null;
             hitbox = null;
             PlayerManager.SetTeleporting(false);
+            PlayerManager.SetParticles(false);
         }
     }
 
@@ -67,7 +68,7 @@ public class BandwidthPipeMain : MonoBehaviour {
     {
         this.player = player;
         PlayerManager.SetTeleporting(true);
-        //Activate TrailRenderer for Plug's Path
+        PlayerManager.SetParticles(true);
     }
 
     public void SetHitbox(Transform hitbox)
