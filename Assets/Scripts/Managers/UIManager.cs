@@ -16,6 +16,7 @@ public class UIManager : MonoBehaviour {
         timerDisplay = FindObjectOfType<Timer>();
         healthBar = FindObjectOfType<HealthBar>();
         frenzyBar = FindObjectOfType<FrenzyBar>();
+        timer = 0.0f;
     }
 
     void Update()

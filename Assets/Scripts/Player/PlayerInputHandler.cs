@@ -50,7 +50,7 @@ public class PlayerInputHandler : MonoBehaviour {
             if (frenzy)
                 Frenzy();
         }
-        
+
         if (pause)
             GameManager.TogglePauseGame();
     }

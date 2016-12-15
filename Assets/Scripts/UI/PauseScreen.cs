@@ -24,8 +24,7 @@ public class PauseScreen : MonoBehaviour {
                 GameManager.TogglePauseGame();
                 break;
             case 1:
-                print(SceneManager.GetActiveScene().name);
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
                 break;
             case 2:
                 //return to main menu

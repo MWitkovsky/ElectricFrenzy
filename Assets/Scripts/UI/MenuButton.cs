@@ -6,20 +6,13 @@ public class MenuButton : MonoBehaviour {
 
     [SerializeField] private Sprite buttonGraphic, highlightedButtonGraphic;
 
-    private Image image;
-
-    void Start()
-    {
-        image = GetComponent<Image>();
-    }
-
     public void SetHighlighted()
     {
-        image.sprite = highlightedButtonGraphic;
+        GetComponent<Image>().sprite = highlightedButtonGraphic;
     }
 
     public void SetUnhighlighted()
     {
-        image.sprite = buttonGraphic;
+        GetComponent<Image>().sprite = buttonGraphic;
     }
 }

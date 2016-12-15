@@ -6,7 +6,6 @@ public class GameManager : MonoBehaviour {
 
     private static PlayerInfo playerInfo;
 
-    private static UIManager ui;
     private static SplashScreenHandler splashScreen;
     private static PauseScreen pauseScreen;
     private static bool gameActive;
@@ -17,7 +16,6 @@ public class GameManager : MonoBehaviour {
         playerInfo = new PlayerInfo();
         PlayerManager.SetPlayerInfo(playerInfo);
 
-        ui = FindObjectOfType<UIManager>();
         splashScreen = FindObjectOfType<SplashScreenHandler>();
         pauseScreen = FindObjectOfType<PauseScreen>();
         pauseScreen.SetActive(false);
