@@ -67,6 +67,7 @@ public class BandwidthPipeMain : MonoBehaviour {
     {
         this.player = player;
         PlayerManager.SetTeleporting(true);
+        //Activate TrailRenderer for Plug's Path
     }
 
     public void SetHitbox(Transform hitbox)
