@@ -9,17 +9,22 @@ public class PauseScreen : MonoBehaviour {
     [SerializeField] private MenuButton[] buttons;
 
     private int selectedOption;
+    private bool start = true;
 
 	void Awake () {
-        for(int i = 0; i<buttons.Length; i++)
+        if (!start)
         {
-            if (i == 0)
-                buttons[i].SetHighlighted();
-            else
-                buttons[i].SetUnhighlighted();
+            for (int i = 0; i < buttons.Length; i++)
+            {
+                if (i == 0)
+                    buttons[i].SetHighlighted();
+                else
+                    buttons[i].SetUnhighlighted();
+            }
         }
 
         selectedOption = 0;
+        start = false;
 	}
 
     public void SelectMenuOption()
