@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour {
         ui = FindObjectOfType<UIManager>();
         splashScreen = FindObjectOfType<SplashScreenHandler>();
         pauseScreen = FindObjectOfType<PauseScreen>();
+        pauseScreen.SetActive(false);
 
         gameActive = true;
         debug = true;
