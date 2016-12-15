@@ -276,6 +276,7 @@ public class PlayerManager : MonoBehaviour {
     public static void GiveProxy(float duration)
     {
         playerInfo.GiveProxy();
+        proxyTimer = duration;
         afterimages.enabled = true;
     }
 
