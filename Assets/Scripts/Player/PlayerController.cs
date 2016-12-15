@@ -58,6 +58,7 @@ public class PlayerController : MonoBehaviour {
         //HANDLE ATTACK
         if (attackTimer > 0.0f)
         {
+            Instantiate(Resources.Load(ResourcePaths.HackFXPrefab), transform.position, transform.localRotation);
             attackTimer -= Time.deltaTime;
         }
         else
@@ -191,7 +192,9 @@ public class PlayerController : MonoBehaviour {
                 transform.position = hit.point - move.normalized/2.0f;
             else
                 transform.Translate(move.normalized * teleportDistance, Space.World);
-            
+
+            Instantiate(Resources.Load(ResourcePaths.TeleportFXPrefab), transform.position, Quaternion.identity);
+
             teleportCooldownTimer = teleportCooldown;
         }
     }
