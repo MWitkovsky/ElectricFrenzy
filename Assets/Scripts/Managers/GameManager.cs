@@ -38,9 +38,9 @@ public class GameManager : MonoBehaviour {
         {
             Time.timeScale = Time.timeScale > 0.0f ? 0.0f : 1.0f;
             if(Time.timeScale == 0.0f)
-                pauseScreen.gameObject.SetActive(true);
+                pauseScreen.SetActive(true);
             else
-                pauseScreen.gameObject.SetActive(false);
+                pauseScreen.SetActive(false);
         }
     }
 

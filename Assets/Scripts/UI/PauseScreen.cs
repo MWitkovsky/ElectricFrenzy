@@ -11,18 +11,7 @@ public class PauseScreen : MonoBehaviour {
     private int selectedOption;
     private bool start = true;
 
-	void Awake () {
-        if (!start)
-        {
-            for (int i = 0; i < buttons.Length; i++)
-            {
-                if (i == 0)
-                    buttons[i].SetHighlighted();
-                else
-                    buttons[i].SetUnhighlighted();
-            }
-        }
-
+	void Start () {
         selectedOption = 0;
         start = false;
 	}
@@ -35,6 +24,7 @@ public class PauseScreen : MonoBehaviour {
                 GameManager.TogglePauseGame();
                 break;
             case 1:
+                print(SceneManager.GetActiveScene().name);
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
                 break;
             case 2:
@@ -62,5 +52,15 @@ public class PauseScreen : MonoBehaviour {
     public void SetActive(bool active)
     {
         gameObject.SetActive(active);
+        if (active)
+        {
+            for (int i = 0; i < buttons.Length; i++)
+            {
+                if (i == 0)
+                    buttons[i].SetHighlighted();
+                else
+                    buttons[i].SetUnhighlighted();
+            }
+        }
     }
 }

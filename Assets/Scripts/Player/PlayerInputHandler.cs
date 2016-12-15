@@ -20,7 +20,7 @@ public class PlayerInputHandler : MonoBehaviour {
 
         if (GameManager.IsGamePaused())
         {
-            float v = Input.GetAxis("Vertical");
+            float v = Input.GetAxisRaw("Vertical");
             if (stickReset)
             {
                 if (v > 0.5f)
