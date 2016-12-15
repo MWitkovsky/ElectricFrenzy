@@ -16,6 +16,11 @@ public class PlayerAnimEvents : MonoBehaviour {
         playerController.FinishAttack();
     }
 
+    void FinishRecoil()
+    {
+        playerController.StartRecoil();
+    }
+
 	void FinishTurn()
     {
         PlayerManager.SetFacingRight(!PlayerManager.IsFacingRight());

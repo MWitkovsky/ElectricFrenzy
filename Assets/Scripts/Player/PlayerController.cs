@@ -177,6 +177,14 @@ public class PlayerController : MonoBehaviour {
             SetFacingRight(true);
     }
 
+    public void StartRecoil()
+    {
+        if (Vector2.Dot(transform.forward, Vector2.left) > 0)
+            SetFacingRight(false);
+        else
+            SetFacingRight(true);
+    }
+
     public void ResetAttackCooldown()
     {
         attackCooldownTimer = 0.0f;
