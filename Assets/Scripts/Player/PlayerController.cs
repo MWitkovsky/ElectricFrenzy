@@ -149,7 +149,7 @@ public class PlayerController : MonoBehaviour {
 
     public void Attack(Vector2 move)
     {
-        if (AbleToMove() && attackCooldownTimer <= 0.0f)
+        if (AbleToMove() && attackCooldownTimer <= 0.0f && move != Vector2.zero)
         {
             attackTimer = attackTime;
             attackCooldownTimer = attackCooldown;
