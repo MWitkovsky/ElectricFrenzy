@@ -246,6 +246,25 @@ public class PlayerController : MonoBehaviour {
             return true;
     }
 
+    public void SetParticles(bool toggle)
+    {
+        ParticleSystem bwps = GetComponentInChildren<ParticleSystem>();
+
+        if (toggle)
+        {
+            transform.GetChild(0).GetChild(0).gameObject.SetActive(false);
+            bwps.Play();
+        }
+        else
+        {
+            transform.GetChild(0).GetChild(0).gameObject.SetActive(true);
+
+
+            
+            bwps.Stop();
+        }
+    }
+        
     //GETTERS AND SETTERS
     public bool IsFacingRight()
     {

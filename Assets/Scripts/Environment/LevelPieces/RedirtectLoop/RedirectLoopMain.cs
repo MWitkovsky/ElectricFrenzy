@@ -54,12 +54,14 @@ public class RedirectLoopMain : MonoBehaviour {
         }
         else
         {
+            PlayerManager.SetParticles(false);
             hitbox.gameObject.layer = LayerMask.NameToLayer("Player");
             index = -1;
             target = entrance;
             player = null;
             hitbox = null;
             PlayerManager.SetTeleporting(false);
+            
         }
     }
 
@@ -67,6 +69,7 @@ public class RedirectLoopMain : MonoBehaviour {
     {
         this.player = player;
         PlayerManager.SetTeleporting(true);
+        PlayerManager.SetParticles(true);
     }
 
     public void SetHitbox(Transform hitbox)

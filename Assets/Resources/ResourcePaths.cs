@@ -39,6 +39,8 @@ public class ResourcePaths {
     public static readonly string SmallHitPrefab = FXPrefabsRoot + "SmallHit";
     public static readonly string HackFXPrefab = FXPrefabsRoot + "HackFX";
     public static readonly string TeleportFXPrefab = FXPrefabsRoot + "TeleportFX";
+    public static readonly string TrapDoorFXPrefab = FXPrefabsRoot + "TrapDoorFX";
+
 
     /////////////
     //Materials//

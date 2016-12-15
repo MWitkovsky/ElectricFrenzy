@@ -46,7 +46,7 @@ public class EnemyDoor : MonoBehaviour {
     {
         for (int i = 0; i < doors.Length; i++)
         {
-            //spawn particle effect on door or something
+            Instantiate(Resources.Load(ResourcePaths.TrapDoorFXPrefab), doors[i].gameObject.transform.position, Quaternion.identity);   
         }
         Destroy(gameObject); //should delete all the doors with it
     }
@@ -55,8 +55,8 @@ public class EnemyDoor : MonoBehaviour {
     {
         for (int i = 0; i < doors.Length; i++)
         {
-            //spawn particle effect on door or something
             doors[i].SetActive(true);
+            Instantiate(Resources.Load(ResourcePaths.TrapDoorFXPrefab), doors[i].gameObject.transform.position, Quaternion.identity);
         }
     }
 }

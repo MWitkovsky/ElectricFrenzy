@@ -340,6 +340,10 @@ public class PlayerManager : MonoBehaviour {
         }
     }
 
+    public static void SetParticles(bool toggle)
+    {
+        playerController.SetParticles(toggle);
+    }
     public static float GetFrenzyCharge()
     {
         return UIManager.GetFrenzyCharge();
