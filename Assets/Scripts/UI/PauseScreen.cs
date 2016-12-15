@@ -1,16 +1,58 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class PauseScreen : MonoBehaviour {
 
-    //Don't really feel like writing this right now... bunch of buttons.
-    //Mouse driven? Controller driven? Easy but tedious work.
+    [Tooltip("index 0 is unpause, 1 is restart level, 2 is return to main menu")]
+    [SerializeField] private MenuButton[] buttons;
 
-    //IF ANY NON-REACTIVE TIME BASED EFFECTS OR LOGIC IS DONE, USE Time.unscaledDeltaTime
-	void Update () {
+    private int selectedOption;
 
+	void Awake () {
+        for(int i = 0; i<buttons.Length; i++)
+        {
+            if (i == 0)
+                buttons[i].SetHighlighted();
+            else
+                buttons[i].SetUnhighlighted();
+        }
+
+        selectedOption = 0;
 	}
+
+    public void SelectMenuOption()
+    {
+        switch (selectedOption)
+        {
+            case 0:
+                GameManager.TogglePauseGame();
+                break;
+            case 1:
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                break;
+            case 2:
+                //return to main menu
+                break;
+        }
+    }
+
+    public void MoveUpMenu()
+    {
+        buttons[selectedOption].SetUnhighlighted();
+        if (--selectedOption == -1)
+            selectedOption = buttons.Length-1;
+        buttons[selectedOption].SetHighlighted();
+    }
+
+    public void MoveDownMenu()
+    {
+        buttons[selectedOption].SetUnhighlighted();
+        if (++selectedOption == buttons.Length)
+            selectedOption = 0;
+        buttons[selectedOption].SetHighlighted();
+    }
 
     public void SetActive(bool active)
     {

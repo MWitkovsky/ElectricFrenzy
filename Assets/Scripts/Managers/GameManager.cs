@@ -52,9 +52,19 @@ public class GameManager : MonoBehaviour {
             return true;
     }
 
+    public static bool IsGamePaused()
+    {
+        return pauseScreen.gameObject.activeSelf;
+    }
+
     public static bool IsGameActive()
     {
         return gameActive;
+    }
+
+    public static PauseScreen GetPauseScreen()
+    {
+        return pauseScreen;
     }
 
     public static void SetGameActive(bool gameActive)
