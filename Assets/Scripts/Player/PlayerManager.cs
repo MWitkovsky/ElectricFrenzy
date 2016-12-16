@@ -300,11 +300,13 @@ public class PlayerManager : MonoBehaviour {
 
     public static void BeginFrenzy()
     {
+        player.GetComponent<TrailRenderer>().enabled = true;
         playerInfo.BeginFrenzy();
     }
 
     public static void EndFrenzy()
     {
+        player.GetComponent<TrailRenderer>().enabled = false;
         playerInfo.EndFrenzy();
     }
 
@@ -340,6 +342,7 @@ public class PlayerManager : MonoBehaviour {
         }
     }
 
+    //Bandwidth Pipe and Redirect Loop
     public static void SetParticles(bool toggle)
     {
         playerController.SetParticles(toggle);
