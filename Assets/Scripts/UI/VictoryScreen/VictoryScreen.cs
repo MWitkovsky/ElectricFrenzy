@@ -14,6 +14,7 @@ public class VictoryScreen : MonoBehaviour {
     [SerializeField] private float fadeSpeed, flySpeed;
 
     private RectTransform messageTransform, timeTransform, packetsTransform, finalRankTransform;
+    private RankLabel timeRank, packetsRank, finalRank;
     private Image overlay;
     private Color color;
     private float time, currentAlpha, targetAlpha;
@@ -27,6 +28,13 @@ public class VictoryScreen : MonoBehaviour {
         timeTransform = GameObject.Find("TimeLabel").GetComponent<RectTransform>();
         packetsTransform = GameObject.Find("PacketsLabel").GetComponent<RectTransform>();
         finalRankTransform = GameObject.Find("FinalRankLabel").GetComponent<RectTransform>();
+
+        timeRank = GameObject.Find("TimeRankLabel").GetComponent<RankLabel>();
+        packetsRank = GameObject.Find("PacketsRankLabel").GetComponent<RankLabel>();
+        finalRank = GameObject.Find("FinalRankLabel").GetComponent<RankLabel>();
+        timeRank.gameObject.SetActive(false);
+        packetsRank.gameObject.SetActive(false);
+        finalRank.gameObject.SetActive(false);
 
         overlay = GetComponent<Image>();
         color = overlay.color;
@@ -83,7 +91,8 @@ public class VictoryScreen : MonoBehaviour {
             timeRankDelayTimer -= Time.deltaTime;
             if(timeRankDelayTimer <= 0.0f)
             {
-                //displayRank
+                timeRank.gameObject.SetActive(true);
+                timeRank.SetImage(timeScore);
             }
         }
 
@@ -101,7 +110,8 @@ public class VictoryScreen : MonoBehaviour {
             packetRankDelayTimer -= Time.deltaTime;
             if (packetRankDelayTimer <= 0.0f)
             {
-                //displayRank
+                packetsRank.gameObject.SetActive(true);
+                packetsRank.SetImage(packetScore);
             }
         }
 
@@ -119,7 +129,8 @@ public class VictoryScreen : MonoBehaviour {
             finalRankDelayTimer -= Time.deltaTime;
             if(finalRankDelayTimer <= 0.0f)
             {
-                //displayRank
+                finalRank.gameObject.SetActive(true);
+                finalRank.SetImage(totalScore);
             }
         }
     }
