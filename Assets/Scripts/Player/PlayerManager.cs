@@ -121,10 +121,12 @@ public class PlayerManager : MonoBehaviour {
         GameManager.SetGameActive(false);
         RemoveProxy();
         Instantiate(Resources.Load(ResourcePaths.HitBurstPrefab), player.transform.position, Quaternion.identity);
+
         AudioSource source = GameObject.Find("Main Camera").GetComponent<AudioSource>();
         source.Stop();
         source.volume = 1.0f;
         source.PlayOneShot(playerController.GetDeathSound());
+
         Destroy(player);
         resetLevelTimer = 4.0f;
     }
