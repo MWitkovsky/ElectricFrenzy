@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour {
         victoryScreen.gameObject.SetActive(false);
 
         gameActive = true;
-        debug = true;
+        debug = false;
 	}
 
     void Update()
@@ -94,6 +94,11 @@ public class GameManager : MonoBehaviour {
         SceneManager.LoadScene(level);
     }
 
+    public static void ReturnToMainMenu()
+    {
+        //TODO: stub
+    }
+
     public static void NextLevel()
     {
         if(SceneManager.GetSceneAt(SceneManager.GetActiveScene().buildIndex + 1) == null)
@@ -103,5 +108,10 @@ public class GameManager : MonoBehaviour {
         }
         //Move to next scene if available, otherwise
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+
+    public static void RestartLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

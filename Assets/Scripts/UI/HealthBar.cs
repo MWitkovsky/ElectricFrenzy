@@ -18,7 +18,7 @@ public class HealthBar : MonoBehaviour
     private int lerpCounter;
     private float initHealth, displayHealth, backBarHealth, targetDisplayHealth, backBarTargetHealth;
     private float backBarEmptyTimer;
-    private bool isHealing, isTakingDamage, backHealBarDone;
+    private bool isHealing, isTakingDamage, backHealBarDone, dead;
 
     // Use this for initialization
     void Start()
@@ -140,12 +140,13 @@ public class HealthBar : MonoBehaviour
         health -= damage;
         targetDisplayHealth = health / 100.0f;
 
-        if (health <= 0.0f)
+        if (health <= 0.0f && !dead)
         {
             health = 0.0f;
             targetDisplayHealth = 0.0f;
 
-            //Die
+            PlayerManager.Die();
+            dead = true;
         }
 
         isHealing = false;
@@ -162,6 +163,14 @@ public class HealthBar : MonoBehaviour
             backBarTargetHealth -= damage;
             targetDisplayHealth -= damage / 100.0f;
             displayHealth -= damage / 100.0f;
+        }
+        else if (health < 0.0f && !dead)
+        {
+            health = 0.0f;
+            targetDisplayHealth = 0.0f;
+
+            PlayerManager.Die();
+            dead = true;
         }
     }
 

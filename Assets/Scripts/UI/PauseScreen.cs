@@ -24,10 +24,10 @@ public class PauseScreen : MonoBehaviour {
                 GameManager.TogglePauseGame();
                 break;
             case 1:
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                GameManager.RestartLevel();
                 break;
             case 2:
-                //return to main menu
+                GameManager.ReturnToMainMenu();
                 break;
         }
     }

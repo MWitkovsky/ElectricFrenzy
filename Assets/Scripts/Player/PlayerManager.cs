@@ -21,7 +21,7 @@ public class PlayerManager : MonoBehaviour {
 
     //Taking damage and invincibility
     private static float invincibilityTime = 2.0f, amountOfBlinks = 5.0f, blinkTime = 0.1f, blinkIntervalTime;
-    private static float invincibilityTimer, blinkIntervalTimer, blinkTimer;
+    private static float invincibilityTimer, blinkIntervalTimer, blinkTimer, resetLevelTimer;
 
     //Status ailments
     private static float statusTimer;
@@ -67,6 +67,13 @@ public class PlayerManager : MonoBehaviour {
                 CureStatus();
         }
 
+        if(resetLevelTimer > 0.0f)
+        {
+            resetLevelTimer -= Time.deltaTime;
+            if (resetLevelTimer <= 0.0f)
+                GameManager.RestartLevel();
+        }
+
         if (GameManager.IsDebugEnabled())
         {
             if (Input.GetKeyDown(KeyCode.P))
@@ -107,6 +114,19 @@ public class PlayerManager : MonoBehaviour {
         //ensures player ends up visible
         if (invincibilityTimer <= 0.0f)
             meshRenderer.enabled = true;
+    }
+
+    public static void Die()
+    {
+        GameManager.SetGameActive(false);
+        RemoveProxy();
+        Instantiate(Resources.Load(ResourcePaths.HitBurstPrefab), player.transform.position, Quaternion.identity);
+        AudioSource source = GameObject.Find("Main Camera").GetComponent<AudioSource>();
+        source.Stop();
+        source.volume = 1.0f;
+        source.PlayOneShot(playerController.GetDeathSound());
+        Destroy(player);
+        resetLevelTimer = 4.0f;
     }
 
     public static GameObject GetPlayer()
