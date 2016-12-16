@@ -8,6 +8,7 @@ public class UIManager : MonoBehaviour {
     private static Timer timerDisplay;
     private static HealthBar healthBar;
     private static FrenzyBar frenzyBar;
+    private static BossHealthBar bossHealthBar;
     private static float timer;
 
     void Start()
@@ -16,7 +17,10 @@ public class UIManager : MonoBehaviour {
         timerDisplay = FindObjectOfType<Timer>();
         healthBar = FindObjectOfType<HealthBar>();
         frenzyBar = FindObjectOfType<FrenzyBar>();
+        bossHealthBar = FindObjectOfType<BossHealthBar>();
         timer = 0.0f;
+
+        bossHealthBar.gameObject.SetActive(false);
     }
 
     void Update()
@@ -67,5 +71,11 @@ public class UIManager : MonoBehaviour {
     public static void RemoveFrenzyCharge(float amount)
     {
         frenzyBar.RemoveFrenzyCharge(amount);
+    }
+
+    //Interfaces with Boss health bar
+    public static BossHealthBar GetBossHealthBar()
+    {
+        return bossHealthBar;
     }
 }
