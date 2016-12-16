@@ -179,6 +179,16 @@ public class PlayerManager : MonoBehaviour {
         playerController.SetFacingRight(facingRight);
     }
 
+    public static bool IsReadingMessage()
+    {
+        return playerController.IsReadingMessage();
+    }
+
+    public static void SetReadingMessage(bool reading)
+    {
+        playerController.SetReadingMessage(reading);
+    }
+
     public static bool IsTeleporting()
     {
         return playerController.IsTeleporting();

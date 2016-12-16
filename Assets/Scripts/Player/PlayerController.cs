@@ -33,6 +33,7 @@ public class PlayerController : MonoBehaviour {
     private Vector2 lastAttack;
     private float attackTimer, attackCooldownTimer, teleportCooldownTimer, turnTimer, recoilTimer, stunTimer;
     private bool isRecoiling, isStunned, isTeleporting;
+    private bool isReadingMessage;
 
     //animation variables
     private Animator anim;
@@ -64,7 +65,7 @@ public class PlayerController : MonoBehaviour {
         //HANDLE ATTACK
         if (attackTimer > 0.0f)
         {
-            if(GameManager.IsGameActive())
+            if(GameManager.IsGameActive() && !PlayerManager.IsReadingMessage())
                 Instantiate(Resources.Load(ResourcePaths.HackFXPrefab), transform.position, transform.localRotation);
 
             attackTimer -= Time.deltaTime;
@@ -317,6 +318,15 @@ public class PlayerController : MonoBehaviour {
         return attackTimer > 0.0f;
     }
 
+    public bool IsReadingMessage()
+    {
+        return isReadingMessage;
+    }
+
+    public void SetReadingMessage(bool reading)
+    {
+        isReadingMessage = reading;
+    }
     public bool IsTeleporting()
     {
         return isTeleporting;

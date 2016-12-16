@@ -108,6 +108,7 @@ public class UIManager : MonoBehaviour {
 
     public static void OpenTextbox(string message)
     {
+        PlayerManager.SetReadingMessage(true);
         textboxHandler.SetTextToPrint(message);
     }
 }

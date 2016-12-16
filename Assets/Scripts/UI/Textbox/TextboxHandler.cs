@@ -59,6 +59,7 @@ public class TextboxHandler : MonoBehaviour
         {
             if (textQueue == "")
             {
+                
                 GameManager.SetGameActive(true);
                 Time.timeScale = 1.0f;
                 screenOverlay.enabled = false;
@@ -66,6 +67,7 @@ public class TextboxHandler : MonoBehaviour
                 characterPortrait.enabled = false;
                 isTextboxOpen = false;
                 textToPrint.text = "";
+                PlayerManager.SetReadingMessage(false);
             }
             else
             {
