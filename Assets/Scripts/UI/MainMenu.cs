@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class MainMenuController : MonoBehaviour
+public class MainMenu : MonoBehaviour
 {
     [SerializeField] private MenuButton[] buttons;
 
@@ -30,12 +30,12 @@ public class MainMenuController : MonoBehaviour
         {
             if (v > 0.5f)
             {
-                GameManager.GetPauseScreen().MoveUpMenu();
+                MoveUpMenu();
                 stickReset = false;
             }
             else if (v < -0.5f)
             {
-                GameManager.GetPauseScreen().MoveDownMenu();
+                MoveDownMenu();
                 stickReset = false;
             }
         }
@@ -52,7 +52,7 @@ public class MainMenuController : MonoBehaviour
         switch (selectedOption)
         {
             case 0:
-                GameManager.ChangeScene(1);
+                GameManager.ChangeScene(4);
                 break;
             case 1:
                 GameManager.ChangeScene(1);
