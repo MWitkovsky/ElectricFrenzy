@@ -9,10 +9,10 @@ public class BossHealthBar : MonoBehaviour
     [SerializeField] private float drainSpeed;
 
     private Image healthBarImage;
-    public float health;
+    private float health;
 
-    //For graphical LERP
-    public float displayHealth, targetDisplayHealth;
+    //For graphical fill
+    private float displayHealth, targetDisplayHealth;
     private bool isTakingDamage;
 
     // Use this for initialization
