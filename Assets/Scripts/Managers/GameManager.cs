@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour {
 
     private static SplashScreenHandler splashScreen;
     private static PauseScreen pauseScreen;
+    private static VictoryScreen victoryScreen;
     private static bool gameActive;
     private static bool debug;
 
@@ -18,7 +19,10 @@ public class GameManager : MonoBehaviour {
 
         splashScreen = FindObjectOfType<SplashScreenHandler>();
         pauseScreen = FindObjectOfType<PauseScreen>();
+        victoryScreen = FindObjectOfType<VictoryScreen>();
+
         pauseScreen.SetActive(false);
+        victoryScreen.gameObject.SetActive(false);
 
         gameActive = true;
         debug = true;
@@ -28,6 +32,11 @@ public class GameManager : MonoBehaviour {
     {
         if (debug && Input.GetKeyDown(KeyCode.U))
             TogglePauseGame();
+    }
+
+    public static void BeginVictoryScreen()
+    {
+        victoryScreen.Begin();
     }
 
     public static void TogglePauseGame()
