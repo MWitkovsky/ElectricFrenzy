@@ -9,7 +9,11 @@ public class HackFXHandler : MonoBehaviour
     void Start()
     {
         ps = GetComponent<ParticleSystem>();
-        Vector3 normal = PlayerManager.GetPlayer().GetComponent<Rigidbody2D>().velocity.normalized;
+        Vector3 normal;
+        if (GameManager.IsGameActive())
+            normal = PlayerManager.GetPlayer().GetComponent<Rigidbody2D>().velocity.normalized;
+        else
+            normal = Vector3.zero;
 
         ParticleSystem.MinMaxCurve rateX = new ParticleSystem.MinMaxCurve();
         ParticleSystem.MinMaxCurve rateY = new ParticleSystem.MinMaxCurve();

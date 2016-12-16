@@ -5,11 +5,11 @@ using System.Collections;
 public class VictoryScreen : MonoBehaviour {
 
     [Tooltip("index 0 is S rank threshold")]
-    public float[] goalTimes = new float[5];
+    public float[] goalTimes = new float[4];
     [Tooltip("index 0 is S rank threshold")]
-    public int[] goalPackets = new int[5];
+    public int[] goalPackets = new int[4];
 
-    [SerializeField] private float messageDelay, timeDelay, packetsDelay, rankDelay, finalRankDelay;
+    [SerializeField] private float messageDelay, timeDelay, packetsDelay, rankDelay, finalRankDelay, nextStageDelay;
     [SerializeField] private float messageTargetX, timeTargetX, packetsTargetX, finalRankTargetX;
     [SerializeField] private float fadeSpeed, flySpeed;
 
@@ -31,7 +31,7 @@ public class VictoryScreen : MonoBehaviour {
 
         timeRank = GameObject.Find("TimeRankLabel").GetComponent<RankLabel>();
         packetsRank = GameObject.Find("PacketsRankLabel").GetComponent<RankLabel>();
-        finalRank = GameObject.Find("FinalRankLabel").GetComponent<RankLabel>();
+        finalRank = GameObject.Find("FinalRankRankLabel").GetComponent<RankLabel>();
         timeRank.gameObject.SetActive(false);
         packetsRank.gameObject.SetActive(false);
         finalRank.gameObject.SetActive(false);
@@ -48,7 +48,7 @@ public class VictoryScreen : MonoBehaviour {
     }
 
 	void Update () {
-	    if(currentAlpha < targetAlpha)
+	    if( messageDelay <= 0.0f && currentAlpha < targetAlpha)
         {
             currentAlpha += fadeSpeed * Time.deltaTime;
             if (currentAlpha > targetAlpha)
@@ -66,6 +66,8 @@ public class VictoryScreen : MonoBehaviour {
             packetsDelay -= Time.deltaTime;
         else if (finalRankDelay > 0.0f)
             finalRankDelay -= Time.deltaTime;
+        else if (nextStageDelay > 0.0f)
+            nextStageDelay -= Time.deltaTime;
 
         if(messageDelay <= 0.0f && !messageDone)
         {
@@ -77,7 +79,7 @@ public class VictoryScreen : MonoBehaviour {
             }
         }
         
-        if(timeDelay > 0.0f && !timeDone)
+        if(timeDelay <= 0.0f && !timeDone)
         {
             timeTransform.position = new Vector3(timeTransform.position.x + (flySpeed * Time.deltaTime), timeTransform.position.y, timeTransform.position.z);
             if (timeTransform.position.x > timeTargetX)
@@ -96,7 +98,7 @@ public class VictoryScreen : MonoBehaviour {
             }
         }
 
-        if (packetsDelay > 0.0f && !packetsDone)
+        if (packetsDelay <= 0.0f && !packetsDone)
         {
             packetsTransform.position = new Vector3(packetsTransform.position.x + (flySpeed * Time.deltaTime), packetsTransform.position.y, packetsTransform.position.z);
             if (packetsTransform.position.x > packetsTargetX)
@@ -133,6 +135,9 @@ public class VictoryScreen : MonoBehaviour {
                 finalRank.SetImage(totalScore);
             }
         }
+
+        if(nextStageDelay <= 0.0f)
+            GameManager.NextLevel();
     }
 
     public void Begin()
@@ -149,12 +154,18 @@ public class VictoryScreen : MonoBehaviour {
         for(int i=0; i<goalTimes.Length; i++)
         {
             if (time < goalTimes[i])
-                timeScore += goalTimes.Length - i;
+            {
+                timeScore = goalTimes.Length - i;
+                break;
+            } 
         }
         for(int i=0; i<goalPackets.Length; i++)
         {
             if (packets > goalPackets[i])
-                packetScore += goalPackets.Length - i;
+            {
+                packetScore = goalPackets.Length - i;
+                break;
+            }   
         }
 
         totalScore = (int)Mathf.Floor((timeScore + packetScore)/2.0f);

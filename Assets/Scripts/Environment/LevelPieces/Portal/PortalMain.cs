@@ -3,20 +3,45 @@ using System.Collections;
 
 public class PortalMain : MonoBehaviour {
 
-	void Start () {
-	
-	}
+    [SerializeField] private float flattenTime;
+
+    private float originalXScale, flattenTimer;
+    private bool entered;
+
+    void Start()
+    {
+        originalXScale = transform.localScale.x;
+        flattenTimer = flattenTime;
+    }
 
 	void Update () {
-        transform.Rotate(new Vector3(0.0f, 9.5f * Time.deltaTime, 0.0f));
+        if (!entered)
+        {
+            transform.Rotate(new Vector3(0.0f, 9.5f * Time.deltaTime, 0.0f));
+        }
+        else
+        {
+            flattenTimer -= Time.deltaTime;
+            if (flattenTimer > 0.0f)
+                transform.localScale = new Vector3(Mathf.Lerp(originalXScale, 0.0f, 1.0f - (flattenTimer / flattenTime)), transform.localScale.y, transform.localScale.z);
+            else
+                Destroy(gameObject);
+
+            transform.Rotate(new Vector3(0.0f, 360.0f * Time.deltaTime, 0.0f));
+        }
 	}
 
     void OnTriggerEnter2D(Collider2D obj)
     {
-        if(obj.gameObject.tag.Equals("Player"))
+        if(obj.gameObject.CompareTag(TagManager.Player))
         {
-            //GameManager.NextLevel();
-            GameManager
+            entered = true;
+            GameManager.BeginVictoryScreen();
+            GetComponent<Collider2D>().enabled = false;
+
+            for (int i=0; i<100; i++)
+                Instantiate(Resources.Load(ResourcePaths.HackFXPrefab), transform.position, transform.localRotation);
+            Destroy(PlayerManager.GetPlayer());
         }
     }
 }

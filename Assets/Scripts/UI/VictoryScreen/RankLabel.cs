@@ -4,7 +4,7 @@ using System.Collections;
 
 public class RankLabel : MonoBehaviour {
 
-    [Tooltip("S - D")]
+    [Tooltip("D - S")]
     public Sprite[] rankImages = new Sprite[5];
 
 	public void SetImage(int index)
