@@ -52,7 +52,7 @@ public class MainMenu : MonoBehaviour
         switch (selectedOption)
         {
             case 0:
-                GameManager.ChangeScene(1);
+                GameManager.ChangeScene(4);
                 break;
             case 1:
                 GameManager.ChangeScene(1);
