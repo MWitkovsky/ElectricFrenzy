@@ -1,10 +1,13 @@
 fileFormatVersion: 2
 guid: ea35bd1af3d4bcc47807f5cd7bb276a7
-timeCreated: 1481590538
+timeCreated: 1481881015
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - hitSound: {fileID: 8300000, guid: 08762ea2ec95b2947abe9199d8abc6fe, type: 3}
+  - deadSound: {fileID: 8300000, guid: 07ef6b2063510df4c9d9dd018121feb3, type: 3}
+  - detectSound: {fileID: 8300000, guid: 8b08552866a6ca4458ddf1f698b2f1a5, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

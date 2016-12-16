@@ -182,6 +182,11 @@ public class PlayerManager : MonoBehaviour {
         playerController.PlayPacketAttractSound();
     }
 
+    public static void PlayKillEnemySound()
+    {
+        playerController.PlayKillEnemySound();
+    }
+
     //Interfaces with PlayerInfo
     public static uint GetNumOfLoosePackets()
     {

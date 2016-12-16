@@ -33,6 +33,8 @@ public class TrojanMain : MonoBehaviour {
         if (health <= 0)
         {
             //Death stuff
+            Instantiate(Resources.Load(ResourcePaths.HitBurstPrefab), transform.GetChild(0).position, Quaternion.identity);
+
             for (int i = 0; i < packetYield; i++)
                 Instantiate(Resources.Load(ResourcePaths.ReclaimedPacketPrefab), transform.position, Quaternion.identity);
 

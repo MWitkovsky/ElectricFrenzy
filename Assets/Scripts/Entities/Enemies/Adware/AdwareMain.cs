@@ -5,7 +5,9 @@ public class AdwareMain : MonoBehaviour {
 
     [SerializeField] private int health, packetYield, maxChaseDistance;
     [SerializeField] private float damageYield, moveSpeed, chaseSpeed, attackDelay, hitstunTime, spotDelayTime;
+    [SerializeField] private AudioClip hitSound, detectSound;
 
+    private AudioSource source;
     private Transform target, enemy, home, idleTarget;
     private float stealTimer, hitstunTimer, attackDelayTimer, spotDelayTimer;
     private State state;
@@ -13,6 +15,7 @@ public class AdwareMain : MonoBehaviour {
     public enum State { idle, spotted };
 
     void Start () {
+        source = GetComponent<AudioSource>();
 	    foreach(Transform t in transform)
         {
             if(t.name == "Adware(Enemy)")
@@ -80,10 +83,18 @@ public class AdwareMain : MonoBehaviour {
         if (health <= 0)
         {
             //Death stuff
+            Instantiate(Resources.Load(ResourcePaths.HitBurstPrefab), transform.GetChild(0).position, Quaternion.identity);
+
             for (int i = 0; i < packetYield; i++)
                 Instantiate(Resources.Load(ResourcePaths.ReclaimedPacketPrefab), enemy.position, Quaternion.identity);
 
+            PlayerManager.PlayKillEnemySound();
+
             Destroy(gameObject);
+        }
+        else
+        {
+            source.PlayOneShot(hitSound);
         }
 
         PlayerManager.ResetAttackCooldown();

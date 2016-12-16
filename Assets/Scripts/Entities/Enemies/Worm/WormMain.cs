@@ -10,7 +10,7 @@ public class WormMain : MonoBehaviour {
     [SerializeField]
     private float snakeSpeed, snakeRotateSpeed, stealDelay, hitstunTime, spotDelayTime;
     [SerializeField]
-    private AudioClip attachSound, hitSound, deadSound, detectSound;    
+    private AudioClip attachSound, hitSound, detectSound;    
 
     private GameObject head, body, packet;
     private AudioSource source;
@@ -246,12 +246,15 @@ public class WormMain : MonoBehaviour {
         if (health <= 0)
         {
             //Death stuff
+            Instantiate(Resources.Load(ResourcePaths.HitBurstPrefab), transform.GetChild(0).position, Quaternion.identity);
+
             if (packet)
                 packet.GetComponent<WormPacket>().FlyToPlayer();
 
             for(int i=0; i<packetYield; i++)
                 Instantiate(Resources.Load(ResourcePaths.ReclaimedPacketPrefab), head.transform.position, Quaternion.identity);
-            source.PlayOneShot(deadSound);
+
+            PlayerManager.PlayKillEnemySound();
 
             Destroy(gameObject);
         }

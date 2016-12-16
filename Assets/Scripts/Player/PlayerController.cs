@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour {
 
     //Sound Effects
     [SerializeField]
-    private AudioClip teleportSound, hackSound, takeHitSound, shieldSound, proxySound, frenzySound, rechargeSound, packetCollectSound, packetAttractSound;
+    private AudioClip teleportSound, hackSound, takeHitSound, shieldSound, proxySound, frenzySound, rechargeSound, packetCollectSound, packetAttractSound, killedEnemy;
 
     //Not set in editor
     private Rigidbody2D rb;
@@ -360,5 +360,10 @@ public class PlayerController : MonoBehaviour {
     public void PlayRechargeSound()
     {
         source.PlayOneShot(rechargeSound);
+    }
+
+    public void PlayKillEnemySound()
+    {
+        source.PlayOneShot(killedEnemy);
     }
 }
