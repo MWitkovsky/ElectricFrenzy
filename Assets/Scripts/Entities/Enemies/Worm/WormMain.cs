@@ -9,8 +9,11 @@ public class WormMain : MonoBehaviour {
     private float moveSpeed, spottedMoveSpeed, rotateSpeed, spottedRotateSpeed, wallDetectionDistance, turnBeginThresholdDistance;
     [SerializeField]
     private float snakeSpeed, snakeRotateSpeed, stealDelay, hitstunTime, spotDelayTime;
+    [SerializeField]
+    private AudioClip attachSound, hitSound, deadSound, detectSound;    
 
     private GameObject head, body, packet;
+    private AudioSource source;
     private Transform target;
     private float stealTimer, hitstunTimer, spotDelayTimer;
     private bool turningFromWall;
@@ -34,6 +37,8 @@ public class WormMain : MonoBehaviour {
                 body.transform.rotation);
             newSection.transform.parent = body.transform;
         }
+
+        source = GetComponent<AudioSource>();
 
         Vector3 dir = new Vector3(0.0f, 0.0f, 0.0f) - transform.position;
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
@@ -216,6 +221,7 @@ public class WormMain : MonoBehaviour {
     {
         this.target = target;
         state = State.spotted;
+        source.PlayOneShot(detectSound);
     }
 
     public void Attach()
@@ -223,6 +229,7 @@ public class WormMain : MonoBehaviour {
         transform.parent = target;
         PlayerManager.AttachWorm(this);
         state = State.attached;
+        source.PlayOneShot(attachSound);
     }
 
     public void Detach()
@@ -244,8 +251,13 @@ public class WormMain : MonoBehaviour {
 
             for(int i=0; i<packetYield; i++)
                 Instantiate(Resources.Load(ResourcePaths.ReclaimedPacketPrefab), head.transform.position, Quaternion.identity);
+            source.PlayOneShot(deadSound);
 
             Destroy(gameObject);
+        }
+        else
+        {
+            source.PlayOneShot(hitSound);
         }
 
         PlayerManager.ResetAttackCooldown();

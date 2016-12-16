@@ -5,7 +5,9 @@ public class KeyloggerMain : MonoBehaviour {
 
     [SerializeField] private int health, packetYield;
     [SerializeField] private float moveSpeed, chaseSpeed, rotateSpeed, stealDelay, hitstunTime, wallDetectDistance;
+    [SerializeField] private AudioClip attachSound, hitSound, deadSound, detectSound;
 
+    private AudioSource source;
     private Transform target;
     private State state;
     private float stealTimer, hitstunTimer;
@@ -15,6 +17,7 @@ public class KeyloggerMain : MonoBehaviour {
 
     void Awake()
     {
+        source = GetComponent<AudioSource>();
         state = State.idle;
         stealTimer = stealDelay;
     }
@@ -89,6 +92,7 @@ public class KeyloggerMain : MonoBehaviour {
     {
         this.target = target;
         state = State.spotted;
+        source.PlayOneShot(detectSound);
     }
 
     public void Attach()
@@ -97,6 +101,7 @@ public class KeyloggerMain : MonoBehaviour {
         GetComponent<Rigidbody2D>().isKinematic = true;
         PlayerManager.AttachKeylogger(this);
         state = State.attached;
+        source.PlayOneShot(attachSound);
     }
 
     public void Detach()
@@ -117,7 +122,13 @@ public class KeyloggerMain : MonoBehaviour {
             for (int i = 0; i < packetYield; i++)
                 Instantiate(Resources.Load(ResourcePaths.ReclaimedPacketPrefab), transform.position, Quaternion.identity);
 
+            source.PlayOneShot(deadSound);
+
             Destroy(gameObject);
+        }
+        else
+        {
+            source.PlayOneShot(hitSound);
         }
 
         PlayerManager.ResetAttackCooldown();

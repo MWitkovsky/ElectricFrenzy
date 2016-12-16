@@ -23,8 +23,13 @@ public class PlayerController : MonoBehaviour {
     [SerializeField]
     private float recoilForce, recoilTime, stunTime;
 
+    //Sound Effects
+    [SerializeField]
+    private AudioClip teleportSound, hackSound, takeHitSound, shieldSound, proxySound, frenzySound, rechargeSound, packetCollectSound, packetAttractSound;
+
     //Not set in editor
     private Rigidbody2D rb;
+    private AudioSource source;
     private Vector2 lastAttack;
     private float attackTimer, attackCooldownTimer, teleportCooldownTimer, turnTimer, recoilTimer, stunTimer;
     private bool isRecoiling, isStunned, isTeleporting;
@@ -38,6 +43,7 @@ public class PlayerController : MonoBehaviour {
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        source = GetComponent<AudioSource>();
         anim = GetComponent<Animator>();
         foreach (Transform t in transform)
         {
@@ -183,6 +189,7 @@ public class PlayerController : MonoBehaviour {
             }            
 
             anim.SetTrigger("attack");
+            source.PlayOneShot(hackSound);
         }
     }
 
@@ -226,6 +233,7 @@ public class PlayerController : MonoBehaviour {
 
             teleportCooldownTimer = teleportCooldown;
             UIManager.UpdateTeleportCooldownIconDisplay(0.0f);
+            source.PlayOneShot(teleportSound);
         }
     }
 
@@ -241,6 +249,7 @@ public class PlayerController : MonoBehaviour {
 
             recoilTimer = recoilTime;
             isRecoiling = true;
+            source.PlayOneShot(takeHitSound);
         }
     }
 
@@ -279,10 +288,7 @@ public class PlayerController : MonoBehaviour {
         }
         else
         {
-            transform.GetChild(0).GetChild(0).gameObject.SetActive(true);
-
-
-            
+            transform.GetChild(0).GetChild(0).gameObject.SetActive(true);  
             bwps.Stop();
         }
     }
@@ -323,5 +329,36 @@ public class PlayerController : MonoBehaviour {
     public Transform GetModelTransform()
     {
         return model;
+    }
+
+    //play various sounds
+    public void PlayPacketCollectSound()
+    {
+        source.PlayOneShot(packetCollectSound);
+    }
+
+    public void PlayPacketAttractSound()
+    {
+        source.PlayOneShot(packetAttractSound);
+    }
+
+    public void PlayShieldSound()
+    {
+        source.PlayOneShot(shieldSound);
+    }
+
+    public void PlayProxySound()
+    {
+        source.PlayOneShot(proxySound);
+    }
+
+    public void PlayFrenzySound()
+    {
+        source.PlayOneShot(frenzySound);
+    }
+    
+    public void PlayRechargeSound()
+    {
+        source.PlayOneShot(rechargeSound);
     }
 }

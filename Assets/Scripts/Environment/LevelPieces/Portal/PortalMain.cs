@@ -4,12 +4,15 @@ using System.Collections;
 public class PortalMain : MonoBehaviour {
 
     [SerializeField] private float flattenTime;
+    [SerializeField] private AudioClip goalReachedSound;
 
+    private AudioSource source;
     private float originalXScale, flattenTimer;
     private bool entered;
 
     void Start()
     {
+        source = GetComponent<AudioSource>();
         originalXScale = transform.localScale.x;
         flattenTimer = flattenTime;
     }
@@ -42,6 +45,7 @@ public class PortalMain : MonoBehaviour {
             for (int i=0; i<100; i++)
                 Instantiate(Resources.Load(ResourcePaths.HackFXPrefab), transform.position, transform.localRotation);
             Destroy(PlayerManager.GetPlayer());
+            source.PlayOneShot(goalReachedSound);
         }
     }
 }

@@ -177,6 +177,11 @@ public class PlayerManager : MonoBehaviour {
         playerController.ResetAttackCooldown();
     }
 
+    public static void PlayPacketAttractSound()
+    {
+        playerController.PlayPacketAttractSound();
+    }
+
     //Interfaces with PlayerInfo
     public static uint GetNumOfLoosePackets()
     {
@@ -186,6 +191,7 @@ public class PlayerManager : MonoBehaviour {
     public static void IncrementNumOfLoosePackets()
     {
         playerInfo.IncrementNumOfLoosePackets();
+        playerController.PlayPacketCollectSound();
     }
 
     public static bool DecrementNumOfLoosePackets()
@@ -263,6 +269,7 @@ public class PlayerManager : MonoBehaviour {
         playerInfo.GiveFirewall();
         firewall = (GameObject)Instantiate(firewallPrefab, player.transform.position, player.transform.rotation);
         firewall.transform.parent = player.transform;
+        playerController.PlayShieldSound();
     }
 
     public static void RemoveFirewall()
@@ -283,6 +290,7 @@ public class PlayerManager : MonoBehaviour {
         playerInfo.GiveProxy();
         proxyTimer = duration;
         afterimages.enabled = true;
+        playerController.PlayProxySound();
     }
 
     public static void RemoveProxy()
@@ -360,6 +368,8 @@ public class PlayerManager : MonoBehaviour {
     public static void AddFrenzyCharge(float amount)
     {
         UIManager.AddFrenzyCharge(amount);
+        if (amount >= 20.0f)
+            playerController.PlayRechargeSound();
     }
 
     public static void RemoveFrenzyCharge(float amount)
