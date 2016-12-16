@@ -7,8 +7,56 @@ ModelImporter:
   fileIDToRecycleName:
     100000: DigitalLeaves
     100002: //RootNode
+    100004: Armature
+    100006: Bone
+    100008: Bone_001
+    100010: Bone_002
+    100012: Bone_003
+    100014: Bone_004
+    100016: Bone_005
+    100018: Bone_006
+    100020: Bone_007
+    100022: Bone_008
+    100024: Bone_009
+    100026: Bone_010
+    100028: Bone_011
+    100030: Bone_012
+    100032: Bone_013
+    100034: Bone_014
+    100036: Bone_015
+    100038: Bone_016
+    100040: Bone_017
+    100042: Bone_018
+    100044: Bone_019
+    100046: Bone_020
+    100048: Bone_021
+    100050: Trunk
     400000: DigitalLeaves
     400002: //RootNode
+    400004: Armature
+    400006: Bone
+    400008: Bone_001
+    400010: Bone_002
+    400012: Bone_003
+    400014: Bone_004
+    400016: Bone_005
+    400018: Bone_006
+    400020: Bone_007
+    400022: Bone_008
+    400024: Bone_009
+    400026: Bone_010
+    400028: Bone_011
+    400030: Bone_012
+    400032: Bone_013
+    400034: Bone_014
+    400036: Bone_015
+    400038: Bone_016
+    400040: Bone_017
+    400042: Bone_018
+    400044: Bone_019
+    400046: Bone_020
+    400048: Bone_021
+    400050: Trunk
     2300000: DigitalLeaves
     2300002: //RootNode
     3300000: DigitalLeaves
@@ -16,7 +64,11 @@ ModelImporter:
     4300000: Trunk
     4300002: DigitalLeaves
     7400000: Default Take
+    7400002: Blowback
+    7400004: Sway
     9500000: //RootNode
+    13700000: DigitalLeaves
+    13700002: Trunk
   materials:
     importMaterials: 1
     materialName: 0
