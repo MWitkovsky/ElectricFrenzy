@@ -8,6 +8,7 @@ public class ShootLeaf : MonoBehaviour {
 
     private LeafMain leaf;
     private float startDelayTimer, shotDelayTimer;
+    private bool start;
 
     void Start()
     {
@@ -20,7 +21,7 @@ public class ShootLeaf : MonoBehaviour {
         {
             startDelayTimer -= Time.fixedDeltaTime;
         }
-        else
+        else if(start)
         {
             if (shotDelayTimer > 0.0f)
             {
@@ -37,5 +38,13 @@ public class ShootLeaf : MonoBehaviour {
                 shotDelayTimer = shotDelay;
             }
         }
+    }
+
+    public void Setup(int numOfLeaves, float shotDelay, float shotSpeed)
+    {
+        this.numOfLeaves = numOfLeaves;
+        this.shotDelay = shotDelay;
+        this.shotSpeed = shotSpeed;
+        start = true;
     }
 }
