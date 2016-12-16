@@ -66,6 +66,10 @@ public class PlayerController : MonoBehaviour {
             if(attackCooldownTimer > 0.0f)
             {
                 attackCooldownTimer -= Time.deltaTime;
+                if(attackCooldownTimer <= 0.0f)
+                    UIManager.UpdateHackCooldownIconDisplay(1.0f);
+                else
+                    UIManager.UpdateHackCooldownIconDisplay(1.0f - attackCooldownTimer / attackCooldown);
             }   
         }    
 
@@ -92,7 +96,17 @@ public class PlayerController : MonoBehaviour {
 
         //TELEPORT COOLDOWN
         if (teleportCooldownTimer > 0.0f)
+        {
             teleportCooldownTimer -= Time.deltaTime;
+
+            print(teleportCooldownTimer / teleportCooldown);
+
+            if(teleportCooldownTimer <= 0.0f)
+                UIManager.UpdateTeleportCooldownIconDisplay(1.0f);
+            else
+                UIManager.UpdateTeleportCooldownIconDisplay(1.0f - teleportCooldownTimer/teleportCooldown);
+        }
+            
 
         //TURNING
         if ((turnTimer > 0.0f) && ((facingRight && rb.velocity.x < 0.0f) || (!facingRight && rb.velocity.x > 0.0f)))
@@ -152,7 +166,6 @@ public class PlayerController : MonoBehaviour {
         if (AbleToMove() && attackCooldownTimer <= 0.0f && move != Vector2.zero)
         {
             attackTimer = attackTime;
-            attackCooldownTimer = attackCooldown;
             rb.velocity = Vector3.zero;
             rb.AddForce(move.normalized * moveSpeed * 2.0f, ForceMode2D.Impulse);
 
@@ -164,6 +177,12 @@ public class PlayerController : MonoBehaviour {
             float rotationZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
             hitbox.rotation = Quaternion.Euler(0.0f, 0.0f, rotationZ);
             hitbox.Rotate(0.0f, 0.0f, -90.0f);
+
+            if (!PlayerManager.IsFrenzying())
+            {
+                attackCooldownTimer = attackCooldown;
+                UIManager.UpdateHackCooldownIconDisplay(0.0f);
+            }            
 
             anim.SetTrigger("attack");
         }
@@ -188,15 +207,19 @@ public class PlayerController : MonoBehaviour {
     public void ResetAttackCooldown()
     {
         attackCooldownTimer = 0.0f;
+        UIManager.UpdateHackCooldownIconDisplay(1.0f);
     }
 
     public void Teleport(Vector2 move)
     {
-        if (AbleToMove() && teleportCooldownTimer <= 0.0f)
+        if (AbleToMove() && teleportCooldownTimer <= 0.0f && move != Vector2.zero)
         {
             PlayerManager.DetachEnemies();
             RaycastHit2D hit = Physics2D.Raycast(transform.position, move.normalized, teleportDistance, LayerMask.GetMask("Walls", "Enemies"));
-            if(hit.collider != null)
+
+            Instantiate(Resources.Load(ResourcePaths.TeleportFXPrefab), transform.position, Quaternion.identity);
+
+            if (hit.collider != null)
                 transform.position = hit.point - move.normalized/2.0f;
             else
                 transform.Translate(move.normalized * teleportDistance, Space.World);
@@ -204,6 +227,7 @@ public class PlayerController : MonoBehaviour {
             Instantiate(Resources.Load(ResourcePaths.TeleportFXPrefab), transform.position, Quaternion.identity);
 
             teleportCooldownTimer = teleportCooldown;
+            UIManager.UpdateTeleportCooldownIconDisplay(0.0f);
         }
     }
 

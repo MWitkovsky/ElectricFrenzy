@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour {
     private static HealthBar healthBar;
     private static FrenzyBar frenzyBar;
     private static BossHealthBar bossHealthBar;
+    private static CooldownIcon hackCooldownIcon, teleportCooldownIcon;
     private static float timer;
 
     void Start()
@@ -18,6 +19,8 @@ public class UIManager : MonoBehaviour {
         healthBar = FindObjectOfType<HealthBar>();
         frenzyBar = FindObjectOfType<FrenzyBar>();
         bossHealthBar = FindObjectOfType<BossHealthBar>();
+        hackCooldownIcon = GameObject.Find("HackCooldown").GetComponent<CooldownIcon>();
+        teleportCooldownIcon = GameObject.Find("TeleportCooldown").GetComponent<CooldownIcon>();
         timer = 0.0f;
 
         bossHealthBar.gameObject.SetActive(false);
@@ -77,5 +80,16 @@ public class UIManager : MonoBehaviour {
     public static BossHealthBar GetBossHealthBar()
     {
         return bossHealthBar;
+    }
+
+    //Interfaces with cooldown icons
+    public static void UpdateHackCooldownIconDisplay(float fillAmount)
+    {
+        hackCooldownIcon.UpdateDisplay(fillAmount);
+    }
+
+    public static void UpdateTeleportCooldownIconDisplay(float fillAmount)
+    {
+        teleportCooldownIcon.UpdateDisplay(fillAmount);
     }
 }
