@@ -92,7 +92,7 @@ public class KeyloggerMain : MonoBehaviour {
     {
         this.target = target;
         state = State.spotted;
-        source.PlayOneShot(detectSound);
+        //source.PlayOneShot(detectSound);
     }
 
     public void Attach()
