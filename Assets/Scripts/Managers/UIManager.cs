@@ -45,6 +45,11 @@ public class UIManager : MonoBehaviour {
             pickupDisplay.text = numOfPickups.ToString();
     }
 
+    public static float GetTime()
+    {
+        return timer;
+    }
+
     //Interfaces with the health and frenzy bars
     public static float GetHealth()
     {

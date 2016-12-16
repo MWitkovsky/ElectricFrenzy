@@ -178,6 +178,11 @@ public class PlayerManager : MonoBehaviour {
     }
 
     //Interfaces with PlayerInfo
+    public static uint GetNumOfLoosePackets()
+    {
+        return playerInfo.GetNumOfLoosePackets();
+    }
+
     public static void IncrementNumOfLoosePackets()
     {
         playerInfo.IncrementNumOfLoosePackets();
