@@ -64,7 +64,9 @@ public class PlayerController : MonoBehaviour {
         //HANDLE ATTACK
         if (attackTimer > 0.0f)
         {
-            Instantiate(Resources.Load(ResourcePaths.HackFXPrefab), transform.position, transform.localRotation);
+            if(GameManager.IsGameActive())
+                Instantiate(Resources.Load(ResourcePaths.HackFXPrefab), transform.position, transform.localRotation);
+
             attackTimer -= Time.deltaTime;
         }
         else

@@ -41,7 +41,7 @@ public class PlayerInputHandler : MonoBehaviour {
             if (attack)
                 GameManager.GetPauseScreen().SelectMenuOption();
         }
-        else
+        else if(!UIManager.IsTextboxOpen())
         {
             if (attack)
                 playerController.Attack(move);

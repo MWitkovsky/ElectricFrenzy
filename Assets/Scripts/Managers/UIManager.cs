@@ -10,6 +10,7 @@ public class UIManager : MonoBehaviour {
     private static FrenzyBar frenzyBar;
     private static BossHealthBar bossHealthBar;
     private static CooldownIcon hackCooldownIcon, teleportCooldownIcon;
+    private static TextboxHandler textboxHandler;
     private static float timer;
 
     void Start()
@@ -21,6 +22,7 @@ public class UIManager : MonoBehaviour {
         bossHealthBar = FindObjectOfType<BossHealthBar>();
         hackCooldownIcon = GameObject.Find("HackCooldown").GetComponent<CooldownIcon>();
         teleportCooldownIcon = GameObject.Find("TeleportCooldown").GetComponent<CooldownIcon>();
+        textboxHandler = FindObjectOfType<TextboxHandler>();
         timer = 0.0f;
 
         bossHealthBar.gameObject.SetActive(false);
@@ -96,5 +98,16 @@ public class UIManager : MonoBehaviour {
     public static void UpdateTeleportCooldownIconDisplay(float fillAmount)
     {
         teleportCooldownIcon.UpdateDisplay(fillAmount);
+    }
+
+    //Interfaces with textbox
+    public static bool IsTextboxOpen()
+    {
+        return textboxHandler.IsTextboxOpen();
+    }
+
+    public static void OpenTextbox(string message)
+    {
+        textboxHandler.SetTextToPrint(message);
     }
 }
