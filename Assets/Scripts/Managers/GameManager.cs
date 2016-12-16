@@ -21,8 +21,10 @@ public class GameManager : MonoBehaviour {
         pauseScreen = FindObjectOfType<PauseScreen>();
         victoryScreen = FindObjectOfType<VictoryScreen>();
 
-        pauseScreen.SetActive(false);
-        victoryScreen.gameObject.SetActive(false);
+        if(pauseScreen)
+            pauseScreen.SetActive(false);
+        if(victoryScreen)
+            victoryScreen.gameObject.SetActive(false);
 
         gameActive = true;
         debug = false;
@@ -113,5 +115,13 @@ public class GameManager : MonoBehaviour {
     public static void RestartLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    //Ends the application
+    //Why the hell do we need this again?
+    //Now that we made a controller driven game, it makes sense
+    public static void ExitGame()
+    {
+        Application.Quit();
     }
 }
