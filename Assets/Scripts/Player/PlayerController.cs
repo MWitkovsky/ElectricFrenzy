@@ -99,8 +99,6 @@ public class PlayerController : MonoBehaviour {
         {
             teleportCooldownTimer -= Time.deltaTime;
 
-            print(teleportCooldownTimer / teleportCooldown);
-
             if(teleportCooldownTimer <= 0.0f)
                 UIManager.UpdateTeleportCooldownIconDisplay(1.0f);
             else
