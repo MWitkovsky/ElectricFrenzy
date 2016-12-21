@@ -71,6 +71,7 @@ public class VictoryScreen : MonoBehaviour {
 
         if(messageDelay <= 0.0f && !messageDone)
         {
+            GameManager.GetMusicHandler().PlayVictoryTheme();
             messageTransform.position = new Vector3(messageTransform.position.x + (flySpeed * Time.deltaTime), messageTransform.position.y, messageTransform.position.z);
             if(messageTransform.position.x > messageTargetX)
             {
@@ -81,6 +82,7 @@ public class VictoryScreen : MonoBehaviour {
         
         if(timeDelay <= 0.0f && !timeDone)
         {
+            
             timeTransform.position = new Vector3(timeTransform.position.x + (flySpeed * Time.deltaTime), timeTransform.position.y, timeTransform.position.z);
             if (timeTransform.position.x > timeTargetX)
             {

@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour {
     private static SplashScreenHandler splashScreen;
     private static PauseScreen pauseScreen;
     private static VictoryScreen victoryScreen;
+    private static MusicHandler musicHandler;
     private static bool gameActive;
     private static bool debug;
 
@@ -20,6 +21,7 @@ public class GameManager : MonoBehaviour {
         splashScreen = FindObjectOfType<SplashScreenHandler>();
         pauseScreen = FindObjectOfType<PauseScreen>();
         victoryScreen = FindObjectOfType<VictoryScreen>();
+        musicHandler = FindObjectOfType<MusicHandler>();
 
         if(pauseScreen)
             pauseScreen.SetActive(false);
@@ -74,6 +76,11 @@ public class GameManager : MonoBehaviour {
     public static PauseScreen GetPauseScreen()
     {
         return pauseScreen;
+    }
+
+    public static MusicHandler GetMusicHandler()
+    {
+        return musicHandler;
     }
 
     public static void SetGameActive(bool gameActive)

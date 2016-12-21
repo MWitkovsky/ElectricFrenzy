@@ -8,6 +8,7 @@ public class MusicHandler : MonoBehaviour {
 	public AudioSource source1, source2; //two sources used for gapless playback
 
     [Range(0.0f, 1.0f)]public float volume;
+    public float targetVolume = 0.5f;
 
 	//Starts playing the song intro and queues the main loop to play right after
 	void Start () {
@@ -58,7 +59,7 @@ public class MusicHandler : MonoBehaviour {
     public void PlayVictoryTheme()
     {
         PauseAll();
-        ChangeVolume(1.0f);
+        ChangeVolume(targetVolume);
         source1.loop = false;
         source1.clip = victoryTheme;
         source1.Play();
