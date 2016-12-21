@@ -30,7 +30,8 @@ public class ShootLeaf : MonoBehaviour {
             else
             {
                 leaf = ((GameObject)Instantiate(Resources.Load(ResourcePaths.SakuraLeafPrefab), transform.position, transform.rotation)).GetComponent<LeafMain>();
-                leaf.SetShotDirection(PlayerManager.GetPlayer().transform.position - transform.position, shotSpeed);
+                if(leaf)
+                    leaf.SetShotDirection(PlayerManager.GetPlayer().transform.position - transform.position, shotSpeed);
 
                 if (--numOfLeaves == 0)
                     Destroy(gameObject);

@@ -6,11 +6,16 @@ public class SakuraMain : MonoBehaviour {
     [SerializeField] private GameObject fallingLeafAttack;
     [SerializeField] private ShootLeaf shootLeafAttack;
     [SerializeField] private RotateLeafAttack rotateLeafAttack;
+    [SerializeField] private AudioClip damageSound;
+    [SerializeField] private AudioClip destructionSound;
+    [SerializeField] private AudioClip windSound;
 
+    
     private Transform player;
     private BossHealthBar healthBar;
     private Vector3 spawnCenter, fallingLeafSpawnPoint, teleportTarget;
     private float spawnCenterHalfX, spawnCenterHalfY;
+    private AudioSource source;
 
     private float packetSpawnDelay, shortPacketSpawnDelay, windDelay, attackDelay, winDelay;
     private float packetSpawnTimer, windDelayTimer, attackDelayTimer;
@@ -32,6 +37,8 @@ public class SakuraMain : MonoBehaviour {
         shortPacketSpawnDelay = 0.025f;
         windDelay = 1.0f;
         winDelay = 2.0f;
+
+        source = GetComponent<AudioSource>();
     }
 
     IEnumerator LateStart(float waitTime)
@@ -92,6 +99,8 @@ public class SakuraMain : MonoBehaviour {
         }
         else if(windBlow)
         {
+            source.clip = windSound;
+            source.Play();
             PlayerManager.SetTeleporting(true);
             teleportTarget = Physics2D.Raycast(player.position, Vector3.left, 1000.0f, LayerMask.GetMask("Walls")).point;
             windBlow = false;
@@ -177,6 +186,8 @@ public class SakuraMain : MonoBehaviour {
         {
             if (PlayerManager.IsAttacking())
             {
+                source.clip = damageSound;
+                source.Play();
                 ++timesHit;
                 healthBar.ApplyDamage(16.7f);
 
@@ -189,6 +200,8 @@ public class SakuraMain : MonoBehaviour {
                 }
                 else
                 {
+                    source.clip = destructionSound;
+                    source.Play();
                     packetsToSpawn = 200;
                     packetSpawnTimer = packetSpawnDelay;
                     dead = true;
