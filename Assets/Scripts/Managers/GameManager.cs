@@ -105,7 +105,7 @@ public class GameManager : MonoBehaviour {
 
     public static void ReturnToMainMenu()
     {
-        //TODO: stub
+        SceneManager.LoadScene(0);
     }
 
     public static void NextLevel()
